@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_TTYP" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DD40V>
+    <TYPENAME>ZAPP_T_RULE_SORT</TYPENAME>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <ROWTYPE>ZAPP_S_RULE</ROWTYPE>
+    <ROWKIND>S</ROWKIND>
+    <DATATYPE>STRU</DATATYPE>
+    <ACCESSMODE>T</ACCESSMODE>
+    <KEYDEF>K</KEYDEF>
+    <KEYKIND>N</KEYKIND>
+    <KEYFDCOUNT>0004</KEYFDCOUNT>
+    <DDTEXT>Pretty Printer Rules Sort</DDTEXT>
+   </DD40V>
+   <DD42V>
+    <DD42V>
+     <TYPENAME>ZAPP_T_RULE_SORT</TYPENAME>
+     <KEYFDPOS>0001</KEYFDPOS>
+     <ROWTYPEPOS>0002</ROWTYPEPOS>
+     <KEYFIELD>TOKEN</KEYFIELD>
+    </DD42V>
+    <DD42V>
+     <TYPENAME>ZAPP_T_RULE_SORT</TYPENAME>
+     <KEYFDPOS>0002</KEYFDPOS>
+     <ROWTYPEPOS>0003</ROWTYPEPOS>
+     <KEYFIELD>CONTEXT</KEYFIELD>
+    </DD42V>
+    <DD42V>
+     <TYPENAME>ZAPP_T_RULE_SORT</TYPENAME>
+     <KEYFDPOS>0003</KEYFDPOS>
+     <ROWTYPEPOS>0004</ROWTYPEPOS>
+     <KEYFIELD>HL_CONTEXT</KEYFIELD>
+    </DD42V>
+    <DD42V>
+     <TYPENAME>ZAPP_T_RULE_SORT</TYPENAME>
+     <KEYFDPOS>0004</KEYFDPOS>
+     <ROWTYPEPOS>0005</ROWTYPEPOS>
+     <KEYFIELD>SQLSCRIPT</KEYFIELD>
+    </DD42V>
+   </DD42V>
+  </asx:values>
+ </asx:abap>
+</abapGit>
