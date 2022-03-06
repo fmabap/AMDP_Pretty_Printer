@@ -30,7 +30,7 @@ class ZCL_APP_RULE_FACTORY.
 
 ### Scanner logic
 
-The soucre code will be scanned by the class ZCL_APP_SCANNER. Scan means
+The source code will be scanned by the class ZCL_APP_SCANNER. Scan means
 that it calls the SAP internal command SCAN ABAP-SOURCE to tokenize the
 source code. This command is also used by the SAP Standard ABAP Pretty
 Printer. The command returns the tokens in a way that it cannot be used
@@ -77,5 +77,5 @@ following access sequence:
 Hint: Currently all rules have no context. The context could be defined
 by a previous rule.
 
-All rules can be find in the package $APP_PRETTY_PRINTER_RULES and
+All rules can be found in the package $APP_PRETTY_PRINTER_RULES and
 below.
