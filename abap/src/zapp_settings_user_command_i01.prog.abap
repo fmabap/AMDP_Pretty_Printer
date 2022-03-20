@@ -12,5 +12,7 @@ MODULE user_command_0100 INPUT.
       gr_settings->handle_exit( zapp_settings ).
     WHEN 'SAVE'.
       gr_settings->save( zapp_settings ).
+    WHEN 'DELETE'.
+      gr_settings->delete( ).
   ENDCASE.
 ENDMODULE.
