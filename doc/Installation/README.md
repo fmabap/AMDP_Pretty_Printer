@@ -27,7 +27,7 @@ See also here
 <https://tools.hana.ondemand.com/#abap>
 
 You have to copy the current zapp.pretty.printer\_\*.jar file from the
-folder Eclipse Dropin\\plugins to your Eclipse\\dropins folder.
+github folder [Eclipse Dropin\\plugins](../../Eclipse%20Dropin/plugins) to your local Eclipse\\dropins folder.
 
 Then you have to restart your Eclipse.
 
