@@ -81,7 +81,8 @@ CLASS zcl_app_rule_abap_dummy IMPLEMENTATION.
         ir_rule_data       = ir_rule_data
         ir_context_rule    = ir_context_rule
         ir_hl_context_rule = ir_hl_context_rule
-        ir_prev_rule       = ir_prev_rule ).
+        ir_prev_rule       = ir_prev_rule
+        ir_settings        = ir_settings ).
 
   ENDMETHOD.
 

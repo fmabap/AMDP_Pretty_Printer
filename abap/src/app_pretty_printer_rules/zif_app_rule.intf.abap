@@ -32,6 +32,7 @@ INTERFACE zif_app_rule
               ir_t_statement     TYPE REF TO sstmnt_tab
               ir_t_structure     TYPE REF TO sstruc_tab
               ir_rule_data       TYPE REF TO zapp_s_rule
+              ir_settings        type ref to zif_app_settings
               ir_context_rule    TYPE REF TO zif_app_rule OPTIONAL
               ir_hl_context_rule TYPE REF TO zif_app_rule OPTIONAL
               ir_prev_rule       TYPE REF TO zif_app_rule OPTIONAL
@@ -90,10 +91,6 @@ INTERFACE zif_app_rule
 
 
   METHODS is_end_of_statement
-    RETURNING VALUE(rv_result) TYPE abap_bool
-    RAISING   zcx_app_exception.
-
-  METHODS is_keyword
     RETURNING VALUE(rv_result) TYPE abap_bool
     RAISING   zcx_app_exception.
 

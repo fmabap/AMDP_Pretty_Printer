@@ -158,7 +158,8 @@ CLASS zcl_app_rule_amdp_default IMPLEMENTATION.
         ir_rule_data       = ir_rule_data
         ir_context_rule    = ir_context_rule
         ir_hl_context_rule = ir_hl_context_rule
-        ir_prev_rule       = ir_prev_rule ).
+        ir_prev_rule       = ir_prev_rule
+        ir_settings        = ir_settings ).
 
   ENDMETHOD.
 
@@ -169,16 +170,17 @@ CLASS zcl_app_rule_amdp_default IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    IF zif_app_rule~get_token_up(  ) = ','.
-      rv_result = abap_true.
-      RETURN.
-    ENDIF.
+    IF mr_settings->is_line_break_at_comma_req( ) = abap_true.
+      IF zif_app_rule~get_token_up(  ) = ','.
+        rv_result = abap_true.
+        RETURN.
+      ENDIF.
 
-    IF zcl_app_utilities=>contains_delimiter_char(
-         it_delimiter =  mr_token_ext->delimiter
-         iv_char      = ','  ) = abap_true.
-      rv_result = abap_true.
+      IF zcl_app_utilities=>contains_delimiter_char(
+           it_delimiter =  mr_token_ext->delimiter
+           iv_char      = ','  ) = abap_true.
+        rv_result = abap_true.
+      ENDIF.
     ENDIF.
-
   ENDMETHOD.
 ENDCLASS.

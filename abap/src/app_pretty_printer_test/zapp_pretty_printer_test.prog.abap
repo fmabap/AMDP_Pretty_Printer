@@ -116,6 +116,7 @@ CLASS lcl_logic IMPLEMENTATION.
     DATA lv_source_res TYPE string.
     DATA lv_source_stm TYPE string.
     DATA lv_source_res_stm TYPE string.
+    DATA lr_settings TYPE REF TO zif_app_settings.
 
 
     mr_text_output->delete_text( ).
@@ -170,7 +171,10 @@ CLASS lcl_logic IMPLEMENTATION.
 
     CREATE OBJECT lr_pretty_printer.
     TRY.
-        lt_source_res = lr_pretty_printer->pretty_print( it_source = lt_source ).
+        CREATE OBJECT lr_settings TYPE zcl_app_settings.
+        lt_source_res = lr_pretty_printer->pretty_print(
+          it_source   = lt_source
+          ir_settings = lr_settings ).
 
       CATCH zcx_app_exception INTO lr_ex.
         MESSAGE lr_ex->get_text( ) TYPE 'I' DISPLAY LIKE 'E'.

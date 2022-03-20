@@ -30,20 +30,23 @@ CLASS ZCL_APP_ADT_REST_PRETTY_PRINT IMPLEMENTATION.
 
 
   METHOD post.
-    DATA lt_initial_source     TYPE sourcetable.
+    DATA lt_source     TYPE sourcetable.
     DATA lt_app_res TYPE sourcetable.
-    DATA lr_settings TYPE REF TO if_pretty_printer_settings.
     DATA lr_ex_pp TYPE REF TO zcx_app_exception.
+    data lr_settings type ref to zif_app_settings.
 
 
     request->get_body_data(
       EXPORTING
         content_handler = cl_adt_rest_cnt_hdl_factory=>get_instance( )->get_handler_for_plain_text( )
       IMPORTING
-        data            = lt_initial_source ).
+        data            = lt_source ).
 
     TRY.
-        lt_app_res =  NEW zcl_app_pretty_printer( )->pretty_print( it_source = lt_initial_source ).
+        create object lr_settings type zcl_app_settings.
+        lt_app_res =  NEW zcl_app_pretty_printer( )->pretty_print(
+                                                    it_source   = lt_source
+                                                    ir_settings = lr_settings ).
       CATCH zcx_app_exception INTO lr_ex_pp.
         RAISE EXCEPTION TYPE cx_sedi_adt_err_pretty_printer
           EXPORTING
