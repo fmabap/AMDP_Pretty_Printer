@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DD04V>
-    <ROLLNAME>ZAPP_D_NEW_LINE_INTEND_DIFF</ROLLNAME>
+    <ROLLNAME>ZAPP_D_NEW_STATEM_INDENT_DIFF</ROLLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
     <DOMNAME>INT4</DOMNAME>
     <HEADLEN>55</HEADLEN>
@@ -26,7 +26,7 @@
      <DDLANGUAGE>D</DDLANGUAGE>
      <DDTEXT>Einrückungsdifferenz zu neuen Ausdruck</DDTEXT>
      <REPTEXT>Einrückungsdifferenz zu neuen Ausdruck</REPTEXT>
-     <SCRTEXT_S>Einrückdif</SCRTEXT_S>
+     <SCRTEXT_S>Einrü. D A</SCRTEXT_S>
      <SCRTEXT_M>Einrückungsdifferenz</SCRTEXT_M>
      <SCRTEXT_L>Einrückungsdifferenz zu neuen Ausdruck</SCRTEXT_L>
     </item>

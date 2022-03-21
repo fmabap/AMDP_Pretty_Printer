@@ -70,11 +70,11 @@ INTERFACE zif_app_rule
     RETURNING VALUE(rt_result) TYPE sourcetable
     RAISING   zcx_app_exception.
 
-  METHODS get_new_line_intend
+  METHODS get_new_line_indent
     RETURNING VALUE(rv_result) TYPE i
     RAISING   zcx_app_exception.
 
-  METHODS get_new_statement_intend
+  METHODS get_new_statement_indent
     RETURNING VALUE(rv_result) TYPE i
     RAISING   zcx_app_exception.
 
@@ -110,12 +110,12 @@ INTERFACE zif_app_rule
     RETURNING VALUE(rv_result) TYPE abap_bool
     RAISING   zcx_app_exception.
 
-  METHODS set_additional_intend
-    IMPORTING iv_intend TYPE i
+  METHODS set_additional_indent
+    IMPORTING iv_indent TYPE i
     RAISING   zcx_app_exception.
 
-  METHODS get_additional_intend
-    RETURNING VALUE(rv_intend) TYPE i
+  METHODS get_additional_indent
+    RETURNING VALUE(rv_indent) TYPE i
     RAISING   zcx_app_exception.
 
   METHODS refresh_buffer.

@@ -43,9 +43,9 @@ CLASS zcl_app_rule_amdp_by IMPLEMENTATION.
     adjust_prev_rule( lr_open_bracket_rule ).
 
     super->zif_app_rule~finalize_init( ).
-    "respect the new line intend difference of the ORDER Rule at ORDER by for example
+    "respect the new line indent difference of the ORDER Rule at ORDER by for example
     lv_cur_offset_end = zif_app_rule~get_cur_offset_end( ).
-    mr_rule_data->new_line_intend_diff = lv_cur_offset_end - mr_prev_rule->get_new_line_intend( ).
+    mr_rule_data->new_line_indent_diff = lv_cur_offset_end - mr_prev_rule->get_new_line_indent( ).
 
   ENDMETHOD.
 

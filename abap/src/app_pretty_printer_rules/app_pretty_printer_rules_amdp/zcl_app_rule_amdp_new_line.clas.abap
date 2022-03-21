@@ -47,12 +47,12 @@ CLASS zcl_app_rule_amdp_new_line IMPLEMENTATION.
     ENDIF.
 
     IF has_prev_rule_same_type(  ) = abap_false.
-      rv_result = mv_default_line_intend.
+      rv_result = mv_default_line_indent.
     ELSE.
-      rv_result = mr_prev_rule->get_new_line_intend( ).
+      rv_result = mr_prev_rule->get_new_line_indent( ).
     ENDIF.
     zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
-    rv_result = rv_result + mv_add_intend.
+    rv_result = rv_result + mv_add_indent.
     zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
 
 

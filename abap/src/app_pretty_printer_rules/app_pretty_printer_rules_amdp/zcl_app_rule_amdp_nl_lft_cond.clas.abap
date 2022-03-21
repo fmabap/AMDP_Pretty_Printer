@@ -1,12 +1,12 @@
 CLASS zcl_app_rule_amdp_nl_lft_cond DEFINITION
   PUBLIC
-  INHERITING FROM ZCL_APP_RULE_AMDP_NEW_LINE_LFT
+  INHERITING FROM zcl_app_rule_amdp_new_line_lft
   CREATE PUBLIC .
 
   PUBLIC SECTION.
 
   PROTECTED SECTION.
-    METHODS set_add_intend REDEFINITION.
+    METHODS set_add_indent REDEFINITION.
     DATA mv_cond_fulfilled_set TYPE abap_bool.
     DATA mv_cond_fulfilled TYPE abap_bool.
   PRIVATE SECTION.
@@ -18,10 +18,10 @@ ENDCLASS.
 CLASS zcl_app_rule_amdp_nl_lft_cond IMPLEMENTATION.
 
 
-  METHOD set_add_intend.
+  METHOD set_add_indent.
     DATA lr_rule_cond TYPE REF TO zif_app_rule_condition.
 
-    CLEAR mv_add_intend.
+    CLEAR mv_add_indent.
     IF is_logic_active( ) = abap_false.
       RETURN.
     ENDIF.
@@ -40,7 +40,7 @@ CLASS zcl_app_rule_amdp_nl_lft_cond IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    super->set_add_intend( ).
+    super->set_add_indent( ).
   ENDMETHOD.
 
 

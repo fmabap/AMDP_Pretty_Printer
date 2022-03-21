@@ -48,16 +48,16 @@ CLASS zcl_app_rule_amdp_control_stru IMPLEMENTATION.
   METHOD finalize_init_end.
     DATA lr_next_rule TYPE REF TO zif_app_rule.
     lr_next_rule = zif_app_rule~get_next_rule( ).
-    mr_rule_data->add_intend = -4.
-    mv_add_intend = mr_rule_data->add_intend.
+    mr_rule_data->add_indent = -4.
+    mv_add_indent = mr_rule_data->add_indent.
     IF lr_next_rule IS NOT INITIAL.
       CASE lr_next_rule->get_token_up(  ).
         WHEN 'IF' OR 'FOR' OR 'WHILE'.
           RETURN.
       ENDCASE.
     ENDIF.
-    mr_rule_data->new_line_intend_diff = -4.
-    mr_rule_data->new_statement_intend_diff = -4.
+    mr_rule_data->new_line_indent_diff = -4.
+    mr_rule_data->new_statement_indent_diff = -4.
   ENDMETHOD.
 
   METHOD finalize_init_others.
@@ -67,14 +67,14 @@ CLASS zcl_app_rule_amdp_control_stru IMPLEMENTATION.
     IF lr_prev_rule IS NOT INITIAL
       AND lr_prev_rule->get_token_up(  ) = 'END'
       AND lr_prev_rule->is_end_of_statement( ) = abap_false.
-      mr_rule_data->new_line_intend_diff = -4.
-      mr_rule_data->new_statement_intend_diff = -4.
+      mr_rule_data->new_line_indent_diff = -4.
+      mr_rule_data->new_statement_indent_diff = -4.
       mv_logic_active = abap_false.
       RETURN.
     ENDIF.
 
-    mr_rule_data->new_line_intend_diff = 4.
-    mr_rule_data->new_statement_intend_diff = 4.
+    mr_rule_data->new_line_indent_diff = 4.
+    mr_rule_data->new_statement_indent_diff = 4.
   ENDMETHOD.
 
   METHOD finalize_init_then.
@@ -83,24 +83,24 @@ CLASS zcl_app_rule_amdp_control_stru IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD finalize_init_when.
-    mr_rule_data->add_intend = -2.
-    mv_add_intend = mr_rule_data->add_intend.
+    mr_rule_data->add_indent = -2.
+    mv_add_indent = mr_rule_data->add_indent.
   ENDMETHOD.
 
   METHOD finalize_init_else.
-    mr_rule_data->add_intend = -2.
-    mv_add_intend = mr_rule_data->add_intend.
+    mr_rule_data->add_indent = -2.
+    mv_add_indent = mr_rule_data->add_indent.
     mr_rule_data->is_new_line_req = abap_true.
   ENDMETHOD.
 
   METHOD finalize_init_elseif.
-    mr_rule_data->add_intend = -2.
-    mv_add_intend = mr_rule_data->add_intend.
+    mr_rule_data->add_indent = -2.
+    mv_add_indent = mr_rule_data->add_indent.
   ENDMETHOD.
 
   METHOD finalize_init_case.
-    mr_rule_data->new_line_intend_diff = 4.
-    mr_rule_data->new_statement_intend_diff = 4.
+    mr_rule_data->new_line_indent_diff = 4.
+    mr_rule_data->new_statement_indent_diff = 4.
   ENDMETHOD.
 
 ENDCLASS.

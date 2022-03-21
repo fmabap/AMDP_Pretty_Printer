@@ -160,14 +160,14 @@ CLASS zcl_app_rule_amdp_call IMPLEMENTATION.
 
   METHOD set_add_indent_add_arrow.
     DATA lr_arrow TYPE REF TO zif_app_rule.
-    DATA lv_add_intend TYPE i.
+    DATA lv_add_indent TYPE i.
     lr_arrow = get_arrow_of_parameter( ir_parameter ).
     IF lr_arrow IS INITIAL.
       RETURN.
     ENDIF.
 
-    lv_add_intend = iv_max_parameter_length - zcl_app_utilities=>get_token_length_wo_delimiter( ir_parameter ).
-    lr_arrow->set_additional_intend( iv_intend = lv_add_intend ).
+    lv_add_indent = iv_max_parameter_length - zcl_app_utilities=>get_token_length_wo_delimiter( ir_parameter ).
+    lr_arrow->set_additional_indent( iv_indent = lv_add_indent ).
 
   ENDMETHOD.
 

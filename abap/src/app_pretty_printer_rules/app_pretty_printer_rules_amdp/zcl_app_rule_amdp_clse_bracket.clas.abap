@@ -7,7 +7,7 @@ CLASS zcl_app_rule_amdp_clse_bracket DEFINITION
   PUBLIC SECTION.
     METHODS zif_app_rule~get_cur_row REDEFINITION.
     METHODS zif_app_rule~get_cur_offset_start REDEFINITION.
-    METHODS zif_app_rule~get_new_line_intend REDEFINITION.
+    METHODS zif_app_rule~get_new_line_indent REDEFINITION.
   PROTECTED SECTION.
   PRIVATE SECTION.
     METHODS find_prev_open_bracket_rule
@@ -70,7 +70,7 @@ CLASS zcl_app_rule_amdp_clse_bracket IMPLEMENTATION.
     lr_open_bracket_rule ?= find_prev_open_bracket_rule(  ).
     IF lr_open_bracket_rule->get_mv_special_logic( ) <> zif_app_amdp_rule_definitions=>cos_open_bracket_special_logic-call_statement
     AND lr_open_bracket_rule->zif_app_rule~get_end_row( ) <> zif_app_rule~get_cur_row(  ).
-      rv_result = lr_open_bracket_rule->zif_app_rule~get_cur_offset_start(  ) + mv_add_intend.
+      rv_result = lr_open_bracket_rule->zif_app_rule~get_cur_offset_start(  ) + mv_add_indent.
       zif_app_rule~set_cur_offset_start( rv_result ).
     ELSE.
       rv_result = super->zif_app_rule~get_cur_offset_start(  ).
@@ -78,19 +78,19 @@ CLASS zcl_app_rule_amdp_clse_bracket IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD zif_app_rule~get_new_line_intend.
+  METHOD zif_app_rule~get_new_line_indent.
     DATA lr_rule TYPE REF TO zif_app_rule.
 
     IF is_logic_active(  ) = abap_false OR zif_app_rule~is_end_of_statement( ) = abap_true.
-      rv_result = super->zif_app_rule~get_new_line_intend( ).
+      rv_result = super->zif_app_rule~get_new_line_indent( ).
       RETURN.
     ENDIF.
 
     lr_rule = find_prev_open_bracket_rule(  ).
     IF lr_rule->get_prev_rule( ) IS INITIAL.
-      rv_result = mv_default_line_intend.
+      rv_result = mv_default_line_indent.
     ELSE.
-      rv_result = lr_rule->get_prev_rule( )->get_new_line_intend(  ).
+      rv_result = lr_rule->get_prev_rule( )->get_new_line_indent(  ).
     ENDIF.
   ENDMETHOD.
 

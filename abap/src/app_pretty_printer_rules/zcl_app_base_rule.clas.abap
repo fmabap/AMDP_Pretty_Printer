@@ -18,7 +18,7 @@ CLASS zcl_app_base_rule DEFINITION
     DATA mr_t_statement  TYPE REF TO sstmnt_tab.
     DATA mr_t_structure  TYPE REF TO sstruc_tab .
     DATA mr_rule_data TYPE REF TO zapp_s_rule.
-    DATA mv_default_line_intend TYPE i.
+    DATA mv_default_line_indent TYPE i.
     DATA mv_cur_offset_start_set TYPE abap_bool.
     DATA mv_cur_offset_start TYPE i.
     DATA mv_cur_offset_end_set TYPE abap_bool.
@@ -27,7 +27,7 @@ CLASS zcl_app_base_rule DEFINITION
     DATA mv_cur_row TYPE i.
     DATA mv_end_row_set TYPE abap_bool.
     DATA mv_end_row TYPE i.
-    DATA mv_add_intend TYPE i.
+    DATA mv_add_indent TYPE i.
     DATA mr_settings TYPE REF TO zif_app_settings.
 
     METHODS set_cur_offset_end
@@ -145,24 +145,24 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
     OR ( has_prev_rule_same_type(  ) = abap_false
          AND mr_prev_rule->get_cur_row( ) <> zif_app_rule~get_cur_row(  )
        ).
-      rv_result = mv_default_line_intend + mv_add_intend.
+      rv_result = mv_default_line_indent + mv_add_indent.
       zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
       zif_app_rule~set_cur_offset_start( rv_result ).
       RETURN.
     ENDIF.
 
     CASE mr_token_ext->comment_detail.
-      WHEN zcl_app_scanner_comment=>cos_comment_detail-start_begin_of_line_intendable.
+      WHEN zcl_app_scanner_comment=>cos_comment_detail-start_begin_of_line_indentable.
 
         IF mr_prev_rule->has_multline_delimiter( ) = abap_true.
-          rv_result = mr_prev_rule->get_cur_offset_end( ) + mv_add_intend.
+          rv_result = mr_prev_rule->get_cur_offset_end( ) + mv_add_indent.
           zif_app_rule~set_cur_offset_start( rv_result ).
           RETURN.
         ENDIF.
 
-        rv_result = mr_prev_rule->get_new_line_intend( ).
+        rv_result = mr_prev_rule->get_new_line_indent( ).
         zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
-        rv_result = rv_result + mv_add_intend.
+        rv_result = rv_result + mv_add_indent.
         zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
         zif_app_rule~set_cur_offset_start( rv_result ).
         RETURN.
@@ -170,7 +170,7 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
       WHEN zcl_app_scanner_comment=>cos_comment_detail-start
         OR zcl_app_scanner_comment=>cos_comment_detail-part.
 
-        rv_result = mr_prev_rule->get_cur_offset_end( ) + mv_add_intend.
+        rv_result = mr_prev_rule->get_cur_offset_end( ) + mv_add_indent.
         zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
         zif_app_rule~set_cur_offset_start( rv_result ).
         RETURN.
@@ -180,13 +180,13 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
     IF mr_prev_rule->is_new_line_req( ) = abap_true
      AND mr_prev_rule->has_multline_delimiter( ) = abap_false
      AND zif_app_rule~is_line_breaking_token( ) = abap_false.
-      rv_result = mr_prev_rule->get_new_line_intend( ).
+      rv_result = mr_prev_rule->get_new_line_indent( ).
     ELSE.
       rv_result = mr_prev_rule->get_cur_offset_end( ).
     ENDIF.
 
     zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
-    rv_result = rv_result + mv_add_intend.
+    rv_result = rv_result + mv_add_indent.
     zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
     zif_app_rule~set_cur_offset_start( rv_result ).
   ENDMETHOD.
@@ -207,7 +207,7 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
 
     CASE mr_token_ext->comment_detail.
       WHEN zcl_app_scanner_comment=>cos_comment_detail-start_begin_of_line
-        OR zcl_app_scanner_comment=>cos_comment_detail-start_begin_of_line_intendable.
+        OR zcl_app_scanner_comment=>cos_comment_detail-start_begin_of_line_indentable.
         IF mr_prev_rule->has_multline_delimiter( ) = abap_true.
           rv_result = mr_prev_rule->get_end_row( ).
         ELSE.
@@ -288,18 +288,18 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD zif_app_rule~get_new_line_intend.
+  METHOD zif_app_rule~get_new_line_indent.
     IF has_prev_rule_same_type(  ) = abap_true.
       IF zif_app_rule~is_end_of_statement( ) = abap_true.
-        rv_result = mr_prev_rule->get_new_statement_intend( ).
+        rv_result = mr_prev_rule->get_new_statement_indent( ).
       ELSE.
-        rv_result = mr_prev_rule->get_new_line_intend(  ).
+        rv_result = mr_prev_rule->get_new_line_indent(  ).
 
       ENDIF.
     ELSE.
-      rv_result = mv_default_line_intend.
+      rv_result = mv_default_line_indent.
     ENDIF.
-    rv_result = rv_result + mr_rule_data->new_line_intend_diff.
+    rv_result = rv_result + mr_rule_data->new_line_indent_diff.
     zcl_app_utilities=>set_to_0_if_negativ(
       CHANGING
         cv_value = rv_result
@@ -308,13 +308,13 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD zif_app_rule~get_new_statement_intend.
+  METHOD zif_app_rule~get_new_statement_indent.
     IF has_prev_rule_same_type(  ) = abap_true.
-      rv_result = mr_prev_rule->get_new_statement_intend( ).
+      rv_result = mr_prev_rule->get_new_statement_indent( ).
     ELSE.
-      rv_result = mv_default_line_intend.
+      rv_result = mv_default_line_indent.
     ENDIF.
-    rv_result = rv_result + mr_rule_data->new_statement_intend_diff.
+    rv_result = rv_result + mr_rule_data->new_statement_indent_diff.
   ENDMETHOD.
 
 
@@ -488,12 +488,12 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD zif_app_rule~set_additional_intend.
-    mv_add_intend = iv_intend.
+  METHOD zif_app_rule~set_additional_indent.
+    mv_add_indent = iv_indent.
   ENDMETHOD.
 
-  METHOD zif_app_rule~get_additional_intend.
-    rv_intend = mv_add_intend.
+  METHOD zif_app_rule~get_additional_indent.
+    rv_indent = mv_add_indent.
   ENDMETHOD.
 
 

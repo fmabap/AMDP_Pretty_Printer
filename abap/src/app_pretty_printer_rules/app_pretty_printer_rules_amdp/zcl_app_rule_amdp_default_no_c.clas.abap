@@ -21,7 +21,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_APP_RULE_AMDP_DEFAULT_NO_C IMPLEMENTATION.
+CLASS zcl_app_rule_amdp_default_no_c IMPLEMENTATION.
 
 
   METHOD is_logic_active.
@@ -51,10 +51,10 @@ CLASS ZCL_APP_RULE_AMDP_DEFAULT_NO_C IMPLEMENTATION.
 
   METHOD zif_app_rule~finalize_init.
     super->zif_app_rule~finalize_init( ).
-        set_logic_active( ).
+    set_logic_active( ).
 
     IF is_logic_active( ) = abap_true.
-      mv_add_intend = mr_rule_data->add_intend.
+      mv_add_indent = mr_rule_data->add_indent.
     ENDIF.
 
 

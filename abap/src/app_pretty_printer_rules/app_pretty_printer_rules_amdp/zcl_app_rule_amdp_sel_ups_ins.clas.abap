@@ -5,12 +5,12 @@ CLASS zcl_app_rule_amdp_sel_ups_ins DEFINITION
 
   PUBLIC SECTION.
     METHODS zif_app_rule~finalize_init REDEFINITION.
-    METHODS zif_app_rule~get_new_line_intend REDEFINITION.
+    METHODS zif_app_rule~get_new_line_indent REDEFINITION.
     METHODS zif_app_rule~get_cur_offset_start REDEFINITION.
     METHODS zif_app_rule~refresh_buffer REDEFINITION.
   PROTECTED SECTION.
   PRIVATE SECTION.
-    METHODS set_additional_intend
+    METHODS set_additional_indent
       RAISING
         zcx_app_exception.
 
@@ -51,15 +51,15 @@ CLASS zcl_app_rule_amdp_sel_ups_ins DEFINITION
       RETURNING VALUE(rr_result) TYPE REF TO zif_app_rule
       RAISING   zcx_app_exception .
 
-    DATA mv_add_intend_set TYPE abap_bool.
+    DATA mv_add_indent_set TYPE abap_bool.
 
 
 ENDCLASS.
 
 CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
-  METHOD zif_app_rule~get_new_line_intend.
+  METHOD zif_app_rule~get_new_line_indent.
     IF is_logic_active(  ) = abap_false.
-      rv_result = super->zif_app_rule~get_new_line_intend( ).
+      rv_result = super->zif_app_rule~get_new_line_indent( ).
       RETURN.
     ENDIF.
 
@@ -70,13 +70,13 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
   METHOD zif_app_rule~get_cur_offset_start.
 
     IF is_logic_active(  ) = abap_true.
-      set_additional_intend( ).
+      set_additional_indent( ).
     ENDIF.
     rv_result = super->zif_app_rule~get_cur_offset_start( ).
 
   ENDMETHOD.
 
-  METHOD set_additional_intend.
+  METHOD set_additional_indent.
 
     DATA lr_prev_select_rule TYPE REF TO zif_app_rule.
     DATA lr_prev_insert_rule TYPE REF TO zif_app_rule.
@@ -87,21 +87,21 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
     DATA lr_union_all_rule TYPE REF TO zif_app_rule.
     DATA lr_default_rule TYPE REF TO zif_app_rule.
 
-    IF mv_add_intend_set = abap_true.
+    IF mv_add_indent_set = abap_true.
       RETURN.
     ENDIF.
 
     lr_prev_insert_rule = get_prev_ups_ins_rule( ).
     IF lr_prev_insert_rule IS NOT INITIAL.
-      mv_add_intend = -7.
-      mv_add_intend_set = abap_true.
+      mv_add_indent = -7.
+      mv_add_indent_set = abap_true.
       RETURN.
     ENDIF.
 
     lr_prev_select_rule = get_prev_select_rule(  ).
     IF lr_prev_select_rule IS NOT INITIAL.
-      mv_add_intend = lr_prev_select_rule->get_additional_intend( ).
-      mv_add_intend_set = abap_true.
+      mv_add_indent = lr_prev_select_rule->get_additional_indent( ).
+      mv_add_indent_set = abap_true.
       RETURN.
     ENDIF.
 
@@ -110,14 +110,14 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
     IF lr_join_rule IS NOT INITIAL.
       CASE lr_join_rule->get_token_up( ).
         WHEN 'LEFT'.
-          mv_add_intend = 9.
+          mv_add_indent = 9.
         WHEN 'RIGHT'.
-          mv_add_intend = 10.
+          mv_add_indent = 10.
         WHEN 'CROSS' OR 'INNER'.
-          mv_add_intend = 4.
+          mv_add_indent = 4.
       ENDCASE.
 
-      mv_add_intend_set = abap_true.
+      mv_add_indent_set = abap_true.
       RETURN.
 
     ENDIF.
@@ -125,42 +125,42 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
     lr_union_all_rule = get_union_all_rule( ).
 
     IF NOT lr_union_all_rule IS INITIAL.
-      mv_add_intend = 3.
-      mv_add_intend_set = abap_true.
+      mv_add_indent = 3.
+      mv_add_indent_set = abap_true.
       RETURN.
     ENDIF.
 
     lr_distinct_rule = get_distinct_rule( ).
     IF NOT lr_distinct_rule IS INITIAL.
-      mv_add_intend = 2.
-      mv_add_intend_set = abap_true.
+      mv_add_indent = 2.
+      mv_add_indent_set = abap_true.
       RETURN.
     ENDIF.
 
     lr_order_rule = get_order_rule( ).
 
     IF NOT lr_order_rule IS INITIAL.
-      mv_add_intend = 2.
-      mv_add_intend_set = abap_true.
+      mv_add_indent = 2.
+      mv_add_indent_set = abap_true.
       RETURN.
     ENDIF.
 
     lr_group_rule = get_group_rule( ).
 
     IF NOT lr_group_rule IS INITIAL.
-      mv_add_intend = 2.
-      mv_add_intend_set = abap_true.
+      mv_add_indent = 2.
+      mv_add_indent_set = abap_true.
       RETURN.
     ENDIF.
 
     lr_default_rule = get_default_rule( ).
     IF NOT lr_default_rule IS INITIAL.
-      mv_add_intend = 1.
-      mv_add_intend_set = abap_true.
+      mv_add_indent = 1.
+      mv_add_indent_set = abap_true.
       RETURN.
     ENDIF.
 
-    mv_add_intend_set = abap_true.
+    mv_add_indent_set = abap_true.
   ENDMETHOD.
 
   METHOD get_join_rule.
@@ -292,7 +292,7 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
 
   METHOD zif_app_rule~refresh_buffer.
     super->zif_app_rule~refresh_buffer( ).
-    CLEAR mv_add_intend_set.
+    CLEAR mv_add_indent_set.
   ENDMETHOD.
 
   METHOD zif_app_rule~finalize_init.

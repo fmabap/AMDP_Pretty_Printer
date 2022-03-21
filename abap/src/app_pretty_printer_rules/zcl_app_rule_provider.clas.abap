@@ -156,7 +156,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
     ls_result-rule_class = 'ZCL_APP_RULE_AMDP_NL_LFT_COND'.
     ls_result-rule_cond_class = 'ZCL_APP_RULE_COND_FROM_TOKN_RW'.
-    ls_result-add_intend = -9.
+    ls_result-add_indent = -9.
     INSERT ls_result INTO TABLE rt_result.
 
     CLEAR ls_result.
@@ -165,7 +165,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
     ls_result-rule_class = 'ZCL_APP_RULE_AMDP_NL_LFT_COND'.
     ls_result-rule_cond_class = 'ZCL_APP_RULE_COND_FROM_TOKN_RW'.
-    ls_result-add_intend = -9.
+    ls_result-add_indent = -9.
     INSERT ls_result INTO TABLE rt_result.
 
     CLEAR ls_result.
@@ -212,7 +212,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
     ls_result-rule_class = 'ZCL_APP_RULE_AMDP_NL_LFT_COND'.
     ls_result-rule_cond_class = 'ZCL_APP_RULE_COND_N_RL_IS_NO_B'.
-    ls_result-add_intend = -16.
+    ls_result-add_indent = -16.
     INSERT ls_result INTO TABLE rt_result.
 
     CLEAR ls_result.
@@ -221,7 +221,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
     ls_result-rule_class = 'ZCL_APP_RULE_AMDP_NL_LFT_COND'.
     ls_result-rule_cond_class = 'ZCL_APP_RULE_COND_N_RL_IS_NO_B'.
-    ls_result-add_intend = -17.
+    ls_result-add_indent = -17.
     INSERT ls_result INTO TABLE rt_result.
 
     CLEAR ls_result.
@@ -229,7 +229,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     ls_result-token = 'CROSS'.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
     ls_result-rule_class = 'ZCL_APP_RULE_AMDP_NEW_LINE_LFT'.
-    ls_result-add_intend = -11.
+    ls_result-add_indent = -11.
     INSERT ls_result INTO TABLE rt_result.
 
     CLEAR ls_result.
@@ -237,7 +237,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     ls_result-token = 'INNER'.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
     ls_result-rule_class = 'ZCL_APP_RULE_AMDP_NEW_LINE_LFT'.
-    ls_result-add_intend = -11.
+    ls_result-add_indent = -11.
     INSERT ls_result INTO TABLE rt_result.
 
     CLEAR ls_result.
@@ -275,7 +275,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     ls_result-token = 'DELETE'.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
     ls_result-rule_class = 'ZCL_APP_RULE_AMDP_NEW_LINE'.
-    ls_result-new_line_intend_diff = '7'.
+    ls_result-new_line_indent_diff = '7'.
     INSERT ls_result INTO TABLE rt_result.
 
     CLEAR ls_result.
@@ -297,7 +297,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     ls_result-token = 'UPDATE'.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
     ls_result-rule_class = 'ZCL_APP_RULE_AMDP_NEW_LINE'.
-    ls_result-new_line_intend_diff = '7'.
+    ls_result-new_line_indent_diff = '7'.
     INSERT ls_result INTO TABLE rt_result.
 
     CLEAR ls_result.

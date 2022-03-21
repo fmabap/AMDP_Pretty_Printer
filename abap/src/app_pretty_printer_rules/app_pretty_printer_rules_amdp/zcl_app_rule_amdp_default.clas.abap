@@ -99,23 +99,23 @@ CLASS zcl_app_rule_amdp_default IMPLEMENTATION.
          AND mr_prev_rule->get_cur_row( ) <> zif_app_rule~get_cur_row(  )
        ).
 
-      rv_result = mv_default_line_intend + mv_add_intend.
+      rv_result = mv_default_line_indent + mv_add_indent.
       zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
       zif_app_rule~set_cur_offset_start( rv_result ).
       RETURN.
     ENDIF.
 
     CASE mr_token_ext->comment_detail.
-      WHEN zcl_app_scanner_comment=>cos_comment_detail-start_begin_of_line_intendable.
-        rv_result = mr_prev_rule->get_new_line_intend( ).
+      WHEN zcl_app_scanner_comment=>cos_comment_detail-start_begin_of_line_indentable.
+        rv_result = mr_prev_rule->get_new_line_indent( ).
         zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
-        rv_result = rv_result + mv_add_intend.
+        rv_result = rv_result + mv_add_indent.
         zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
         zif_app_rule~set_cur_offset_start( rv_result ).
         RETURN.
       WHEN zcl_app_scanner_comment=>cos_comment_detail-start
         OR zcl_app_scanner_comment=>cos_comment_detail-part.
-        rv_result = mr_prev_rule->get_cur_offset_end( ) + mv_add_intend.
+        rv_result = mr_prev_rule->get_cur_offset_end( ) + mv_add_indent.
         zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
         zif_app_rule~set_cur_offset_start( rv_result ).
         RETURN.
@@ -126,20 +126,20 @@ CLASS zcl_app_rule_amdp_default IMPLEMENTATION.
     OR  ( mr_prev_rule->is_new_line_req( ) = abap_true
           AND zif_app_rule~is_line_breaking_token( ) = abap_false ).
 
-      rv_result = mr_prev_rule->get_new_line_intend( ).
+      rv_result = mr_prev_rule->get_new_line_indent( ).
     ELSE.
       rv_result = mr_prev_rule->get_cur_offset_end( ).
     ENDIF.
 
     zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
-    rv_result = rv_result + mv_add_intend.
+    rv_result = rv_result + mv_add_indent.
     zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
     zif_app_rule~set_cur_offset_start( rv_result ).
   ENDMETHOD.
 
 
   METHOD zif_app_rule~init.
-    mv_default_line_intend = 4.
+    mv_default_line_indent = 4.
 
     IF zcl_app_utilities=>is_sqlscript_token( ir_token_ext->sqlscript ) = abap_false.
       RAISE EXCEPTION TYPE zcx_app_exception

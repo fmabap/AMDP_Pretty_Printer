@@ -1,14 +1,14 @@
 CLASS zcl_app_rule_amdp_union_all DEFINITION
   PUBLIC
   FINAL
-  INHERITING FROM ZCL_APP_RULE_AMDP_NEW_LINE_LFT
+  INHERITING FROM zcl_app_rule_amdp_new_line_lft
 
   CREATE PUBLIC .
 
   PUBLIC SECTION.
     METHODS zif_app_rule~finalize_init REDEFINITION.
     METHODS zif_app_rule~is_new_line_req REDEFINITION.
-    METHODS zif_app_rule~get_new_line_intend REDEFINITION.
+    METHODS zif_app_rule~get_new_line_indent REDEFINITION.
     METHODS zif_app_rule~get_cur_offset_start REDEFINITION.
     METHODS zif_app_rule~get_cur_row REDEFINITION.
   PROTECTED SECTION.
@@ -23,7 +23,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_APP_RULE_AMDP_UNION_ALL IMPLEMENTATION.
+CLASS zcl_app_rule_amdp_union_all IMPLEMENTATION.
 
 
   METHOD is_union_or_all_of_union_all.
@@ -57,8 +57,8 @@ CLASS ZCL_APP_RULE_AMDP_UNION_ALL IMPLEMENTATION.
     IF mr_token_ext->str_up = 'UNION'
         AND mr_next_rule IS NOT INITIAL
         AND mr_next_rule->get_token_up( ) = 'ALL'.
-      mr_rule_data->add_intend = '-3'.
-      mv_add_intend = mr_rule_data->add_intend.
+      mr_rule_data->add_indent = '-3'.
+      mv_add_indent = mr_rule_data->add_indent.
       RETURN.
     ENDIF.
 
@@ -99,7 +99,7 @@ CLASS ZCL_APP_RULE_AMDP_UNION_ALL IMPLEMENTATION.
         RETURN.
       ENDIF.
 
-      rv_result = lr_select_rule->get_cur_offset_start( ) + mv_add_intend.
+      rv_result = lr_select_rule->get_cur_offset_start( ) + mv_add_indent.
 
     ELSEIF mr_token_ext->str_up = 'ALL' AND is_logic_active(  ) = abap_true.
       rv_result = mr_prev_rule->get_cur_offset_end( ).
@@ -121,7 +121,7 @@ CLASS ZCL_APP_RULE_AMDP_UNION_ALL IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD zif_app_rule~get_new_line_intend.
+  METHOD zif_app_rule~get_new_line_indent.
     DATA lv_token TYPE zapp_d_token.
     DATA lt_token TYPE zapp_t_token.
     DATA lt_stop_token TYPE zapp_t_token.
@@ -148,14 +148,14 @@ CLASS ZCL_APP_RULE_AMDP_UNION_ALL IMPLEMENTATION.
           it_stop_token = lt_stop_token
       ).
       IF lr_select_rule IS INITIAL.
-        rv_result = super->zif_app_rule~get_new_line_intend(  ).
+        rv_result = super->zif_app_rule~get_new_line_indent(  ).
         RETURN.
       ENDIF.
 
-      rv_result = lr_select_rule->get_cur_offset_start( ) - lr_select_rule->get_additional_intend( ).
+      rv_result = lr_select_rule->get_cur_offset_start( ) - lr_select_rule->get_additional_indent( ).
 
     ELSE.
-      rv_result = super->zif_app_rule~get_new_line_intend( ).
+      rv_result = super->zif_app_rule~get_new_line_indent( ).
     ENDIF.
   ENDMETHOD.
 

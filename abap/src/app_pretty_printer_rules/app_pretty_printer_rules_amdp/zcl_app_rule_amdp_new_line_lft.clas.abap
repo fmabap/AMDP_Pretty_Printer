@@ -1,4 +1,4 @@
-CLASS ZCL_APP_RULE_AMDP_NEW_LINE_LFT DEFINITION
+CLASS zcl_app_rule_amdp_new_line_lft DEFINITION
   PUBLIC
   INHERITING FROM zcl_app_rule_amdp_new_line
   CREATE PUBLIC .
@@ -7,14 +7,14 @@ CLASS ZCL_APP_RULE_AMDP_NEW_LINE_LFT DEFINITION
     METHODS zif_app_rule~get_cur_offset_start REDEFINITION.
 
   PROTECTED SECTION.
-    METHODS set_add_intend
+    METHODS set_add_indent
       RAISING zcx_app_exception.
   PRIVATE SECTION.
 ENDCLASS.
 
 
 
-CLASS ZCL_APP_RULE_AMDP_NEW_LINE_LFT IMPLEMENTATION.
+CLASS zcl_app_rule_amdp_new_line_lft IMPLEMENTATION.
 
   METHOD zif_app_rule~get_cur_offset_start.
 
@@ -26,28 +26,28 @@ CLASS ZCL_APP_RULE_AMDP_NEW_LINE_LFT IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    set_add_intend( ).
+    set_add_indent( ).
 
     rv_result = super->zif_app_rule~get_cur_offset_start(  ).
 
   ENDMETHOD.
 
-  METHOD set_add_intend.
+  METHOD set_add_indent.
     DATA lt_text TYPE sourcetable.
     DATA lr_text TYPE REF TO string.
 
     IF is_logic_active( ) = abap_true.
-      IF mr_rule_data->add_intend is INITIAL.
+      IF mr_rule_data->add_indent IS INITIAL.
 
         lt_text = zif_app_rule~get_text( ).
 
         READ TABLE lt_text REFERENCE INTO lr_text
         INDEX 1.
         IF sy-subrc = 0.
-          mv_add_intend = strlen( lr_text->* ) * -1.
+          mv_add_indent = strlen( lr_text->* ) * -1.
         ENDIF.
       ELSE.
-        mv_add_intend = mr_rule_data->add_intend.
+        mv_add_indent = mr_rule_data->add_indent.
       ENDIF.
     ENDIF.
   ENDMETHOD.

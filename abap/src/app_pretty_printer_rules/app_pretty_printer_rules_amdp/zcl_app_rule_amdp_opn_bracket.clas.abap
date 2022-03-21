@@ -4,7 +4,7 @@ CLASS zcl_app_rule_amdp_opn_bracket DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    METHODS zif_app_rule~get_new_line_intend REDEFINITION.
+    METHODS zif_app_rule~get_new_line_indent REDEFINITION.
     METHODS zif_app_rule~finalize_init REDEFINITION.
     METHODS zif_app_rule~get_cur_row REDEFINITION.
     METHODS zif_app_rule~is_new_line_req REDEFINITION.
@@ -22,7 +22,7 @@ ENDCLASS.
 
 CLASS zcl_app_rule_amdp_opn_bracket IMPLEMENTATION.
 
-  METHOD zif_app_rule~get_new_line_intend.
+  METHOD zif_app_rule~get_new_line_indent.
 
 
     IF is_logic_active( ) = abap_true.
@@ -33,7 +33,7 @@ CLASS zcl_app_rule_amdp_opn_bracket IMPLEMENTATION.
         rv_result = zif_app_rule~get_cur_offset_end( ).
       ENDIF.
     ELSE.
-      rv_result = super->zif_app_rule~get_new_line_intend( ).
+      rv_result = super->zif_app_rule~get_new_line_indent( ).
     ENDIF.
   ENDMETHOD.
 
@@ -116,14 +116,14 @@ CLASS zcl_app_rule_amdp_opn_bracket IMPLEMENTATION.
     DO.
       lr_rule = lr_rule->get_next_rule( ).
       IF lr_rule IS INITIAL.
-        return.
+        RETURN.
       ENDIF.
       IF zcl_app_utilities=>is_sqlscript_rule( lr_rule ) = abap_false.
-        return.
+        RETURN.
       ENDIF.
 
       IF lr_rule->is_end_of_statement(  ) = abap_true.
-        return.
+        RETURN.
       ENDIF.
 
       IF lr_rule->is_comment( ) = abap_true.

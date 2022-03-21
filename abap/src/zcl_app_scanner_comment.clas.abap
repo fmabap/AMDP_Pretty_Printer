@@ -16,7 +16,7 @@ CLASS zcl_app_scanner_comment DEFINITION
                  start                          TYPE zapp_d_comment_detail VALUE 'S',
                  part                           TYPE zapp_d_comment_detail VALUE 'P',
                  start_begin_of_line            TYPE zapp_d_comment_detail VALUE 'L',
-                 start_begin_of_line_intendable TYPE zapp_d_comment_detail VALUE 'I',
+                 start_begin_of_line_indentable TYPE zapp_d_comment_detail VALUE 'I',
                END OF cos_comment_detail.
     METHODS is_comment_abap
       IMPORTING
@@ -315,14 +315,14 @@ CLASS zcl_app_scanner_comment IMPLEMENTATION.
     IF ir_token_ext->str_up(1) = '*'.
       ir_token_ext->comment_detail = cos_comment_detail-start_begin_of_line.
     ELSE.
-      ir_token_ext->comment_detail = cos_comment_detail-start_begin_of_line_intendable.
+      ir_token_ext->comment_detail = cos_comment_detail-start_begin_of_line_indentable.
     ENDIF.
   ENDMETHOD.
   METHOD set_abap_start_being_of_line.
     IF ir_token_ext->str_up(1) = '*'.
       ir_token_ext->comment_detail = cos_comment_detail-start_begin_of_line.
     ELSE.
-      ir_token_ext->comment_detail = cos_comment_detail-start_begin_of_line_intendable.
+      ir_token_ext->comment_detail = cos_comment_detail-start_begin_of_line_indentable.
     ENDIF.
   ENDMETHOD.
 
