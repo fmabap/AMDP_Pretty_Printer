@@ -9,7 +9,7 @@ There are two different kinds of settings. General settings and user
 specific settings.
 
 <img src="images/media/image1.png"
-style="width:3.48364in;height:2.12935in"/>
+width=50%/>
 
 The general settings are valid for all users. But if a user defines his
 own settings, then only his settings will be used.
@@ -26,7 +26,7 @@ settings for detail).
 There is currently only the setting “No Line Break at Comma”.
 
 <img src="images/media/image2.png"
-style="width:4.07535in;height:1.92933in"/>
+width=50%/>
 
 It controls if the AMDP Pretty Printer automatically adds a line break
 after a comma. If nothing is configured, then it will be added.
@@ -36,16 +36,16 @@ after a comma. If nothing is configured, then it will be added.
 The unformatted AMDP source code:
 
 <img src="images/media/image3.png"
-style="width:6.3in;height:0.71319in" />
+wdith=100% />
 
 The formatted AMDP source code will look like this **with** the line
 break after the comma:
 
 <img src="images/media/image4.png"
-style="width:5.3713in;height:1.90017in"/>
+width=75%/>
 
 The formatted AMDP source code will look like this **without** the line
 break after the comma:
 
 <img src="images/media/image5.png"
-style="width:6.04636in;height:1.30428in"/>
+width=75%/>
