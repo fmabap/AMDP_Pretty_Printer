@@ -19,6 +19,12 @@
     <TCODE>ZAPP_SETTINGS</TCODE>
     <TTEXT>AMDP Pretty Printer Settings</TTEXT>
    </TSTCT>
+   <I18N_TPOOL>
+    <TSTCT>
+     <SPRSL>D</SPRSL>
+     <TTEXT>AMDP Pretty Printer Einstellungen</TTEXT>
+    </TSTCT>
+   </I18N_TPOOL>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -18,6 +18,19 @@
     <DTELMASTER>E</DTELMASTER>
     <REFKIND>D</REFKIND>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>AMDP Pretty Printer Regel</DDTEXT>
+     <REPTEXT>AMDP Pretty Printer Regel</REPTEXT>
+     <SCRTEXT_S>PP Regel</SCRTEXT_S>
+     <SCRTEXT_M>Pretty Printer Regel</SCRTEXT_M>
+     <SCRTEXT_L>AMDP Pretty Printer Regel</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>
