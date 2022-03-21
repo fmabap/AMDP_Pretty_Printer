@@ -18,7 +18,7 @@
      <SPRSL>E</SPRSL>
      <ARBGB>ZAPP_MC_PRETTY_PRINT</ARBGB>
      <MSGNR>003</MSGNR>
-     <TEXT>No Statement found to Token &amp;</TEXT>
+     <TEXT>No statement found for token &amp;</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
@@ -91,6 +91,24 @@
      <ARBGB>ZAPP_MC_PRETTY_PRINT</ARBGB>
      <MSGNR>015</MSGNR>
      <TEXT>Logic active is not set rule &amp;.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZAPP_MC_PRETTY_PRINT</ARBGB>
+     <MSGNR>016</MSGNR>
+     <TEXT>Settings saved.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZAPP_MC_PRETTY_PRINT</ARBGB>
+     <MSGNR>017</MSGNR>
+     <TEXT>Error during saving settings.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZAPP_MC_PRETTY_PRINT</ARBGB>
+     <MSGNR>018</MSGNR>
+     <TEXT>Settings deleted.</TEXT>
     </T100>
    </T100>
   </asx:values>

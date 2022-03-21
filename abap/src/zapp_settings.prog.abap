@@ -34,6 +34,9 @@ CLASS lcl_settings DEFINITION FINAL.
 
     METHODS delete.
 
+    METHODS exists_settings
+      RETURNING VALUE(rv_result) TYPE abap_bool.
+
   PRIVATE SECTION.
     DATA mv_uname TYPE sy-uname.
 
@@ -150,23 +153,38 @@ CLASS lcl_settings IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD save.
-    ##NEEDED DATA lv_uname TYPE sy-uname.
-    SELECT SINGLE uname INTO lv_uname
-    FROM zapp_settings
-    WHERE uname =  mv_uname.
-    IF sy-subrc <> 0.
-      INSERT zapp_settings FROM is_settings.
-    ELSE.
+    DATA lv_subrc TYPE sy-subrc.
+    IF exists_settings( ).
       UPDATE zapp_settings FROM is_settings.
+    ELSE.
+      INSERT zapp_settings FROM is_settings.
     ENDIF.
+    lv_subrc = sy-subrc.
     COMMIT WORK AND WAIT.
+    IF lv_subrc = 0.
+      MESSAGE s016(zapp_mc_pretty_print).
+    ELSE.
+      MESSAGE e017(zapp_mc_pretty_print).
+    ENDIF.
+
     LEAVE TO SCREEN 0.
   ENDMETHOD.
 
   METHOD delete.
     DELETE FROM zapp_settings WHERE uname = mv_uname.
     COMMIT WORK AND WAIT.
+    MESSAGE s018(zapp_mc_pretty_print).
     LEAVE TO SCREEN 0.
+  ENDMETHOD.
+
+  METHOD exists_settings.
+    ##NEEDED DATA lv_uname TYPE sy-uname.
+    SELECT SINGLE uname INTO lv_uname
+    FROM zapp_settings
+    WHERE uname =  mv_uname.
+    IF sy-subrc = 0.
+      rv_result = abap_true.
+    ENDIF.
   ENDMETHOD.
 
 ENDCLASS.
