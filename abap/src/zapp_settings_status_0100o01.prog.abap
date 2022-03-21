@@ -7,7 +7,12 @@
 *&
 *&---------------------------------------------------------------------*
 MODULE status_0100 OUTPUT.
-  SET PF-STATUS '0100'.
+
+  IF gr_settings->exists_settings( ).
+    SET PF-STATUS '0100'.
+  ELSE.
+    SET PF-STATUS '0100' EXCLUDING 'DELETE'.
+  ENDIF.
   IF p_set_g = abap_true.
     SET TITLEBAR '0100'.
   ELSE.
