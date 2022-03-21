@@ -18,6 +18,19 @@
     <DTELMASTER>E</DTELMASTER>
     <REFKIND>D</REFKIND>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Schlüsselwort</DDTEXT>
+     <REPTEXT>Schlüsselwort</REPTEXT>
+     <SCRTEXT_S>Schlüssel.</SCRTEXT_S>
+     <SCRTEXT_M>Schlüsselwort</SCRTEXT_M>
+     <SCRTEXT_L>Schlüsselwort</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

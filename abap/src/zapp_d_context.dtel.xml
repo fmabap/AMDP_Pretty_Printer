@@ -18,6 +18,19 @@
     <DTELMASTER>E</DTELMASTER>
     <REFKIND>D</REFKIND>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Pretty Printer Kontext</DDTEXT>
+     <REPTEXT>Pretty Printer Kontext</REPTEXT>
+     <SCRTEXT_S>PP Kontext</SCRTEXT_S>
+     <SCRTEXT_M>PP Kontext</SCRTEXT_M>
+     <SCRTEXT_L>Pretty Printer Kontext</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

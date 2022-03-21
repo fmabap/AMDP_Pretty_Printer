@@ -3,18 +3,18 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DD04V>
-    <ROLLNAME>ZAPP_D_COMMENT_DETAIL</ROLLNAME>
+    <ROLLNAME>ZAPP_D_NO_LB_AT_COMMA</ROLLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
-    <DOMNAME>ZAPP_COMMENT_DETAIL</DOMNAME>
+    <DOMNAME>XFELD</DOMNAME>
     <HEADLEN>55</HEADLEN>
     <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Pretty Printer Comment Detail</DDTEXT>
-    <REPTEXT>Pretty Printer Comment Detail</REPTEXT>
-    <SCRTEXT_S>PP Com Det</SCRTEXT_S>
-    <SCRTEXT_M>PP Comment Detail</SCRTEXT_M>
-    <SCRTEXT_L>Pretty Printer Comment Detail</SCRTEXT_L>
+    <DDTEXT>No Line Break at Comma</DDTEXT>
+    <REPTEXT>No Line Break at Comma</REPTEXT>
+    <SCRTEXT_S>No LB Com</SCRTEXT_S>
+    <SCRTEXT_M>No LB at Comma</SCRTEXT_M>
+    <SCRTEXT_L>No Line Break at Comma</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <REFKIND>D</REFKIND>
    </DD04V>
@@ -24,11 +24,11 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Pretty Printer Kommentar Detail</DDTEXT>
-     <REPTEXT>Pretty Printer Kommentar Detail</REPTEXT>
-     <SCRTEXT_S>PP Kom Det</SCRTEXT_S>
-     <SCRTEXT_M>PP Kommentar Detail</SCRTEXT_M>
-     <SCRTEXT_L>Pretty Printer Kommentar Detail</SCRTEXT_L>
+     <DDTEXT>Keine Neue Zeile bei Komma</DDTEXT>
+     <REPTEXT>Keine Neue Zeile bei Komma</REPTEXT>
+     <SCRTEXT_S>K N Z Kom</SCRTEXT_S>
+     <SCRTEXT_M>K N Zeile bei Komma</SCRTEXT_M>
+     <SCRTEXT_L>Keine Neue Zeile bei Komma</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

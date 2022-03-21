@@ -18,6 +18,19 @@
     <DTELMASTER>E</DTELMASTER>
     <REFKIND>D</REFKIND>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Ist eine neue Zeile angefragt</DDTEXT>
+     <REPTEXT>Ist eine neue Zeile angefragt</REPTEXT>
+     <SCRTEXT_S>Neue Zeile</SCRTEXT_S>
+     <SCRTEXT_M>Neue Zeile angefragt</SCRTEXT_M>
+     <SCRTEXT_L>Ist eine neue Zeile angefragt</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -28,6 +28,7 @@ CLASS zcl_app_base_rule DEFINITION
     DATA mv_end_row_set TYPE abap_bool.
     DATA mv_end_row TYPE i.
     DATA mv_add_intend TYPE i.
+    DATA mr_settings TYPE REF TO zif_app_settings.
 
     METHODS set_cur_offset_end
       IMPORTING iv_cur_offset_end TYPE i.
@@ -376,6 +377,7 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
     mr_t_statement = ir_t_statement.
     mr_t_structure = ir_t_structure.
     mr_rule_data = ir_rule_data.
+    mr_settings = ir_settings.
   ENDMETHOD.
 
 
@@ -431,12 +433,6 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
 
   ENDMETHOD.
 
-
-  METHOD zif_app_rule~is_keyword.
-
-  ENDMETHOD.
-
-
   METHOD zif_app_rule~is_line_breaking_token.
     IF is_comment( ) = abap_true.
       RETURN.
@@ -452,9 +448,14 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
 
     IF zcl_app_utilities=>is_sqlscript_token( mr_token_ext->sqlscript ).
       CASE zif_app_rule~get_token_up(  ).
-        WHEN ';' OR ','.
+        WHEN ';'.
           rv_result = abap_true.
           RETURN.
+        WHEN ','.
+          IF mr_settings->is_line_break_at_comma_req( ) = abap_true.
+            rv_result = abap_true.
+            RETURN.
+          ENDIF.
       ENDCASE.
     ENDIF.
   ENDMETHOD.
@@ -530,16 +531,20 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
         EXPORTING
           it_delimiter = mr_token_ext->delimiter
           iv_char      = ',' ).
-
-
       RETURN.
     ENDIF.
 
     IF zcl_app_utilities=>is_sqlscript_token( mr_token_ext->sqlscript ).
       CASE zif_app_rule~get_token_up(  ).
-        WHEN ';' OR ','.
+        WHEN ';'.
           rv_result = abap_true.
           RETURN.
+        WHEN ','.
+          IF mr_settings->is_line_break_at_comma_req( ) = abap_true.
+            rv_result = abap_true.
+            RETURN.
+          ENDIF.
+
       ENDCASE.
 
       rv_result = zcl_app_utilities=>contains_delimiter_char(
@@ -551,13 +556,13 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
         RETURN.
       ENDIF.
 
-      rv_result = zcl_app_utilities=>contains_delimiter_char(
-        EXPORTING
-          it_delimiter = mr_token_ext->delimiter
-          iv_char      = ',' ).
-
+      IF mr_settings->is_line_break_at_comma_req( ) = abap_true.
+        rv_result = zcl_app_utilities=>contains_delimiter_char(
+          EXPORTING
+            it_delimiter = mr_token_ext->delimiter
+            iv_char      = ',' ).
+      ENDIF.
     ENDIF.
-
 
   ENDMETHOD.
 

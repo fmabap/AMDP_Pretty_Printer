@@ -124,6 +124,15 @@
        <LENGTH>062</LENGTH>
        <TEXT>Implementation: Servie document provider</TEXT>
       </SOTR_TEXT>
+      <SOTR_TEXT>
+       <CONCEPT>0242AC1100021EECA4CA0E87A5ADDCCF</CONCEPT>
+       <LANGU>D</LANGU>
+       <LFD_NUM>0001</LFD_NUM>
+       <FLAG_CNTXT>X</FLAG_CNTXT>
+       <STATUS>R</STATUS>
+       <LENGTH>062</LENGTH>
+       <TEXT>Implementierung: Service Bereitstellung</TEXT>
+      </SOTR_TEXT>
      </ENTRIES>
     </item>
     <item>
@@ -142,6 +151,15 @@
        <STATUS>R</STATUS>
        <LENGTH>078</LENGTH>
        <TEXT>Implementation: REST application class registration</TEXT>
+      </SOTR_TEXT>
+      <SOTR_TEXT>
+       <CONCEPT>0242AC1100021EECA4CA139B51E29CDE</CONCEPT>
+       <LANGU>D</LANGU>
+       <LFD_NUM>0001</LFD_NUM>
+       <FLAG_CNTXT>X</FLAG_CNTXT>
+       <STATUS>R</STATUS>
+       <LENGTH>078</LENGTH>
+       <TEXT>Implementierung: REST Anwendungsklassen Registrierung</TEXT>
       </SOTR_TEXT>
      </ENTRIES>
     </item>

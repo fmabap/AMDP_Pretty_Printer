@@ -6,7 +6,8 @@ CLASS zcl_app_rule_factory DEFINITION
   PUBLIC SECTION.
 
     METHODS constructor
-      RAISING zcx_app_exception.
+      IMPORTING ir_settings TYPE REF TO zif_app_settings
+      RAISING   zcx_app_exception.
 
     METHODS get_rule
       IMPORTING ir_t_source      TYPE REF TO sourcetable
@@ -20,6 +21,7 @@ CLASS zcl_app_rule_factory DEFINITION
   PROTECTED SECTION.
   PRIVATE SECTION.
     DATA mr_rule_finder TYPE REF TO zif_app_rule_finder.
+    DATA mr_settings TYPE REF TO zif_app_settings.
 
     METHODS get_rule_search
       IMPORTING
@@ -37,7 +39,7 @@ CLASS zcl_app_rule_factory IMPLEMENTATION.
   METHOD constructor.
 
     CREATE OBJECT mr_rule_finder TYPE zcl_app_rule_finder.
-
+    mr_settings = ir_settings.
   ENDMETHOD.
 
 
@@ -75,7 +77,8 @@ CLASS zcl_app_rule_factory IMPLEMENTATION.
           ir_t_source    = ir_t_source
           ir_t_statement = ir_t_statement
           ir_t_structure = ir_t_structure
-          ir_rule_data   = lr_rule_data_new ).
+          ir_rule_data   = lr_rule_data_new
+          ir_settings    = mr_settings ).
     ELSE.
 
       rr_result->init(
@@ -85,6 +88,7 @@ CLASS zcl_app_rule_factory IMPLEMENTATION.
           ir_t_statement     = ir_t_statement
           ir_t_structure     = ir_t_structure
           ir_rule_data       = lr_rule_data_new
+          ir_settings        = mr_settings
           ir_context_rule    = ir_prev_rule->get_new_context_rule( )
           ir_hl_context_rule = ir_prev_rule->get_new_hl_context_rule( )
           ir_prev_rule       = ir_prev_rule ).

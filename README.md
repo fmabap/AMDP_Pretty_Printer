@@ -5,4 +5,5 @@ SAP recommends a code push down of your ABAP logic to the HANA database to have 
 ![AMDP Pretty Printer](/doc/images/amdp_pretty_printer.gif)
 
 ## [Installation](doc/Installation/README.md)
+## [Configuration](doc/Configuration/README.md)
 ## [How does it work (technical)](doc/how_does_it_work/README.md)

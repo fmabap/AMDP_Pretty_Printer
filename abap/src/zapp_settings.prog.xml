@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <PROGDIR>
-    <NAME>ZAPP_PRETTY_PRINTER_TEST</NAME>
+    <NAME>ZAPP_SETTINGS</NAME>
     <SUBC>1</SUBC>
     <RLOAD>E</RLOAD>
     <FIXPT>X</FIXPT>
@@ -12,79 +12,44 @@
    <DYNPROS>
     <item>
      <HEADER>
-      <PROGRAM>ZAPP_PRETTY_PRINTER_TEST</PROGRAM>
+      <PROGRAM>ZAPP_SETTINGS</PROGRAM>
       <SCREEN>0100</SCREEN>
       <LANGUAGE>E</LANGUAGE>
-      <DESCRIPT>Test Screen</DESCRIPT>
+      <DESCRIPT>AMDP General Settings</DESCRIPT>
       <TYPE>N</TYPE>
       <NEXTSCREEN>0100</NEXTSCREEN>
-      <LINES>200</LINES>
-      <COLUMNS>255</COLUMNS>
+      <LINES>027</LINES>
+      <COLUMNS>121</COLUMNS>
      </HEADER>
      <CONTAINERS>
       <RPY_DYCATT>
        <TYPE>SCREEN</TYPE>
        <NAME>SCREEN</NAME>
       </RPY_DYCATT>
-      <RPY_DYCATT>
-       <TYPE>CUST_CTRL</TYPE>
-       <NAME>INPUT_TEXT</NAME>
-       <ELEMENT_OF>SCREEN</ELEMENT_OF>
-       <LINE>001</LINE>
-       <COLUMN>001</COLUMN>
-       <LENGTH>119</LENGTH>
-       <HEIGHT>049</HEIGHT>
-       <C_RESIZE_V>X</C_RESIZE_V>
-       <C_RESIZE_H>X</C_RESIZE_H>
-       <C_LINE_MIN>024</C_LINE_MIN>
-       <C_COLN_MIN>059</C_COLN_MIN>
-      </RPY_DYCATT>
-      <RPY_DYCATT>
-       <TYPE>CUST_CTRL</TYPE>
-       <NAME>OUTPUT_TEXT</NAME>
-       <ELEMENT_OF>SCREEN</ELEMENT_OF>
-       <LINE>001</LINE>
-       <COLUMN>126</COLUMN>
-       <LENGTH>129</LENGTH>
-       <HEIGHT>049</HEIGHT>
-       <C_RESIZE_V>X</C_RESIZE_V>
-       <C_RESIZE_H>X</C_RESIZE_H>
-       <C_LINE_MIN>024</C_LINE_MIN>
-       <C_COLN_MIN>064</C_COLN_MIN>
-      </RPY_DYCATT>
-      <RPY_DYCATT>
-       <TYPE>CUST_CTRL</TYPE>
-       <NAME>INPUT_TEXT_STATEMENT</NAME>
-       <ELEMENT_OF>SCREEN</ELEMENT_OF>
-       <LINE>051</LINE>
-       <COLUMN>001</COLUMN>
-       <LENGTH>119</LENGTH>
-       <HEIGHT>015</HEIGHT>
-       <C_RESIZE_V>X</C_RESIZE_V>
-       <C_RESIZE_H>X</C_RESIZE_H>
-       <C_LINE_MIN>010</C_LINE_MIN>
-       <C_COLN_MIN>059</C_COLN_MIN>
-      </RPY_DYCATT>
-      <RPY_DYCATT>
-       <TYPE>CUST_CTRL</TYPE>
-       <NAME>OUTPUT_TEXT_STATEMENT</NAME>
-       <ELEMENT_OF>SCREEN</ELEMENT_OF>
-       <LINE>051</LINE>
-       <COLUMN>126</COLUMN>
-       <LENGTH>129</LENGTH>
-       <HEIGHT>015</HEIGHT>
-       <C_RESIZE_V>X</C_RESIZE_V>
-       <C_RESIZE_H>X</C_RESIZE_H>
-       <C_LINE_MIN>007</C_LINE_MIN>
-       <C_COLN_MIN>064</C_COLN_MIN>
-      </RPY_DYCATT>
      </CONTAINERS>
      <FIELDS>
       <RPY_DYFATC>
        <CONT_TYPE>SCREEN</CONT_TYPE>
        <CONT_NAME>SCREEN</CONT_NAME>
+       <TYPE>CHECK</TYPE>
+       <NAME>ZAPP_SETTINGS-NO_LB_AT_COMMA</NAME>
+       <LINE>001</LINE>
+       <COLUMN>001</COLUMN>
+       <LENGTH>042</LENGTH>
+       <VISLENGTH>042</VISLENGTH>
+       <HEIGHT>001</HEIGHT>
+       <FORMAT>CHAR</FORMAT>
+       <FROM_DICT>X</FROM_DICT>
+       <MODIFIC>3</MODIFIC>
+       <INPUT_FLD>X</INPUT_FLD>
+       <OUTPUT_FLD>X</OUTPUT_FLD>
+       <DICT_I_VAL>X</DICT_I_VAL>
+      </RPY_DYFATC>
+      <RPY_DYFATC>
+       <CONT_TYPE>SCREEN</CONT_TYPE>
+       <CONT_NAME>SCREEN</CONT_NAME>
        <TYPE>OKCODE</TYPE>
-       <NAME>OK_CODE</NAME>
+       <NAME>GV_OKCODE</NAME>
        <TEXT>____________________</TEXT>
        <LENGTH>020</LENGTH>
        <VISLENGTH>020</VISLENGTH>
@@ -98,19 +63,17 @@
        <LINE>PROCESS BEFORE OUTPUT.</LINE>
       </RPY_DYFLOW>
       <RPY_DYFLOW>
-       <LINE> MODULE STATUS_0100.</LINE>
+       <LINE>  MODULE status_0100.</LINE>
       </RPY_DYFLOW>
-      <RPY_DYFLOW>
-       <LINE> module create_objects.</LINE>
-      </RPY_DYFLOW>
-      <RPY_DYFLOW>
-       <LINE>*</LINE>
-      </RPY_DYFLOW>
+      <RPY_DYFLOW/>
       <RPY_DYFLOW>
        <LINE>PROCESS AFTER INPUT.</LINE>
       </RPY_DYFLOW>
       <RPY_DYFLOW>
-       <LINE> MODULE USER_COMMAND_0100.</LINE>
+       <LINE>  MODULE user_command_0100.</LINE>
+      </RPY_DYFLOW>
+      <RPY_DYFLOW>
+       <LINE>  MODULE cancel AT EXIT-COMMAND.</LINE>
       </RPY_DYFLOW>
      </FLOW_LOGIC>
     </item>
@@ -127,27 +90,13 @@
       <ACTCODE>000001</ACTCODE>
       <PFKCODE>000001</PFKCODE>
       <BUTCODE>0001</BUTCODE>
-      <INT_NOTE>0100</INT_NOTE>
+      <INT_NOTE>Settings</INT_NOTE>
      </RSMPE_STAT>
     </STA>
     <FUN>
      <RSMPE_FUNT>
-      <CODE>EXIT</CODE>
+      <CODE>CANCEL</CODE>
       <TEXTNO>001</TEXTNO>
-      <TYPE>E</TYPE>
-      <TEXT_TYPE>S</TEXT_TYPE>
-      <FUN_TEXT>Back</FUN_TEXT>
-     </RSMPE_FUNT>
-     <RSMPE_FUNT>
-      <CODE>EXIT</CODE>
-      <TEXTNO>002</TEXTNO>
-      <TYPE>E</TYPE>
-      <TEXT_TYPE>S</TEXT_TYPE>
-      <FUN_TEXT>Exit</FUN_TEXT>
-     </RSMPE_FUNT>
-     <RSMPE_FUNT>
-      <CODE>EXIT</CODE>
-      <TEXTNO>003</TEXTNO>
       <TYPE>E</TYPE>
       <TEXT_TYPE>S</TEXT_TYPE>
       <TEXT_NAME>ICON_CANCEL</TEXT_NAME>
@@ -155,10 +104,40 @@
       <FUN_TEXT>Cancel</FUN_TEXT>
      </RSMPE_FUNT>
      <RSMPE_FUNT>
-      <CODE>PP</CODE>
+      <CODE>DELETE</CODE>
       <TEXTNO>001</TEXTNO>
       <TEXT_TYPE>S</TEXT_TYPE>
-      <FUN_TEXT>Pretty Print</FUN_TEXT>
+      <TEXT_NAME>ICON_DELETE</TEXT_NAME>
+      <ICON_ID>@11@</ICON_ID>
+      <FUN_TEXT>Delete</FUN_TEXT>
+     </RSMPE_FUNT>
+     <RSMPE_FUNT>
+      <CODE>EXIT</CODE>
+      <TEXTNO>001</TEXTNO>
+      <TEXT_TYPE>S</TEXT_TYPE>
+      <FUN_TEXT>Back</FUN_TEXT>
+     </RSMPE_FUNT>
+     <RSMPE_FUNT>
+      <CODE>EXIT</CODE>
+      <TEXTNO>002</TEXTNO>
+      <TEXT_TYPE>S</TEXT_TYPE>
+      <FUN_TEXT>Exit</FUN_TEXT>
+     </RSMPE_FUNT>
+     <RSMPE_FUNT>
+      <CODE>EXIT</CODE>
+      <TEXTNO>003</TEXTNO>
+      <TEXT_TYPE>S</TEXT_TYPE>
+      <TEXT_NAME>ICON_CANCEL</TEXT_NAME>
+      <ICON_ID>@0W@</ICON_ID>
+      <FUN_TEXT>Cancel</FUN_TEXT>
+     </RSMPE_FUNT>
+     <RSMPE_FUNT>
+      <CODE>SAVE</CODE>
+      <TEXTNO>001</TEXTNO>
+      <TEXT_TYPE>S</TEXT_TYPE>
+      <TEXT_NAME>ICON_SYSTEM_SAVE</TEXT_NAME>
+      <ICON_ID>@2L@</ICON_ID>
+      <FUN_TEXT>Save</FUN_TEXT>
      </RSMPE_FUNT>
     </FUN>
     <BUT>
@@ -166,7 +145,13 @@
       <PFK_CODE>000001</PFK_CODE>
       <CODE>0001</CODE>
       <NO>01</NO>
-      <PFNO>13</PFNO>
+      <PFNO>11</PFNO>
+     </RSMPE_BUT>
+     <RSMPE_BUT>
+      <PFK_CODE>000001</PFK_CODE>
+      <CODE>0001</CODE>
+      <NO>02</NO>
+      <PFNO>14</PFNO>
      </RSMPE_BUT>
     </BUT>
     <PFK>
@@ -178,14 +163,20 @@
      </RSMPE_PFK>
      <RSMPE_PFK>
       <CODE>000001</CODE>
-      <PFNO>12</PFNO>
-      <FUNCODE>EXIT</FUNCODE>
-      <FUNNO>003</FUNNO>
+      <PFNO>11</PFNO>
+      <FUNCODE>SAVE</FUNCODE>
+      <FUNNO>001</FUNNO>
      </RSMPE_PFK>
      <RSMPE_PFK>
       <CODE>000001</CODE>
-      <PFNO>13</PFNO>
-      <FUNCODE>PP</FUNCODE>
+      <PFNO>12</PFNO>
+      <FUNCODE>CANCEL</FUNCODE>
+      <FUNNO>001</FUNNO>
+     </RSMPE_PFK>
+     <RSMPE_PFK>
+      <CODE>000001</CODE>
+      <PFNO>14</PFNO>
+      <FUNCODE>DELETE</FUNCODE>
       <FUNNO>001</FUNNO>
      </RSMPE_PFK>
      <RSMPE_PFK>
@@ -198,11 +189,19 @@
     <SET>
      <RSMPE_STAF>
       <STATUS>0100</STATUS>
+      <FUNCTION>CANCEL</FUNCTION>
+     </RSMPE_STAF>
+     <RSMPE_STAF>
+      <STATUS>0100</STATUS>
+      <FUNCTION>DELETE</FUNCTION>
+     </RSMPE_STAF>
+     <RSMPE_STAF>
+      <STATUS>0100</STATUS>
       <FUNCTION>EXIT</FUNCTION>
      </RSMPE_STAF>
      <RSMPE_STAF>
       <STATUS>0100</STATUS>
-      <FUNCTION>PP</FUNCTION>
+      <FUNCTION>SAVE</FUNCTION>
      </RSMPE_STAF>
     </SET>
     <DOC>
@@ -210,34 +209,62 @@
       <OBJ_TYPE>A</OBJ_TYPE>
       <OBJ_CODE>000001</OBJ_CODE>
       <MODAL>D</MODAL>
-      <INT_NOTE>0100</INT_NOTE>
+      <INT_NOTE>Settings</INT_NOTE>
      </RSMPE_ATRT>
      <RSMPE_ATRT>
       <OBJ_TYPE>P</OBJ_TYPE>
       <OBJ_CODE>000001</OBJ_CODE>
       <MODAL>D</MODAL>
-      <INT_NOTE>0100</INT_NOTE>
+      <INT_NOTE>Settings</INT_NOTE>
      </RSMPE_ATRT>
      <RSMPE_ATRT>
       <OBJ_TYPE>B</OBJ_TYPE>
       <OBJ_CODE>000001</OBJ_CODE>
       <SUB_CODE>0001</SUB_CODE>
       <MODAL>D</MODAL>
-      <INT_NOTE>0100</INT_NOTE>
+      <INT_NOTE>Settings</INT_NOTE>
      </RSMPE_ATRT>
     </DOC>
     <TIT>
      <RSMPE_TITT>
       <CODE>0100</CODE>
-      <TEXT>Test Tool for the AMDP Pretty Printer</TEXT>
+      <TEXT>AMDP Pretty Printer General Settings</TEXT>
+     </RSMPE_TITT>
+     <RSMPE_TITT>
+      <CODE>0200</CODE>
+      <TEXT>AMDP Pretty Printer Settings for User &amp;1</TEXT>
      </RSMPE_TITT>
     </TIT>
    </CUA>
    <TPOOL>
     <item>
+     <ID>I</ID>
+     <KEY>100</KEY>
+     <ENTRY>Settings changed. Do you want to save them?</ENTRY>
+     <LENGTH>80</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>110</KEY>
+     <ENTRY>Save Settings?</ENTRY>
+     <LENGTH>80</LENGTH>
+    </item>
+    <item>
      <ID>R</ID>
-     <ENTRY>Test Tool for the AMDP Pretty Printer</ENTRY>
-     <LENGTH>37</LENGTH>
+     <ENTRY>AMDP Pretty Printer Settings</ENTRY>
+     <LENGTH>28</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_SET_G</KEY>
+     <ENTRY>General Settings</ENTRY>
+     <LENGTH>24</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_SET_U</KEY>
+     <ENTRY>User Specific Settings</ENTRY>
+     <LENGTH>30</LENGTH>
     </item>
    </TPOOL>
    <I18N_TPOOL>
@@ -245,9 +272,33 @@
      <LANGUAGE>D</LANGUAGE>
      <TEXTPOOL>
       <item>
+       <ID>I</ID>
+       <KEY>100</KEY>
+       <ENTRY>Die Einstellungen wurden geändert, möchten Sie sie speichern?</ENTRY>
+       <LENGTH>80</LENGTH>
+      </item>
+      <item>
+       <ID>I</ID>
+       <KEY>110</KEY>
+       <ENTRY>Einstellungen Speichern?</ENTRY>
+       <LENGTH>80</LENGTH>
+      </item>
+      <item>
        <ID>R</ID>
-       <ENTRY>Test Tool für den AMDP Pretty Printer</ENTRY>
+       <ENTRY>AMDP Pretty Printer Einstellungen</ENTRY>
        <LENGTH>70</LENGTH>
+      </item>
+      <item>
+       <ID>S</ID>
+       <KEY>P_SET_G</KEY>
+       <ENTRY>Allgemeine Einstellungen</ENTRY>
+       <LENGTH>38</LENGTH>
+      </item>
+      <item>
+       <ID>S</ID>
+       <KEY>P_SET_U</KEY>
+       <ENTRY>Benutzerspezifische Einstell.</ENTRY>
+       <LENGTH>38</LENGTH>
       </item>
      </TEXTPOOL>
     </item>
