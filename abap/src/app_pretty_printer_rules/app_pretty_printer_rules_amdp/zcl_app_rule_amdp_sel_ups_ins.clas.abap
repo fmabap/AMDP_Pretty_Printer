@@ -168,14 +168,15 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
     DATA lt_stop_token TYPE zapp_t_token.
     DATA lr_next_rule TYPE REF TO zif_app_rule.
     DATA lv_token TYPE zapp_d_token.
+    DATA lr_start_rule TYPE REF TO zif_app_rule.
 
     INSERT  iv_token INTO TABLE lt_token.
-
+    lr_start_rule = me.
     DO.
 
       rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
         EXPORTING
-          ir_start_rule = me
+          ir_start_rule = lr_start_rule
           it_token      = lt_token
           it_stop_token = lt_stop_token
       ).
@@ -190,6 +191,7 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
           IF  lr_next_rule IS NOT INITIAL.
             IF lr_next_rule->get_token_up( ) = '('.
               "the rule doesn't belong to the join condition, it is the function
+              lr_start_rule = lr_next_rule.
               CONTINUE.
             ENDIF.
           ENDIF.

@@ -103,6 +103,7 @@ FROM SPFLI WHERE mandt = session_context( 'CLIENT' );
     where spfli.mandt = SESSION_CONTEXT('CLIENT')
     and spfli.carrid = 'AB';
 
+lt_bla =  SELECT RIGHT( carrid,  4  )  FROM sflight;
     --ENDMETHOD.
   ENDMETHOD.
 ENDCLASS.
