@@ -8,6 +8,7 @@ CLASS test DEFINITION FINAL FOR TESTING
     METHODS with_sql_script FOR TESTING RAISING cx_static_check.
     METHODS with_sql_script_no_lb_at_comma FOR TESTING RAISING cx_static_check.
     METHODS insert_sql FOR TESTING RAISING cx_static_check.
+    METHODS insert_with_select_sql FOR TESTING RAISING cx_static_check.
     METHODS delete_sql FOR TESTING RAISING cx_static_check.
     METHODS select_right FOR TESTING RAISING cx_static_check.
 ENDCLASS.
@@ -853,6 +854,60 @@ CLASS test IMPLEMENTATION.
                                  ( |               FROM sflight; | )
                                  ( || )
                                  ( | endmethod. | ) ).
+
+    CREATE OBJECT lr_cut.
+    TRY.
+        lt_source_res = lr_cut->pretty_print(
+          it_source   = lt_source
+          ir_settings = lr_settings ).
+
+      CATCH zcx_app_exception INTO lr_ex.
+        cl_abap_unit_assert=>fail( lr_ex->get_text( ) ).
+    ENDTRY.
+    cl_abap_unit_assert=>assert_equals(
+      EXPORTING
+        act = lt_source_res
+        exp = lt_source_res_exp
+        msg = 'Tables differs' ).
+
+  ENDMETHOD.
+
+  METHOD insert_with_select_sql.
+    DATA lt_source TYPE sourcetable.
+    DATA lt_source_res TYPE sourcetable.
+    DATA lt_source_res_exp TYPE sourcetable.
+    DATA lr_cut TYPE REF TO zcl_app_pretty_printer.
+    DATA lr_ex TYPE REF TO zcx_app_exception.
+    DATA lr_settings TYPE REF TO zif_app_settings.
+
+    lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
+    lr_settings->is_line_break_at_comma_req( ).
+
+  lt_source = VALUE #(
+                     ( |  METHOD sel_data| )
+                     ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                     ( || )
+                     ( |    INSERT bla    SELECT *          FROM blub| )
+                     ( |inner join bla on bla.ha = '1234' and bla.blub = 'slfdka'| )
+                     ( |where bla.blub = 'alkjfd';| )
+                     ( || )
+                     ( |endmethod.| ) ).
+
+lt_source_res_exp = VALUE #(
+                             ( |  METHOD sel_data| )
+                             ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                             ( || )
+                             ( |        INSERT bla | )
+                             ( |                   SELECT * | )
+                             ( |                     FROM blub| )
+                             ( |               INNER JOIN bla | )
+                             ( |                       ON bla.ha = '1234' | )
+                             ( |                      AND bla.blub = 'slfdka'| )
+                             ( |                    WHERE bla.blub = 'alkjfd';| )
+                             ( || )
+                             ( |endmethod.| ) ).
+
 
     CREATE OBJECT lr_cut.
     TRY.

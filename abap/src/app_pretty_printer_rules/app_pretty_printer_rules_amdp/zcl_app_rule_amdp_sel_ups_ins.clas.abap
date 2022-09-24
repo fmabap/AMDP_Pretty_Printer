@@ -1,14 +1,21 @@
-CLASS zcl_app_rule_amdp_sel_ups_ins DEFINITION
-  PUBLIC
-  INHERITING FROM zcl_app_rule_amdp_default_no_c
-  CREATE PUBLIC .
+class ZCL_APP_RULE_AMDP_SEL_UPS_INS definition
+  public
+  inheriting from ZCL_APP_RULE_AMDP_DEFAULT_NO_C
+  create public .
 
-  PUBLIC SECTION.
-    METHODS zif_app_rule~finalize_init REDEFINITION.
-    METHODS zif_app_rule~get_new_line_indent REDEFINITION.
-    METHODS zif_app_rule~get_cur_offset_start REDEFINITION.
-    METHODS zif_app_rule~refresh_buffer REDEFINITION.
-  PROTECTED SECTION.
+public section.
+
+  methods ZIF_APP_RULE~FINALIZE_INIT
+    redefinition .
+  methods ZIF_APP_RULE~GET_CUR_OFFSET_START
+    redefinition .
+  methods ZIF_APP_RULE~GET_NEW_LINE_INDENT
+    redefinition .
+  methods ZIF_APP_RULE~REFRESH_BUFFER
+    redefinition .
+  methods ZIF_APP_RULE~GET_CUR_ROW
+    redefinition .
+protected section.
   PRIVATE SECTION.
     METHODS set_additional_indent
       RAISING
@@ -56,25 +63,218 @@ CLASS zcl_app_rule_amdp_sel_ups_ins DEFINITION
 
 ENDCLASS.
 
-CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
-  METHOD zif_app_rule~get_new_line_indent.
-    IF is_logic_active(  ) = abap_false.
-      rv_result = super->zif_app_rule~get_new_line_indent( ).
+
+
+CLASS ZCL_APP_RULE_AMDP_SEL_UPS_INS IMPLEMENTATION.
+
+
+  METHOD get_default_rule.
+    DATA lt_token TYPE zapp_t_token.
+    DATA lt_stop_token TYPE zapp_t_token.
+    DATA lv_token TYPE zapp_d_token.
+    lv_token = 'DEFAULT'.
+    INSERT  lv_token INTO TABLE lt_token.
+
+    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
+      EXPORTING
+        ir_start_rule = me
+        it_token      = lt_token
+        it_stop_token = lt_stop_token
+    ).
+
+  ENDMETHOD.
+
+
+  METHOD get_distinct_rule.
+    DATA lt_token TYPE zapp_t_token.
+    DATA lt_stop_token TYPE zapp_t_token.
+    DATA lv_token TYPE zapp_d_token.
+    lv_token = 'DISTINCT'.
+    INSERT  lv_token INTO TABLE lt_token.
+
+    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
+      EXPORTING
+        ir_start_rule = me
+        it_token      = lt_token
+        it_stop_token = lt_stop_token
+    ).
+
+  ENDMETHOD.
+
+
+  METHOD get_group_rule.
+    DATA lt_token TYPE zapp_t_token.
+    DATA lt_stop_token TYPE zapp_t_token.
+    DATA lv_token TYPE zapp_d_token.
+    lv_token = 'GROUP'.
+    INSERT  lv_token INTO TABLE lt_token.
+
+    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
+      EXPORTING
+        ir_start_rule = me
+        it_token      = lt_token
+        it_stop_token = lt_stop_token
+    ).
+
+  ENDMETHOD.
+
+
+  METHOD get_join_rule.
+    DATA lt_token TYPE zapp_t_token.
+    DATA lt_stop_token TYPE zapp_t_token.
+    DATA lr_next_rule TYPE REF TO zif_app_rule.
+    DATA lv_token TYPE zapp_d_token.
+    DATA lr_start_rule TYPE REF TO zif_app_rule.
+
+    INSERT  iv_token INTO TABLE lt_token.
+    lr_start_rule = me.
+    DO.
+
+      rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
+        EXPORTING
+          ir_start_rule = lr_start_rule
+          it_token      = lt_token
+          it_stop_token = lt_stop_token
+      ).
+
+      IF rr_result IS INITIAL.
+        RETURN.
+      ENDIF.
+
+      CASE rr_result->get_token_up( ).
+        WHEN 'LEFT' OR 'RIGHT'.
+          lr_next_rule = rr_result->get_next_rule( ).
+          IF  lr_next_rule IS NOT INITIAL.
+            IF lr_next_rule->get_token_up( ) = '('.
+              "the rule doesn't belong to the join condition, it is the function
+              lr_start_rule = lr_next_rule.
+              CONTINUE.
+            ENDIF.
+          ENDIF.
+      ENDCASE.
+      RETURN.
+    ENDDO.
+
+  ENDMETHOD.
+
+
+  METHOD get_longest_join_rule.
+
+    DATA lv_token TYPE zapp_d_token.
+    lv_token = 'RIGHT'.
+    rr_result = get_join_rule( lv_token ).
+
+    IF NOT rr_result IS INITIAL.
       RETURN.
     ENDIF.
 
-    rv_result = zif_app_rule~get_cur_offset_end( ).
+    lv_token = 'LEFT'.
+    rr_result = get_join_rule( lv_token ).
 
-  ENDMETHOD.
-
-  METHOD zif_app_rule~get_cur_offset_start.
-
-    IF is_logic_active(  ) = abap_true.
-      set_additional_indent( ).
+    IF NOT rr_result IS INITIAL.
+      RETURN.
     ENDIF.
-    rv_result = super->zif_app_rule~get_cur_offset_start( ).
+
+    lv_token = 'INNER'.
+    rr_result = get_join_rule( lv_token ).
+
+    IF NOT rr_result IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    lv_token = 'CROSS'.
+    rr_result = get_join_rule( lv_token ).
+
 
   ENDMETHOD.
+
+
+  METHOD get_order_rule.
+    DATA lt_token TYPE zapp_t_token.
+    DATA lt_stop_token TYPE zapp_t_token.
+    DATA lv_token TYPE zapp_d_token.
+    lv_token = 'ORDER'.
+    INSERT  lv_token INTO TABLE lt_token.
+
+    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
+      EXPORTING
+        ir_start_rule = me
+        it_token      = lt_token
+        it_stop_token = lt_stop_token
+    ).
+
+  ENDMETHOD.
+
+
+  METHOD get_prev_select_rule.
+
+    DATA lt_token TYPE zapp_t_token.
+    DATA lt_stop_token TYPE zapp_t_token.
+    DATA lv_token TYPE zapp_d_token.
+    lv_token = 'SELECT'.
+    INSERT  lv_token INTO TABLE lt_token.
+
+    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_lvl_rw(
+      EXPORTING
+        ir_start_rule = me
+        it_token      = lt_token
+        it_stop_token = lt_stop_token
+    ).
+
+  ENDMETHOD.
+
+
+  METHOD get_prev_ups_ins_rule.
+
+    DATA lt_token TYPE zapp_t_token.
+    DATA lt_stop_token TYPE zapp_t_token.
+    DATA lv_token TYPE zapp_d_token.
+
+    lv_token = 'INSERT'.
+    INSERT  lv_token INTO TABLE lt_token.
+
+    lv_token = 'UPSERT'.
+    INSERT  lv_token INTO TABLE lt_token.
+
+    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_lvl_rw(
+      EXPORTING
+        ir_start_rule = me
+        it_token      = lt_token
+        it_stop_token = lt_stop_token
+    ).
+
+  ENDMETHOD.
+
+
+  METHOD get_union_all_rule.
+    DATA lt_token TYPE zapp_t_token.
+    DATA lt_stop_token TYPE zapp_t_token.
+    DATA lv_token TYPE zapp_d_token.
+    DATA lr_rule TYPE REF TO zif_app_rule.
+    DATA lr_next_rule TYPE REF TO zif_app_rule.
+
+    lv_token = 'UNION'.
+    INSERT  lv_token INTO TABLE lt_token.
+
+    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
+      EXPORTING
+        ir_start_rule = me
+        it_token      = lt_token
+        it_stop_token = lt_stop_token
+    ).
+
+    IF lr_rule IS NOT INITIAL.
+      lr_next_rule = lr_rule->get_next_rule( ).
+      IF lr_next_rule IS NOT INITIAL.
+        IF lr_next_rule->get_token_up( ) = 'ALL'.
+          rr_result = lr_rule.
+        ENDIF.
+      ENDIF.
+
+    ENDIF.
+
+  ENDMETHOD.
+
 
   METHOD set_additional_indent.
 
@@ -91,12 +291,12 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    lr_prev_insert_rule = get_prev_ups_ins_rule( ).
-    IF lr_prev_insert_rule IS NOT INITIAL.
-      mv_add_indent = -7.
-      mv_add_indent_set = abap_true.
-      RETURN.
-    ENDIF.
+*    lr_prev_insert_rule = get_prev_ups_ins_rule( ).
+*    IF lr_prev_insert_rule IS NOT INITIAL.
+*      mv_add_indent = -7.
+*      mv_add_indent_set = abap_true.
+*      RETURN.
+*    ENDIF.
 
     lr_prev_select_rule = get_prev_select_rule(  ).
     IF lr_prev_select_rule IS NOT INITIAL.
@@ -163,139 +363,6 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
     mv_add_indent_set = abap_true.
   ENDMETHOD.
 
-  METHOD get_join_rule.
-    DATA lt_token TYPE zapp_t_token.
-    DATA lt_stop_token TYPE zapp_t_token.
-    DATA lr_next_rule TYPE REF TO zif_app_rule.
-    DATA lv_token TYPE zapp_d_token.
-    DATA lr_start_rule TYPE REF TO zif_app_rule.
-
-    INSERT  iv_token INTO TABLE lt_token.
-    lr_start_rule = me.
-    DO.
-
-      rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
-        EXPORTING
-          ir_start_rule = lr_start_rule
-          it_token      = lt_token
-          it_stop_token = lt_stop_token
-      ).
-
-      IF rr_result IS INITIAL.
-        RETURN.
-      ENDIF.
-
-      CASE rr_result->get_token_up( ).
-        WHEN 'LEFT' OR 'RIGHT'.
-          lr_next_rule = rr_result->get_next_rule( ).
-          IF  lr_next_rule IS NOT INITIAL.
-            IF lr_next_rule->get_token_up( ) = '('.
-              "the rule doesn't belong to the join condition, it is the function
-              lr_start_rule = lr_next_rule.
-              CONTINUE.
-            ENDIF.
-          ENDIF.
-      ENDCASE.
-      RETURN.
-    ENDDO.
-
-  ENDMETHOD.
-
-  METHOD get_order_rule.
-    DATA lt_token TYPE zapp_t_token.
-    DATA lt_stop_token TYPE zapp_t_token.
-    DATA lv_token TYPE zapp_d_token.
-    lv_token = 'ORDER'.
-    INSERT  lv_token INTO TABLE lt_token.
-
-    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
-      EXPORTING
-        ir_start_rule = me
-        it_token      = lt_token
-        it_stop_token = lt_stop_token
-    ).
-
-  ENDMETHOD.
-
-  METHOD get_default_rule.
-    DATA lt_token TYPE zapp_t_token.
-    DATA lt_stop_token TYPE zapp_t_token.
-    DATA lv_token TYPE zapp_d_token.
-    lv_token = 'DEFAULT'.
-    INSERT  lv_token INTO TABLE lt_token.
-
-    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
-      EXPORTING
-        ir_start_rule = me
-        it_token      = lt_token
-        it_stop_token = lt_stop_token
-    ).
-
-  ENDMETHOD.
-
-  METHOD get_union_all_rule.
-    DATA lt_token TYPE zapp_t_token.
-    DATA lt_stop_token TYPE zapp_t_token.
-    DATA lv_token TYPE zapp_d_token.
-    DATA lr_rule TYPE REF TO zif_app_rule.
-    DATA lr_next_rule TYPE REF TO zif_app_rule.
-
-    lv_token = 'UNION'.
-    INSERT  lv_token INTO TABLE lt_token.
-
-    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
-      EXPORTING
-        ir_start_rule = me
-        it_token      = lt_token
-        it_stop_token = lt_stop_token
-    ).
-
-    IF lr_rule IS NOT INITIAL.
-      lr_next_rule = lr_rule->get_next_rule( ).
-      IF lr_next_rule IS NOT INITIAL.
-        IF lr_next_rule->get_token_up( ) = 'ALL'.
-          rr_result = lr_rule.
-        ENDIF.
-      ENDIF.
-
-    ENDIF.
-
-  ENDMETHOD.
-
-  METHOD get_longest_join_rule.
-
-    DATA lv_token TYPE zapp_d_token.
-    lv_token = 'RIGHT'.
-    rr_result = get_join_rule( lv_token ).
-
-    IF NOT rr_result IS INITIAL.
-      RETURN.
-    ENDIF.
-
-    lv_token = 'LEFT'.
-    rr_result = get_join_rule( lv_token ).
-
-    IF NOT rr_result IS INITIAL.
-      RETURN.
-    ENDIF.
-
-    lv_token = 'INNER'.
-    rr_result = get_join_rule( lv_token ).
-
-    IF NOT rr_result IS INITIAL.
-      RETURN.
-    ENDIF.
-
-    lv_token = 'CROSS'.
-    rr_result = get_join_rule( lv_token ).
-
-
-  ENDMETHOD.
-
-  METHOD zif_app_rule~refresh_buffer.
-    super->zif_app_rule~refresh_buffer( ).
-    CLEAR mv_add_indent_set.
-  ENDMETHOD.
 
   METHOD zif_app_rule~finalize_init.
     super->zif_app_rule~finalize_init( ).
@@ -304,73 +371,68 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
-  METHOD get_group_rule.
-    DATA lt_token TYPE zapp_t_token.
-    DATA lt_stop_token TYPE zapp_t_token.
-    DATA lv_token TYPE zapp_d_token.
-    lv_token = 'GROUP'.
-    INSERT  lv_token INTO TABLE lt_token.
 
-    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
-      EXPORTING
-        ir_start_rule = me
-        it_token      = lt_token
-        it_stop_token = lt_stop_token
-    ).
+  METHOD zif_app_rule~get_cur_offset_start.
+    DATA lr_prev_insert_rule TYPE REF TO zif_app_rule.
+    IF mv_cur_offset_start_set = abap_true.
+      rv_result = mv_cur_offset_start.
+      RETURN.
+    ENDIF.
 
-  ENDMETHOD.
-
-  METHOD get_distinct_rule.
-    DATA lt_token TYPE zapp_t_token.
-    DATA lt_stop_token TYPE zapp_t_token.
-    DATA lv_token TYPE zapp_d_token.
-    lv_token = 'DISTINCT'.
-    INSERT  lv_token INTO TABLE lt_token.
-
-    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
-      EXPORTING
-        ir_start_rule = me
-        it_token      = lt_token
-        it_stop_token = lt_stop_token
-    ).
-
-  ENDMETHOD.
-  METHOD get_prev_select_rule.
-
-    DATA lt_token TYPE zapp_t_token.
-    DATA lt_stop_token TYPE zapp_t_token.
-    DATA lv_token TYPE zapp_d_token.
-    lv_token = 'SELECT'.
-    INSERT  lv_token INTO TABLE lt_token.
-
-    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_lvl_rw(
-      EXPORTING
-        ir_start_rule = me
-        it_token      = lt_token
-        it_stop_token = lt_stop_token
-    ).
+    IF is_logic_active(  ) = abap_true.
+      set_additional_indent( ).
+      lr_prev_insert_rule = get_prev_ups_ins_rule( ).
+      IF lr_prev_insert_rule IS NOT INITIAL.
+        rv_result = mr_prev_rule->get_new_line_indent( ).
+        zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
+        rv_result = rv_result + mv_add_indent.
+        zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
+        zif_app_rule~set_cur_offset_start( rv_result ).
+        RETURN.
+      ENDIF.
+    ENDIF.
+    rv_result = super->zif_app_rule~get_cur_offset_start( ).
 
   ENDMETHOD.
 
-  METHOD get_prev_ups_ins_rule.
 
-    DATA lt_token TYPE zapp_t_token.
-    DATA lt_stop_token TYPE zapp_t_token.
-    DATA lv_token TYPE zapp_d_token.
+  METHOD zif_app_rule~get_cur_row.
+    DATA lv_cur_row TYPE i.
+    DATA lr_prev_insert_rule TYPE REF TO zif_app_rule.
 
-    lv_token = 'INSERT'.
-    INSERT  lv_token INTO TABLE lt_token.
+    IF mv_cur_row_set = abap_true.
+      rv_result = mv_cur_row.
+      RETURN.
+    ENDIF.
 
-    lv_token = 'UPSERT'.
-    INSERT  lv_token INTO TABLE lt_token.
+    lv_cur_row = super->zif_app_rule~get_cur_row( ).
 
-    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_lvl_rw(
-      EXPORTING
-        ir_start_rule = me
-        it_token      = lt_token
-        it_stop_token = lt_stop_token
-    ).
+    IF NOT mr_prev_rule IS INITIAL AND is_logic_active(  ) = abap_true.
+      IF mr_prev_rule->get_cur_row( ) = lv_cur_row.
+        lr_prev_insert_rule = get_prev_ups_ins_rule( ).
+        IF lr_prev_insert_rule IS NOT INITIAL.
+          lv_cur_row = lv_cur_row + 1.
+          zif_app_rule~set_cur_row( lv_cur_row ).
+        ENDIF.
+      ENDIF.
+    ENDIF.
+    rv_result = super->zif_app_rule~get_cur_row( ).
+  ENDMETHOD.
+
+
+  METHOD zif_app_rule~get_new_line_indent.
+    IF is_logic_active(  ) = abap_false.
+      rv_result = super->zif_app_rule~get_new_line_indent( ).
+      RETURN.
+    ENDIF.
+
+    rv_result = zif_app_rule~get_cur_offset_end( ).
 
   ENDMETHOD.
 
+
+  METHOD zif_app_rule~refresh_buffer.
+    super->zif_app_rule~refresh_buffer( ).
+    CLEAR mv_add_indent_set.
+  ENDMETHOD.
 ENDCLASS.
