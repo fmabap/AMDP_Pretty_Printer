@@ -883,13 +883,20 @@ CLASS test IMPLEMENTATION.
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
     lr_settings->is_line_break_at_comma_req( ).
 
-  lt_source = VALUE #(
+lt_source = VALUE #(
                      ( |  METHOD sel_data| )
                      ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
                      ( || )
-                     ( |    INSERT bla    SELECT *          FROM blub| )
-                     ( |inner join bla on bla.ha = '1234' and bla.blub = 'slfdka'| )
-                     ( |where bla.blub = 'alkjfd';| )
+                     ( |        INSERT bla select * FROM blub| )
+                     ( |               INNER JOIN bla | )
+                     ( |                       ON bla.ha = '1234' | )
+                     ( |                      AND bla.blub = 'slfdka'| )
+                     ( |                    WHERE bla.blub = 'alkjfd'| )
+                     ( |and exists ( select 1 from blub| )
+                     ( |INNER JOIN bla | )
+                     ( |                       ON bla.ha = blub.abc | )
+                     ( |                     AND bla.blub = 'slfdka'| )
+                     ( |where ab = 'dfkjs' );| )
                      ( || )
                      ( |endmethod.| ) ).
 
@@ -898,12 +905,19 @@ lt_source_res_exp = VALUE #(
                              ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
                              ( || )
                              ( |        INSERT bla | )
-                             ( |                   SELECT * | )
-                             ( |                     FROM blub| )
-                             ( |               INNER JOIN bla | )
-                             ( |                       ON bla.ha = '1234' | )
-                             ( |                      AND bla.blub = 'slfdka'| )
-                             ( |                    WHERE bla.blub = 'alkjfd';| )
+                             ( |               SELECT * | )
+                             ( |                 FROM blub | )
+                             ( |           INNER JOIN bla | )
+                             ( |                   ON bla.ha = '1234' | )
+                             ( |                  AND bla.blub = 'slfdka' | )
+                             ( |                WHERE bla.blub = 'alkjfd'| )
+                             ( |                  AND EXISTS (     SELECT 1 | )
+                             ( |                                     FROM blub| )
+                             ( |                               INNER JOIN bla | )
+                             ( |                                       ON bla.ha = blub.abc | )
+                             ( |                                      AND bla.blub = 'slfdka'| )
+                             ( |                                    WHERE ab = 'dfkjs' | )
+                             ( |                             );| )
                              ( || )
                              ( |endmethod.| ) ).
 

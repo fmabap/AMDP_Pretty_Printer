@@ -76,7 +76,7 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
     ENDIF.
 
     IF is_logic_active(  ) = abap_true.
-      set_additional_indent( ).
+
       " if we have insert with select then move the select to the begin of a new line
       " with the required indent #5
       lr_prev_insert_rule = get_prev_ups_ins_rule( ).
@@ -87,6 +87,8 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
         zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
         zif_app_rule~set_cur_offset_start( rv_result ).
         RETURN.
+      ELSE.
+        set_additional_indent( ).
       ENDIF.
     ENDIF.
     rv_result = super->zif_app_rule~get_cur_offset_start( ).
@@ -108,7 +110,7 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-" Not longer required because we set the select to a new line #5
+    " Not longer required because we set the select to a new line #5
 *    lr_prev_insert_rule = get_prev_ups_ins_rule( ).
 *    IF lr_prev_insert_rule IS NOT INITIAL.
 *      mv_add_indent = -7.
