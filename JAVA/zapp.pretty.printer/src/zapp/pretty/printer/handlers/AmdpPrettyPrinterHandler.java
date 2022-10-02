@@ -23,7 +23,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-
 import com.sap.adt.tools.abapsource.ui.sources.editors.IAbapSourcePage;
 import com.sap.adt.tools.core.project.IAbapProject;
 import com.sap.adt.tools.core.ui.editors.IAdtFormEditor;
@@ -77,13 +76,13 @@ public class AmdpPrettyPrinterHandler extends AbstractHandler {
 
 		try {
 			if (sourceCodePretty != null) {
-				
+
 				int lineOffset;
 				StyledText textControl = textEditor.getViewer().getTextWidget();
 				int topIndex = textControl.getTopIndex();
-				
+
 				sourceCodeDoc.set(sourceCodePretty);
-				
+
 				if (sourceCodeDoc.getNumberOfLines() >= beforeStartLine) {
 					lineOffset = sourceCodeDoc.getLineOffset(beforeStartLine);
 				} else {
@@ -118,7 +117,8 @@ public class AmdpPrettyPrinterHandler extends AbstractHandler {
 			return String.valueOf(response.getBody());
 
 		} catch (ResourceNotFoundException e) {
-			displayError("Error Calling Pretty Printer");
+			displayError("Error Calling Pretty Printer " + "\n\n" + e.getMessage());
+
 		} catch (RuntimeException e) {
 			// Display any kind of other error
 			displayError(e.getMessage());
