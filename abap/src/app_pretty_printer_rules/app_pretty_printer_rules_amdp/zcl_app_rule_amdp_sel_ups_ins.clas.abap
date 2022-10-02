@@ -7,6 +7,7 @@ CLASS zcl_app_rule_amdp_sel_ups_ins DEFINITION
     METHODS zif_app_rule~finalize_init REDEFINITION.
     METHODS zif_app_rule~get_new_line_indent REDEFINITION.
     METHODS zif_app_rule~get_cur_offset_start REDEFINITION.
+    METHODS zif_app_rule~get_cur_row REDEFINITION.
     METHODS zif_app_rule~refresh_buffer REDEFINITION.
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -68,9 +69,27 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_app_rule~get_cur_offset_start.
+    DATA lr_prev_insert_rule TYPE REF TO zif_app_rule.
+    IF mv_cur_offset_start_set = abap_true.
+      rv_result = mv_cur_offset_start.
+      RETURN.
+    ENDIF.
 
     IF is_logic_active(  ) = abap_true.
-      set_additional_indent( ).
+
+      " if we have insert with select then move the select to the begin of a new line
+      " with the required indent #5
+      lr_prev_insert_rule = get_prev_ups_ins_rule( ).
+      IF lr_prev_insert_rule IS NOT INITIAL.
+        rv_result = mr_prev_rule->get_new_line_indent( ).
+        zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
+        rv_result = rv_result + mv_add_indent.
+        zcl_app_utilities=>set_to_0_if_negativ( CHANGING cv_value = rv_result ).
+        zif_app_rule~set_cur_offset_start( rv_result ).
+        RETURN.
+      ELSE.
+        set_additional_indent( ).
+      ENDIF.
     ENDIF.
     rv_result = super->zif_app_rule~get_cur_offset_start( ).
 
@@ -91,12 +110,13 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    lr_prev_insert_rule = get_prev_ups_ins_rule( ).
-    IF lr_prev_insert_rule IS NOT INITIAL.
-      mv_add_indent = -7.
-      mv_add_indent_set = abap_true.
-      RETURN.
-    ENDIF.
+    " Not longer required because we set the select to a new line #5
+*    lr_prev_insert_rule = get_prev_ups_ins_rule( ).
+*    IF lr_prev_insert_rule IS NOT INITIAL.
+*      mv_add_indent = -7.
+*      mv_add_indent_set = abap_true.
+*      RETURN.
+*    ENDIF.
 
     lr_prev_select_rule = get_prev_select_rule(  ).
     IF lr_prev_select_rule IS NOT INITIAL.
@@ -371,6 +391,29 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
         it_stop_token = lt_stop_token
     ).
 
+  ENDMETHOD.
+
+  METHOD zif_app_rule~get_cur_row.
+    DATA lv_cur_row TYPE i.
+    DATA lr_prev_insert_rule TYPE REF TO zif_app_rule.
+
+    IF mv_cur_row_set = abap_true.
+      rv_result = mv_cur_row.
+      RETURN.
+    ENDIF.
+
+    lv_cur_row = super->zif_app_rule~get_cur_row( ).
+    " if we have insert with select then move the select to a new line if required
+    IF NOT mr_prev_rule IS INITIAL AND is_logic_active(  ) = abap_true.
+      IF mr_prev_rule->get_cur_row( ) = lv_cur_row.
+        lr_prev_insert_rule = get_prev_ups_ins_rule( ).
+        IF lr_prev_insert_rule IS NOT INITIAL.
+          lv_cur_row = lv_cur_row + 1.
+          zif_app_rule~set_cur_row( lv_cur_row ).
+        ENDIF.
+      ENDIF.
+    ENDIF.
+    rv_result = super->zif_app_rule~get_cur_row( ).
   ENDMETHOD.
 
 ENDCLASS.
