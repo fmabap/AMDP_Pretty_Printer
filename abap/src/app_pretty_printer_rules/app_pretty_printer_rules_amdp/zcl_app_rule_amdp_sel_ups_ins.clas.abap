@@ -263,7 +263,7 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
     lv_token = 'UNION'.
     INSERT  lv_token INTO TABLE lt_token.
 
-    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
+    lr_rule = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
       EXPORTING
         ir_start_rule = me
         it_token      = lt_token

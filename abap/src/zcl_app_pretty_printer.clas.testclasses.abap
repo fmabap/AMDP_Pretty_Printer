@@ -11,6 +11,10 @@ CLASS test DEFINITION FINAL FOR TESTING
     METHODS insert_with_select_sql FOR TESTING RAISING cx_static_check.
     METHODS delete_sql FOR TESTING RAISING cx_static_check.
     METHODS select_right FOR TESTING RAISING cx_static_check.
+    METHODS union FOR TESTING RAISING cx_static_check.
+    METHODS union_all FOR TESTING RAISING cx_static_check.
+    METHODS union_all_with_join FOR TESTING RAISING cx_static_check.
+    METHODS union_with_join FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 
 
@@ -883,44 +887,239 @@ CLASS test IMPLEMENTATION.
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
     lr_settings->is_line_break_at_comma_req( ).
 
-lt_source = VALUE #(
-                     ( |  METHOD sel_data| )
-                     ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
-                     ( || )
-                     ( |        INSERT bla select * FROM blub| )
-                     ( |               INNER JOIN bla | )
-                     ( |                       ON bla.ha = '1234' | )
-                     ( |                      AND bla.blub = 'slfdka'| )
-                     ( |                    WHERE bla.blub = 'alkjfd'| )
-                     ( |and exists ( select 1 from blub| )
-                     ( |INNER JOIN bla | )
-                     ( |                       ON bla.ha = blub.abc | )
-                     ( |                     AND bla.blub = 'slfdka'| )
-                     ( |where ab = 'dfkjs' );| )
-                     ( || )
-                     ( |endmethod.| ) ).
+    lt_source = VALUE #(
+                         ( |  METHOD sel_data| )
+                         ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                         ( || )
+                         ( |        INSERT bla select * FROM blub| )
+                         ( |               INNER JOIN bla | )
+                         ( |                       ON bla.ha = '1234' | )
+                         ( |                      AND bla.blub = 'slfdka'| )
+                         ( |                    WHERE bla.blub = 'alkjfd'| )
+                         ( |and exists ( select 1 from blub| )
+                         ( |INNER JOIN bla | )
+                         ( |                       ON bla.ha = blub.abc | )
+                         ( |                     AND bla.blub = 'slfdka'| )
+                         ( |where ab = 'dfkjs' );| )
+                         ( || )
+                         ( |endmethod.| ) ).
 
-lt_source_res_exp = VALUE #(
-                             ( |  METHOD sel_data| )
-                             ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
-                             ( || )
-                             ( |        INSERT bla | )
-                             ( |               SELECT * | )
-                             ( |                 FROM blub | )
-                             ( |           INNER JOIN bla | )
-                             ( |                   ON bla.ha = '1234' | )
-                             ( |                  AND bla.blub = 'slfdka' | )
-                             ( |                WHERE bla.blub = 'alkjfd'| )
-                             ( |                  AND EXISTS (     SELECT 1 | )
-                             ( |                                     FROM blub| )
-                             ( |                               INNER JOIN bla | )
-                             ( |                                       ON bla.ha = blub.abc | )
-                             ( |                                      AND bla.blub = 'slfdka'| )
-                             ( |                                    WHERE ab = 'dfkjs' | )
-                             ( |                             );| )
-                             ( || )
-                             ( |endmethod.| ) ).
+    lt_source_res_exp = VALUE #(
+                                 ( |  METHOD sel_data| )
+                                 ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                                 ( || )
+                                 ( |        INSERT bla | )
+                                 ( |               SELECT * | )
+                                 ( |                 FROM blub | )
+                                 ( |           INNER JOIN bla | )
+                                 ( |                   ON bla.ha = '1234' | )
+                                 ( |                  AND bla.blub = 'slfdka' | )
+                                 ( |                WHERE bla.blub = 'alkjfd'| )
+                                 ( |                  AND EXISTS (     SELECT 1 | )
+                                 ( |                                     FROM blub| )
+                                 ( |                               INNER JOIN bla | )
+                                 ( |                                       ON bla.ha = blub.abc | )
+                                 ( |                                      AND bla.blub = 'slfdka'| )
+                                 ( |                                    WHERE ab = 'dfkjs' | )
+                                 ( |                             );| )
+                                 ( || )
+                                 ( |endmethod.| ) ).
 
+
+    CREATE OBJECT lr_cut.
+    TRY.
+        lt_source_res = lr_cut->pretty_print(
+          it_source   = lt_source
+          ir_settings = lr_settings ).
+
+      CATCH zcx_app_exception INTO lr_ex.
+        cl_abap_unit_assert=>fail( lr_ex->get_text( ) ).
+    ENDTRY.
+    cl_abap_unit_assert=>assert_equals(
+      EXPORTING
+        act = lt_source_res
+        exp = lt_source_res_exp
+        msg = 'Tables differs' ).
+
+  ENDMETHOD.
+
+
+  METHOD union.
+    DATA lt_source TYPE sourcetable.
+    DATA lt_source_res TYPE sourcetable.
+    DATA lt_source_res_exp TYPE sourcetable.
+    DATA lr_cut TYPE REF TO zcl_app_pretty_printer.
+    DATA lr_ex TYPE REF TO zcx_app_exception.
+    DATA lr_settings TYPE REF TO zif_app_settings.
+
+    lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
+    lr_settings->is_line_break_at_comma_req( ).
+
+    lt_source = VALUE #(
+                         ( |  METHOD sel_data| )
+                         ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                         ( |bla = select * from abc union select * from abc;| )
+                         ( || )
+                         ( |endmethod.| ) ).
+
+    lt_source_res_exp = VALUE #(
+                                 ( |  METHOD sel_data| )
+                                 ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                                 ( |    bla = SELECT * | )
+                                 ( |            FROM abc | )
+                                 ( |           UNION | )
+                                 ( |          SELECT * | )
+                                 ( |            FROM abc;| )
+                                 ( || )
+                                 ( |endmethod.| ) ).
+
+
+    CREATE OBJECT lr_cut.
+    TRY.
+        lt_source_res = lr_cut->pretty_print(
+          it_source   = lt_source
+          ir_settings = lr_settings ).
+
+      CATCH zcx_app_exception INTO lr_ex.
+        cl_abap_unit_assert=>fail( lr_ex->get_text( ) ).
+    ENDTRY.
+    cl_abap_unit_assert=>assert_equals(
+      EXPORTING
+        act = lt_source_res
+        exp = lt_source_res_exp
+        msg = 'Tables differs' ).
+
+  ENDMETHOD.
+
+  METHOD union_all.
+    DATA lt_source TYPE sourcetable.
+    DATA lt_source_res TYPE sourcetable.
+    DATA lt_source_res_exp TYPE sourcetable.
+    DATA lr_cut TYPE REF TO zcl_app_pretty_printer.
+    DATA lr_ex TYPE REF TO zcx_app_exception.
+    DATA lr_settings TYPE REF TO zif_app_settings.
+
+    lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
+    lr_settings->is_line_break_at_comma_req( ).
+
+    lt_source = VALUE #(
+                         ( |  METHOD sel_data| )
+                         ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                         ( |bla = select * from abc union all select * from abc;| )
+                         ( || )
+                         ( |endmethod.| ) ).
+
+    lt_source_res_exp = VALUE #(
+                                 ( |  METHOD sel_data| )
+                                 ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                                 ( |    bla =    SELECT * | )
+                                 ( |               FROM abc | )
+                                 ( |          UNION ALL | )
+                                 ( |             SELECT * | )
+                                 ( |               FROM abc;| )
+                                 ( || )
+                                 ( |endmethod.| ) ).
+
+    CREATE OBJECT lr_cut.
+    TRY.
+        lt_source_res = lr_cut->pretty_print(
+          it_source   = lt_source
+          ir_settings = lr_settings ).
+
+      CATCH zcx_app_exception INTO lr_ex.
+        cl_abap_unit_assert=>fail( lr_ex->get_text( ) ).
+    ENDTRY.
+    cl_abap_unit_assert=>assert_equals(
+      EXPORTING
+        act = lt_source_res
+        exp = lt_source_res_exp
+        msg = 'Tables differs' ).
+
+  ENDMETHOD.
+
+  METHOD union_with_join.
+    DATA lt_source TYPE sourcetable.
+    DATA lt_source_res TYPE sourcetable.
+    DATA lt_source_res_exp TYPE sourcetable.
+    DATA lr_cut TYPE REF TO zcl_app_pretty_printer.
+    DATA lr_ex TYPE REF TO zcx_app_exception.
+    DATA lr_settings TYPE REF TO zif_app_settings.
+
+    lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
+    lr_settings->is_line_break_at_comma_req( ).
+
+    lt_source = VALUE #(
+                         ( |  METHOD sel_data| )
+                         ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                         ( |bla = select * from abc union select * from abc inner join blub on blub.bla = abc.bla;| )
+                         ( || )
+                         ( |endmethod.| ) ).
+
+    lt_source_res_exp = VALUE #(
+                                 ( |  METHOD sel_data| )
+                                 ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                                 ( |    bla =     SELECT * | )
+                                 ( |                FROM abc | )
+                                 ( |               UNION | )
+                                 ( |              SELECT * | )
+                                 ( |                FROM abc | )
+                                 ( |          INNER JOIN blub | )
+                                 ( |                  ON blub.bla = abc.bla;| )
+                                 ( || )
+                                 ( |endmethod.| ) ).
+
+
+    CREATE OBJECT lr_cut.
+    TRY.
+        lt_source_res = lr_cut->pretty_print(
+          it_source   = lt_source
+          ir_settings = lr_settings ).
+
+      CATCH zcx_app_exception INTO lr_ex.
+        cl_abap_unit_assert=>fail( lr_ex->get_text( ) ).
+    ENDTRY.
+    cl_abap_unit_assert=>assert_equals(
+      EXPORTING
+        act = lt_source_res
+        exp = lt_source_res_exp
+        msg = 'Tables differs' ).
+
+  ENDMETHOD.
+
+  METHOD union_all_with_join.
+    DATA lt_source TYPE sourcetable.
+    DATA lt_source_res TYPE sourcetable.
+    DATA lt_source_res_exp TYPE sourcetable.
+    DATA lr_cut TYPE REF TO zcl_app_pretty_printer.
+    DATA lr_ex TYPE REF TO zcx_app_exception.
+    DATA lr_settings TYPE REF TO zif_app_settings.
+
+    lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
+    lr_settings->is_line_break_at_comma_req( ).
+
+    lt_source = VALUE #(
+                         ( |  METHOD sel_data| )
+                         ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                         ( |bla = select * from abc union all select * from abc inner join blub on blub.bla = abc.bla;| )
+                         ( || )
+                         ( |endmethod.| ) ).
+
+    lt_source_res_exp = VALUE #(
+                                 ( |  METHOD sel_data| )
+                                 ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                                 ( |    bla =     SELECT * | )
+                                 ( |                FROM abc | )
+                                 ( |           UNION ALL | )
+                                 ( |              SELECT * | )
+                                 ( |                FROM abc | )
+                                 ( |          INNER JOIN blub | )
+                                 ( |                  ON blub.bla = abc.bla;| )
+                                 ( || )
+                                 ( |endmethod.| ) ).
 
     CREATE OBJECT lr_cut.
     TRY.
