@@ -54,10 +54,13 @@ CLASS zcl_app_rule_amdp_union_all IMPLEMENTATION.
     IF is_logic_active( ) = abap_false.
       RETURN.
     ENDIF.
-    IF mr_token_ext->str_up = 'UNION'
-        AND mr_next_rule IS NOT INITIAL
-        AND mr_next_rule->get_token_up( ) = 'ALL'.
-      mr_rule_data->add_indent = '-3'.
+    IF mr_token_ext->str_up = 'UNION'.
+      IF  mr_next_rule IS NOT INITIAL
+         AND mr_next_rule->get_token_up( ) = 'ALL'.
+        mr_rule_data->add_indent = -3.
+      ELSE.
+        mr_rule_data->add_indent = 1.
+      ENDIF.
       mv_add_indent = mr_rule_data->add_indent.
       RETURN.
     ENDIF.
