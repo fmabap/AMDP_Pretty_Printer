@@ -55,8 +55,14 @@ CLASS zcl_app_rule_amdp_default_no_c IMPLEMENTATION.
 
     IF is_logic_active( ) = abap_true.
       mv_add_indent = mr_rule_data->add_indent.
+    ELSE.
+      "If the token is a comment, then clear the rule_data,
+      "that could lead to issues with indent
+      CLEAR mr_rule_data->is_new_line_req.
+      CLEAR mr_rule_data->new_line_indent_diff.
+      CLEAR mr_rule_data->new_statement_indent_diff.
+      CLEAR mr_rule_data->add_indent.
     ENDIF.
-
 
   ENDMETHOD.
 ENDCLASS.
