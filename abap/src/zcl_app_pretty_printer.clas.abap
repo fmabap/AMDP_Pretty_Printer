@@ -7,8 +7,8 @@ CLASS zcl_app_pretty_printer DEFINITION
 
     METHODS pretty_print
       IMPORTING
-        it_source       TYPE sourcetable
-        ir_settings type ref to zif_app_settings
+        it_source        TYPE sourcetable
+        ir_settings      TYPE REF TO zif_app_settings
       RETURNING
         VALUE(rt_source) TYPE sourcetable
       RAISING
@@ -27,31 +27,31 @@ CLASS zcl_app_pretty_printer DEFINITION
         zcx_app_exception .
     METHODS get_and_apply_rules
       IMPORTING
-        it_source       TYPE sourcetable
-        it_statement    TYPE sstmnt_tab
-        it_structure    TYPE sstruc_tab
-        ir_settings     type ref to zif_app_settings
+        it_source        TYPE sourcetable
+        it_statement     TYPE sstmnt_tab
+        it_structure     TYPE sstruc_tab
+        ir_settings      TYPE REF TO zif_app_settings
       CHANGING
-        ct_token_ext    TYPE zapp_t_stokesx_ext_st
+        ct_token_ext     TYPE zapp_t_stokesx_ext_st
       RETURNING
         VALUE(rt_source) TYPE sourcetable
       RAISING
         zcx_app_exception .
     METHODS get_rules
       IMPORTING
-        it_source       TYPE sourcetable
-        it_statement    TYPE sstmnt_tab
-        it_structure    TYPE sstruc_tab
-        ir_rule_factory TYPE REF TO zcl_app_rule_factory
+        it_source        TYPE sourcetable
+        it_statement     TYPE sstmnt_tab
+        it_structure     TYPE sstruc_tab
+        ir_rule_factory  TYPE REF TO zcl_app_rule_factory
       CHANGING
-        ct_token_ext    TYPE zapp_t_stokesx_ext_st
+        ct_token_ext     TYPE zapp_t_stokesx_ext_st
       RETURNING
         VALUE(rt_result) TYPE zapp_t_rule_instances
       RAISING
         zcx_app_exception .
     METHODS get_source_code_from_rules
       IMPORTING
-        it_rules        TYPE zapp_t_rule_instances
+        it_rules         TYPE zapp_t_rule_instances
       RETURNING
         VALUE(rt_result) TYPE sourcetable
       RAISING
@@ -93,7 +93,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_APP_PRETTY_PRINTER IMPLEMENTATION.
+CLASS zcl_app_pretty_printer IMPLEMENTATION.
 
 
   METHOD add_rule_to_source.

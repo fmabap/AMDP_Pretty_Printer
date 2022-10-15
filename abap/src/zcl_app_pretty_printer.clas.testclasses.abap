@@ -15,6 +15,7 @@ CLASS test DEFINITION FINAL FOR TESTING
     METHODS union_all FOR TESTING RAISING cx_static_check.
     METHODS union_all_with_join FOR TESTING RAISING cx_static_check.
     METHODS union_with_join FOR TESTING RAISING cx_static_check.
+    METHODS comment_with_new_line_indent FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 
 
@@ -1120,6 +1121,70 @@ CLASS test IMPLEMENTATION.
                                  ( |                  ON blub.bla = abc.bla;| )
                                  ( || )
                                  ( |endmethod.| ) ).
+
+    CREATE OBJECT lr_cut.
+    TRY.
+        lt_source_res = lr_cut->pretty_print(
+          it_source   = lt_source
+          ir_settings = lr_settings ).
+
+      CATCH zcx_app_exception INTO lr_ex.
+        cl_abap_unit_assert=>fail( lr_ex->get_text( ) ).
+    ENDTRY.
+    cl_abap_unit_assert=>assert_equals(
+      EXPORTING
+        act = lt_source_res
+        exp = lt_source_res_exp
+        msg = 'Tables differs' ).
+
+  ENDMETHOD.
+
+  METHOD comment_with_new_line_indent.
+  " Check that if a comment has a keyword like delete, that
+  " requests an additional new line indent, that is deactivated
+    DATA lt_source TYPE sourcetable.
+    DATA lt_source_res TYPE sourcetable.
+    DATA lt_source_res_exp TYPE sourcetable.
+    DATA lr_cut TYPE REF TO zcl_app_pretty_printer.
+    DATA lr_ex TYPE REF TO zcx_app_exception.
+    DATA lr_settings TYPE REF TO zif_app_settings.
+
+    lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
+    lr_settings->is_line_break_at_comma_req( ).
+
+lt_source = VALUE #(
+                     ( |  METHOD sel_data| )
+                     ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                     ( |bla = select case | )
+                     ( |when a >= 1 then | )
+                     ( |-- delete bla| )
+                     ( |'ABC'| )
+                     ( || )
+                     ( |else| )
+                     ( |---d dfsa| )
+                     ( |'CDB'| )
+                     ( |end as xy| )
+                     ( |b as d| )
+                     ( || )
+                     ( |endmethod.| ) ).
+
+lt_source_res_exp = VALUE #(
+                             ( |  METHOD sel_data| )
+                             ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                             ( |    bla = SELECT | )
+                             ( |                 CASE | )
+                             ( |                   WHEN a >= 1 THEN | )
+                             ( |                     -- delete bla| )
+                             ( |                     'ABC'| )
+                             ( || )
+                             ( |                   ELSE| )
+                             ( |                     ---d dfsa| )
+                             ( |                     'CDB'| )
+                             ( |                 END AS xy| )
+                             ( |                 b AS d| )
+                             ( || )
+                             ( |endmethod.| ) ).
 
     CREATE OBJECT lr_cut.
     TRY.
