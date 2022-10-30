@@ -71,6 +71,13 @@ CLASS zcl_app_scanner DEFINITION
       RAISING
         zcx_app_exception.
 
+    METHODS correct_overlapping_token
+      IMPORTING
+        ir_token_ext      TYPE REF TO zapp_s_stokesx_ext
+        ir_prev_token_ext TYPE REF TO zapp_s_stokesx_ext
+      RAISING
+        zcx_app_exception.
+
     METHODS correct_token_with_double_dot
       IMPORTING
         it_source    TYPE sourcetable
@@ -242,7 +249,28 @@ CLASS zcl_app_scanner IMPLEMENTATION.
         EXPORTING
           it_source    = it_source
           ir_token_ext = lr_token_ext ).
+    ENDLOOP.
 
+    LOOP AT ct_token_ext
+      REFERENCE INTO lr_token_ext
+      USING KEY row_col.
+
+      IF lr_prev_token_ext IS NOT INITIAL.
+
+        correct_overlapping_token(
+          EXPORTING
+            ir_token_ext      = lr_token_ext
+            ir_prev_token_ext = lr_prev_token_ext
+        ).
+
+      ENDIF.
+      lr_prev_token_ext = lr_token_ext.
+
+    ENDLOOP.
+
+    LOOP AT ct_token_ext
+      REFERENCE INTO lr_token_ext
+      USING KEY row_col.
       lr_scanner_sqlscript->set_sqlscript(
         EXPORTING
           ir_prev_token_ext = lr_prev_token_ext
@@ -383,6 +411,8 @@ CLASS zcl_app_scanner IMPLEMENTATION.
      INDEX ir_token_ext->row.
     IF sy-subrc = 0.
       ir_token_ext->str_org = lr_source->*+ir_token_ext->col(ir_token_ext->len).
+      ir_token_ext->str_up =  ir_token_ext->str_org.
+      TRANSLATE ir_token_ext->str_up TO UPPER CASE.
     ENDIF.
 
 
@@ -583,6 +613,21 @@ CLASS zcl_app_scanner IMPLEMENTATION.
       lr_prev_token_ext = lr_token_ext.
     ENDLOOP.
     ct_token_ext = lt_token_ext_unsorted.
+  ENDMETHOD.
+
+  METHOD correct_overlapping_token.
+    DATA lv_offset TYPE i.
+    IF ir_token_ext->row = ir_prev_token_ext->row.
+      lv_offset = ir_prev_token_ext->col + ir_prev_token_ext->len.
+
+      IF ir_token_ext->col < lv_offset.
+        ir_prev_token_ext->len = ir_token_ext->col - ir_prev_token_ext->col.
+        ir_prev_token_ext->str_org = ir_prev_token_ext->str_org(ir_prev_token_ext->len).
+        ir_prev_token_ext->str_up = ir_prev_token_ext->str_org.
+        TRANSLATE ir_prev_token_ext->str_up TO UPPER CASE.
+      ENDIF.
+
+    ENDIF.
   ENDMETHOD.
 
 ENDCLASS.
