@@ -16,6 +16,8 @@ CLASS test DEFINITION FINAL FOR TESTING
     METHODS union_all_with_join FOR TESTING RAISING cx_static_check.
     METHODS union_with_join FOR TESTING RAISING cx_static_check.
     METHODS comment_with_new_line_indent FOR TESTING RAISING cx_static_check.
+    METHODS no_lb_after_co_in_simple_func FOR TESTING RAISING cx_static_check.
+
 ENDCLASS.
 
 
@@ -28,6 +30,13 @@ CLASS test IMPLEMENTATION.
     DATA lr_cut TYPE REF TO zcl_app_pretty_printer.
     DATA lr_ex TYPE REF TO zcx_app_exception.
     DATA lr_settings TYPE REF TO zif_app_settings.
+
+    lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
+    lr_settings->is_line_break_at_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_for_simple_fu( ).
+
 
     lt_source = VALUE #( ( |CLASS| )
                          ( || )
@@ -60,7 +69,6 @@ CLASS test IMPLEMENTATION.
 
     CREATE OBJECT lr_cut.
     TRY.
-        CREATE OBJECT lr_settings TYPE zcl_app_settings.
 
         lt_source_res = lr_cut->pretty_print(
           it_source   = lt_source
@@ -90,9 +98,11 @@ CLASS test IMPLEMENTATION.
     DATA lr_ex TYPE REF TO zcx_app_exception.
     DATA lr_settings TYPE REF TO zif_app_settings.
 
-    lr_settings ?= cl_abap_testdouble=>create( 'zif_app_settings' ).
+    lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
     lr_settings->is_line_break_at_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_for_simple_fu( ).
 
     lt_source = VALUE #(
                          ( |CLASS zcl_app_test_amdp DEFINITION| )
@@ -434,6 +444,8 @@ CLASS test IMPLEMENTATION.
     lr_settings ?= cl_abap_testdouble=>create( 'zif_app_settings' ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
     lr_settings->is_line_break_at_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_for_simple_fu( ).
 
     lt_source = VALUE #(
                          ( |CLASS zcl_app_test_amdp DEFINITION| )
@@ -737,6 +749,8 @@ CLASS test IMPLEMENTATION.
     lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
     lr_settings->is_line_break_at_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_for_simple_fu( ).
 
     lt_source = VALUE #(
                          ( |METHOD INSERT PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
@@ -789,6 +803,8 @@ CLASS test IMPLEMENTATION.
     lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
     lr_settings->is_line_break_at_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_for_simple_fu( ).
 
     lt_source = VALUE #(
                          ( |METHOD INSERT PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
@@ -824,6 +840,7 @@ CLASS test IMPLEMENTATION.
         msg = 'Tables differs' ).
 
   ENDMETHOD.
+
   METHOD select_right.
     DATA lt_source TYPE sourcetable.
     DATA lt_source_res TYPE sourcetable.
@@ -835,6 +852,8 @@ CLASS test IMPLEMENTATION.
     lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
     lr_settings->is_line_break_at_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_for_simple_fu( ).
 
     lt_source = VALUE #(
                      ( |  METHOD sel_data| )
@@ -887,6 +906,8 @@ CLASS test IMPLEMENTATION.
     lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
     lr_settings->is_line_break_at_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_for_simple_fu( ).
 
     lt_source = VALUE #(
                          ( |  METHOD sel_data| )
@@ -956,6 +977,8 @@ CLASS test IMPLEMENTATION.
     lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
     lr_settings->is_line_break_at_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_for_simple_fu( ).
 
     lt_source = VALUE #(
                          ( |  METHOD sel_data| )
@@ -1004,6 +1027,8 @@ CLASS test IMPLEMENTATION.
     lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
     lr_settings->is_line_break_at_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_for_simple_fu( ).
 
     lt_source = VALUE #(
                          ( |  METHOD sel_data| )
@@ -1051,6 +1076,8 @@ CLASS test IMPLEMENTATION.
     lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
     lr_settings->is_line_break_at_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_for_simple_fu( ).
 
     lt_source = VALUE #(
                          ( |  METHOD sel_data| )
@@ -1101,6 +1128,8 @@ CLASS test IMPLEMENTATION.
     lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
     lr_settings->is_line_break_at_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_for_simple_fu( ).
 
     lt_source = VALUE #(
                          ( |  METHOD sel_data| )
@@ -1140,8 +1169,8 @@ CLASS test IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD comment_with_new_line_indent.
-  " Check that if a comment has a keyword like delete, that
-  " requests an additional new line indent, that is deactivated
+    " Check that if a comment has a keyword like delete, that
+    " requests an additional new line indent, that is deactivated
     DATA lt_source TYPE sourcetable.
     DATA lt_source_res TYPE sourcetable.
     DATA lt_source_res_exp TYPE sourcetable.
@@ -1152,39 +1181,137 @@ CLASS test IMPLEMENTATION.
     lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
     lr_settings->is_line_break_at_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_for_simple_fu( ).
 
-lt_source = VALUE #(
-                     ( |  METHOD sel_data| )
-                     ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
-                     ( |bla = select case | )
-                     ( |when a >= 1 then | )
-                     ( |-- delete bla| )
-                     ( |'ABC'| )
-                     ( || )
-                     ( |else| )
-                     ( |---d dfsa| )
-                     ( |'CDB'| )
-                     ( |end as xy| )
-                     ( |b as d| )
-                     ( || )
-                     ( |endmethod.| ) ).
+    lt_source = VALUE #(
+                         ( |  METHOD sel_data| )
+                         ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                         ( |bla = select case | )
+                         ( |when a >= 1 then | )
+                         ( |-- delete bla| )
+                         ( |'ABC'| )
+                         ( || )
+                         ( |else| )
+                         ( |---d dfsa| )
+                         ( |'CDB'| )
+                         ( |end as xy| )
+                         ( |b as d| )
+                         ( || )
+                         ( |endmethod.| ) ).
 
-lt_source_res_exp = VALUE #(
-                             ( |  METHOD sel_data| )
-                             ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
-                             ( |    bla = SELECT | )
-                             ( |                 CASE | )
-                             ( |                   WHEN a >= 1 THEN | )
-                             ( |                     -- delete bla| )
-                             ( |                     'ABC'| )
+    lt_source_res_exp = VALUE #(
+                                 ( |  METHOD sel_data| )
+                                 ( |  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT.| )
+                                 ( |    bla = SELECT | )
+                                 ( |                 CASE | )
+                                 ( |                   WHEN a >= 1 THEN | )
+                                 ( |                     -- delete bla| )
+                                 ( |                     'ABC'| )
+                                 ( || )
+                                 ( |                   ELSE| )
+                                 ( |                     ---d dfsa| )
+                                 ( |                     'CDB'| )
+                                 ( |                 END AS xy| )
+                                 ( |                 b AS d| )
+                                 ( || )
+                                 ( |endmethod.| ) ).
+
+    CREATE OBJECT lr_cut.
+    TRY.
+        lt_source_res = lr_cut->pretty_print(
+          it_source   = lt_source
+          ir_settings = lr_settings ).
+
+      CATCH zcx_app_exception INTO lr_ex.
+        cl_abap_unit_assert=>fail( lr_ex->get_text( ) ).
+    ENDTRY.
+    cl_abap_unit_assert=>assert_equals(
+      EXPORTING
+        act = lt_source_res
+        exp = lt_source_res_exp
+        msg = 'Tables differs' ).
+
+  ENDMETHOD.
+
+  METHOD no_lb_after_co_in_simple_func.
+    "Check setting no line break after comma in simple function
+    DATA lt_source TYPE sourcetable.
+    DATA lt_source_res TYPE sourcetable.
+    DATA lt_source_res_exp TYPE sourcetable.
+    DATA lr_cut TYPE REF TO zcl_app_pretty_printer.
+    DATA lr_ex TYPE REF TO zcx_app_exception.
+    DATA lr_settings TYPE REF TO zif_app_settings.
+
+    lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
+    lr_settings->is_line_break_at_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
+    lr_settings->is_no_lb_at_co_for_simple_fu( ).
+
+  lt_source = VALUE #(
+                     ( |METHOD sel_data| )
+                     ( | BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                     ( | OPTIONS READ-ONLY| )
+                     ( | USING sflight.| )
+                     ( |                     | )
+                     ( |      lt_bla1 =  SELECT SUBSTRING( concat( "Bla","Blub" ),  4, 6  )  FROM sflight;| )
+                     ( || )
+                     ( |      lt_bla2 =  SELECT SUBSTRING( sflight.connid,  4, 6  )  FROM sflight;| )
+                     ( || )
+                     ( |      lt_bla3 = SELECT SUBSTR_AFTER ('Hello My Friend','My ') "substr after" FROM DUMMY;| )
+                     ( || )
+                     ( |      lt_bla4 = SELECT SUBSTR_BEFORE ('Hello My Friend','My') "substr before" FROM DUMMY;| )
+                     ( || )
+                     ( |      lt_bla5 = SELECT RPAD ('end', 15, '12345') "right padded" FROM DUMMY;| )
+                     ( || )
+                     ( |      lt_bla6 = SELECT LPAD ('end', 15, '12345') "lpad" FROM DUMMY;| )
+                     ( || )
+                     ( |      lt_bla7 = SELECT CONCAT ('C', 'at') "concat" FROM DUMMY;| )
+                     ( || )
+                     ( |      lt_bla8 = SELECT NULLIF ('diff', 'same') "nullif" FROM DUMMY;| )
+                     ( || )
+                     ( |      lt_bla9 = SELECT IFNULL (NULL, 'same') "ifnull" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |endmethod.  | ) ).
+
+    lt_source_res_exp = VALUE #(
+                             ( |METHOD sel_data| )
+                             ( | BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                             ( | OPTIONS READ-ONLY| )
+                             ( | USING sflight.| )
+                             ( |                     | )
+                             ( |    lt_bla1 = SELECT SUBSTRING( concat( "Bla","Blub" ), | )
+                             ( |                                4, | )
+                             ( |                                6 | )
+                             ( |                              ) | )
+                             ( |                FROM sflight; | )
                              ( || )
-                             ( |                   ELSE| )
-                             ( |                     ---d dfsa| )
-                             ( |                     'CDB'| )
-                             ( |                 END AS xy| )
-                             ( |                 b AS d| )
+                             ( |    lt_bla2 = SELECT SUBSTRING( sflight.connid, 4, 6 ) | )
+                             ( |                FROM sflight; | )
                              ( || )
-                             ( |endmethod.| ) ).
+                             ( |    lt_bla3 = SELECT substr_after ('Hello My Friend','My ') "substr after" | )
+                             ( |                FROM dummy; | )
+                             ( || )
+                             ( |    lt_bla4 = SELECT substr_before ('Hello My Friend','My') "substr before" | )
+                             ( |                FROM dummy; | )
+                             ( || )
+                             ( |    lt_bla5 = SELECT rpad ('end', 15, '12345') "right padded" | )
+                             ( |                FROM dummy; | )
+                             ( || )
+                             ( |    lt_bla6 = SELECT lpad ('end', 15, '12345') "lpad" | )
+                             ( |                FROM dummy; | )
+                             ( || )
+                             ( |    lt_bla7 = SELECT concat ('C', 'at') "concat" | )
+                             ( |                FROM dummy; | )
+                             ( || )
+                             ( |    lt_bla8 = SELECT NULLIF ('diff', 'same') "nullif" | )
+                             ( |                FROM dummy; | )
+                             ( || )
+                             ( |    lt_bla9 = SELECT ifnull (NULL, 'same') "ifnull" | )
+                             ( |                FROM dummy; | )
+                             ( || )
+                             ( |endmethod.  | ) ).
 
     CREATE OBJECT lr_cut.
     TRY.

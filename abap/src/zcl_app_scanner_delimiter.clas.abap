@@ -150,6 +150,11 @@ CLASS ZCL_APP_SCANNER_DELIMITER IMPLEMENTATION.
     DATA lv_length TYPE i.
 
     lv_length = ir_token_ext->col - iv_offset.
+
+    IF lv_length < 0.
+      BREAK-POINT.
+    ENDIF.
+
     rv_delimiter = ir_source->*+iv_offset(lv_length).
   ENDMETHOD.
 
