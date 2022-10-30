@@ -11,6 +11,43 @@
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
    </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>AVOID_LB_AFTER_COMMA_IN_FUNC</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Avoid line break after comma in function</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>CONTAINS_FU_SUB_FU_W_CO_OR_SEL</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Contains function sub func. with comma or select statement</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>IS_CLS_BRA_OF_FU_IN_SAME_LINE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Is closing bracket of function original in the same line</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>AVOID_LB_AFTER_COMMA_IN_FUNC</CMPNAME>
+     <SCONAME>IR_START_RULE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Start rule must be function name before the bracket</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CONTAINS_FU_SUB_FU_W_CO_OR_SEL</CMPNAME>
+     <SCONAME>IR_START_RULE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Start rule must be function name before the bracket</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>IS_CLS_BRA_OF_FU_IN_SAME_LINE</CMPNAME>
+     <SCONAME>IR_START_RULE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Start rule must be function name before the bracket</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>
 </abapGit>

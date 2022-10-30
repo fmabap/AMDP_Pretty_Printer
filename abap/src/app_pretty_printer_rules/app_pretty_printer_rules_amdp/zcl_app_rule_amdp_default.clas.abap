@@ -165,6 +165,9 @@ CLASS zcl_app_rule_amdp_default IMPLEMENTATION.
 
 
   METHOD zif_app_rule~is_new_line_req.
+    IF mv_avoid_lb_after_this_token = abap_true.
+      RETURN.
+    ENDIF.
     IF super->zif_app_rule~is_new_line_req( ) = abap_true.
       rv_result = abap_true.
       RETURN.

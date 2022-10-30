@@ -35,6 +35,10 @@ CLASS zcl_app_rule_provider DEFINITION
     METHODS get_amdp_special_rules
       RETURNING VALUE(rt_result) TYPE zapp_t_rule_sort
       RAISING   zcx_app_exception.
+
+    METHODS get_amdp_simple_rules
+      RETURNING VALUE(rt_result) TYPE zapp_t_rule_sort
+      RAISING   zcx_app_exception.
 ENDCLASS.
 
 
@@ -76,6 +80,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     INSERT LINES OF get_amdp_select_rules( ) INTO TABLE rt_result.
     INSERT LINES OF get_amdp_control_rules( ) INTO TABLE rt_result.
     INSERT LINES OF get_amdp_special_rules( ) INTO TABLE rt_result.
+    INSERT LINES OF get_amdp_simple_rules( ) INTO TABLE rt_result.
   ENDMETHOD.
 
   METHOD get_amdp_default_rules.
@@ -216,7 +221,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     INSERT ls_result INTO TABLE rt_result.
 
     CLEAR ls_result.
-    ls_result-rule_name = 'AMDP RIGHT JOIN or LEFT Function'.
+    ls_result-rule_name = 'AMDP RIGHT JOIN or RIGHT Function'.
     ls_result-token = 'RIGHT'.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
     ls_result-rule_class = 'ZCL_APP_RULE_AMDP_NL_LFT_COND'.
@@ -391,6 +396,23 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
     ls_result-rule_class = 'ZCL_APP_RULE_AMDP_CALL'.
     INSERT ls_result INTO TABLE rt_result.
+  ENDMETHOD.
+
+  METHOD get_amdp_simple_rules.
+    DATA ls_result TYPE zapp_s_rule.
+    CLEAR ls_result.
+    ls_result-rule_name = 'AMDP Substring'.
+    ls_result-token = 'SUBSTRING'.
+    ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
+    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_FUNC_IN_1_RO'.
+    INSERT ls_result INTO TABLE rt_result.
+
+*    CLEAR ls_result.
+*    ls_result-rule_name = 'AMDP Substring'.
+*    ls_result-token = 'CONCAT'.
+*    ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
+*    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_FUNC_IN_1_RO'.
+*    INSERT ls_result INTO TABLE rt_result.
   ENDMETHOD.
 
 ENDCLASS.
