@@ -33,7 +33,7 @@ The following options are possible:
 - 1 => add no line break after a comma
 - 2 => add no line break after a comma at simple functions, if the following criterions are fulfilled:
   - the closing bracket is originally in the same row as the function name
-  - a possible sub function contains no comma and no select statement
+  - **a possible sub function contains no comma and no select statement**
   - it is one of the following functions:
     - SUBSTRING
     - SUBSTR_AFTER
@@ -43,40 +43,135 @@ The following options are possible:
     - CONCAT
     - NULLIF
     - IFNULL
-
+- 3 => add no line break after a comma at simple functions, if the following criterions are fulfilled:
+  - the closing bracket is originally in the same row as the function name
+  - it is one of the following functions:
+    - SUBSTRING
+    - SUBSTR_AFTER
+    - SUBSTR_BEFORE
+    - RPAD
+    - LPAD
+    - CONCAT
+    - NULLIF
+    - IFNULL
+    
 If nothing is configured, then a line break will be added.
 
 ### Example option 0 (with line break) vs option 1 (without line break)
 
 The unformatted AMDP source code:
 
-<img src="images/media/image3.png" alt="lb source" wdith=100%/>
+```abap
+lt_spfli2 = SELECT carrid, connid, countryfr, countryto,
+ROW_NUMBER ( ) OVER( PARTITION BY carrid, connid ORDER BY "CARRID", CONNID asc ) AS "ROW_ID"
+FROM SPFLI WHERE mandt = session_context( 'CLIENT' );
+```
 
 The formatted AMDP source code will look like this **with** the line break after the comma:
 
-<img src="images/media/image4.png" alt="with lb" width=75%/>
+```abap
+lt_spfli2 = SELECT carrid, 
+                    connid, 
+                    countryfr, 
+                    countryto,
+                    ROW_NUMBER ( ) OVER( PARTITION BY carrid, 
+                                                      connid 
+                                        ORDER BY "CARRID", 
+                                                  connid ASC 
+                                      ) AS "ROW_ID"
+              FROM spfli 
+              WHERE mandt = SESSION_CONTEXT( 'CLIENT' );
+```
 
 The formatted AMDP source code will look like this **without** the line break after the comma:
 
-<img src="images/media/image5.png" alt="without lb" width=75%/>
+```abap
+lt_spfli2 = SELECT carrid, connid, countryfr, countryto,
+                    ROW_NUMBER ( ) OVER( PARTITION BY carrid, connid 
+                                        ORDER BY "CARRID", connid ASC 
+                                      ) AS "ROW_ID"
+              FROM spfli 
+              WHERE mandt = SESSION_CONTEXT( 'CLIENT' );
+```
 
-### Examples of option 3 (no line break after comma for simple functions)
+### Examples of option 3 (no line break after comma for simple functions dep. closing bracket and sub function)
 
 No line break in the substring function, because the rtrim function conatains no comma:
 
-<img src="images/media/image6.png" alt="substring without lb before" width=75%/>
+```abap
+lt_example = SELECT SUBSTRING( rtrim(connid),3,4) FROM spfli;
+```
 
-<img src="images/media/image7.png" alt="substring without lb after" width=75%/>
+```abap
+lt_example = SELECT SUBSTRING( RTRIM(connid),3,4) 
+               FROM spfli; 
+```
 
 Line break in the substring function, because the closing bracket is in the new line:
+```abap
+lt_example = SELECT SUBSTRING( rtrim(connid),3,4
+) FROM spfli;  
+```
 
-<img src="images/media/image8.png" alt="substring with lb closing bracket in line before" width=75%/>
-
-<img src="images/media/image9.png" alt="substring with lb closing bracket in line after" width=75%/>
+```abap
+lt_example = SELECT SUBSTRING( RTRIM(connid),
+                               3,
+                               4
+                             ) 
+               FROM spfli; 
+```
 
 Line break in the substring function, because the sub function concat contains a comma:
 
-<img src="images/media/image10.png" alt="substring with lb comma in sub function before" width=75%/>
+```abap
+lt_example = SELECT SUBSTRING( concat( 'Bla','Blub' ),  4, 1  )  FROM sflight;
+```
 
-<img src="images/media/image11.png" alt="substring with lb comma in sub function after" width=75%/>
+```abap
+lt_example = SELECT SUBSTRING( CONCAT( 'Bla','Blub' ), 
+                               4, 
+                               1 
+                             ) 
+               FROM sflight;
+```
+### Examples of option 4 (no line break after comma for simple functions dep. closing bracket only)
+No line break in the concat function, because the closing bracket is on the same line like the function name:
 
+```abap
+lt_example = SELECT CONCAT ('C', concat( 'A','B')) FROM DUMMY;
+```
+
+```abap
+    lt_example = SELECT CONCAT ('C', CONCAT( 'A','B')) 
+                   FROM dummy;
+```
+
+Line break in the first concat function, because the closing bracket is on the next line:
+
+```abap
+lt_example = SELECT CONCAT ('C', concat( 'A','B'
+)) FROM DUMMY;
+```
+
+```abap
+lt_example = SELECT CONCAT ('C', 
+                            CONCAT( 'A','B')
+						               ) 
+               FROM dummy;
+```
+
+Line break in the both concat functions, because the closing brackets are both on the next line:
+
+```abap
+lt_example = SELECT CONCAT ('C', concat( 'A','B'
+)) FROM DUMMY;
+```
+
+```abap
+lt_example = SELECT CONCAT ('C', 
+                            CONCAT( 'A',
+                                    'B'
+                                  )
+                            ) 
+               FROM dummy;
+```
