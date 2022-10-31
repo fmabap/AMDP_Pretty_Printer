@@ -54,8 +54,8 @@ The following options are possible:
     - CONCAT
     - NULLIF
     - IFNULL
-    
-If nothing is configured, then a line break will be added.
+
+If nothing is configured, then a line break will be added (option 0).
 
 ### Example option 0 (with line break) vs option 1 (without line break)
 
@@ -80,7 +80,7 @@ lt_spfli2 = SELECT carrid,
                                                   connid ASC 
                                       ) AS "ROW_ID"
               FROM spfli 
-              WHERE mandt = SESSION_CONTEXT( 'CLIENT' );
+             WHERE mandt = SESSION_CONTEXT( 'CLIENT' );
 ```
 
 The formatted AMDP source code will look like this **without** the line break after the comma:
@@ -91,7 +91,7 @@ lt_spfli2 = SELECT carrid, connid, countryfr, countryto,
                                         ORDER BY "CARRID", connid ASC 
                                       ) AS "ROW_ID"
               FROM spfli 
-              WHERE mandt = SESSION_CONTEXT( 'CLIENT' );
+             WHERE mandt = SESSION_CONTEXT( 'CLIENT' );
 ```
 
 ### Examples of option 3 (no line break after comma for simple functions dep. closing bracket and sub function)
