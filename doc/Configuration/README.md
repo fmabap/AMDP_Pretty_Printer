@@ -94,7 +94,7 @@ lt_spfli2 = SELECT carrid, connid, countryfr, countryto,
               WHERE mandt = SESSION_CONTEXT( 'CLIENT' );
 ```
 
-### Examples of option 3 (no line break after comma for simple functions dep. closing bracket and sub function)
+### Examples of option 2 (no line break after comma for simple functions dep. closing bracket and sub function)
 
 No line break in the substring function, because the rtrim function conatains no comma:
 
@@ -134,7 +134,7 @@ lt_example = SELECT SUBSTRING( CONCAT( 'Bla','Blub' ),
                              ) 
                FROM sflight;
 ```
-### Examples of option 4 (no line break after comma for simple functions dep. closing bracket only)
+### Examples of option 3 (no line break after comma for simple functions dep. closing bracket only)
 No line break in the concat function, because the closing bracket is on the same line like the function name:
 
 ```sql
