@@ -314,6 +314,7 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
     DATA lr_token_ext TYPE REF TO zapp_s_stokesx_ext.
     DATA lr_rule TYPE REF TO zif_app_rule.
     DATA lv_counter_open_bracket TYPE i.
+    DATA lv_token TYPE zapp_d_token.
 
     lr_open_bracket_rule = zcl_app_amdp_rule_utilities=>get_next_no_comment_rl_in_stm( ir_start_rule = ir_start_rule ).
 
@@ -326,12 +327,15 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
     ENDIF.
 
     lr_rule = lr_open_bracket_rule.
+    lv_counter_open_bracket = 1.
     DO.
       lr_rule = lr_rule->get_next_rule( ).
 
       IF lr_rule IS INITIAL.
         RETURN.
       ENDIF.
+
+      lv_token = lr_rule->get_token_up(  ).
 
       IF zcl_app_utilities=>is_sqlscript_rule( lr_rule ) = abap_false.
         RETURN.
@@ -341,7 +345,7 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
         CONTINUE.
       ENDIF.
 
-      CASE lr_rule->get_token_up( ).
+      CASE lv_token.
         WHEN '('.
           lv_counter_open_bracket = lv_counter_open_bracket + 1.
         WHEN ')'.
@@ -351,17 +355,18 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
             RETURN.
           ENDIF.
       ENDCASE.
-      IF lv_counter_open_bracket > 0.
-        IF lr_rule->get_token_up(  ) = ',' OR lr_rule->get_token_up(  ) = 'SELECT'.
+      IF lv_counter_open_bracket > 1.
+        IF lv_token = ',' OR lv_token = 'SELECT'.
           rv_result = abap_true.
           RETURN.
         ENDIF.
 
         lr_token_ext = lr_rule->get_token_ext( ).
 
-        IF  zcl_app_utilities=>contains_delimiter_char(
-         it_delimiter = lr_token_ext->delimiter
-         iv_char      = ',' ) = abap_true.
+        IF zcl_app_utilities=>contains_delimiter_char(
+               it_delimiter = lr_token_ext->delimiter
+               iv_char      = ',' ) = abap_true.
+
           rv_result = abap_true.
           RETURN.
 
@@ -382,6 +387,7 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
     DATA lr_token_ext TYPE REF TO zapp_s_stokesx_ext.
     DATA lr_rule TYPE REF TO zif_app_rule.
     DATA lv_counter_open_bracket TYPE i.
+    DATA lv_token TYPE zapp_d_token.
 
     lr_open_bracket_rule = zcl_app_amdp_rule_utilities=>get_next_no_comment_rl_in_stm( ir_start_rule = ir_start_rule ).
 
@@ -394,12 +400,16 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
     ENDIF.
 
     lr_rule = lr_open_bracket_rule.
+    lv_counter_open_bracket = 1.
+
     DO.
       lr_rule = lr_rule->get_next_rule( ).
 
       IF lr_rule IS INITIAL.
         RETURN.
       ENDIF.
+
+      lv_token = lr_rule->get_token_up(  ).
 
       IF zcl_app_utilities=>is_sqlscript_rule( lr_rule ) = abap_false.
         RETURN.
@@ -409,7 +419,7 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
         CONTINUE.
       ENDIF.
 
-      CASE lr_rule->get_token_up( ).
+      CASE lv_token.
         WHEN '('.
           lv_counter_open_bracket = lv_counter_open_bracket + 1.
         WHEN ')'.
@@ -419,8 +429,9 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
             RETURN.
           ENDIF.
       ENDCASE.
-      IF lv_counter_open_bracket = 0.
-        IF lr_rule->get_token_up(  ) = ','.
+
+      IF lv_counter_open_bracket = 1.
+        IF lv_token = ','.
           lr_rule->set_avoid_lb_after_this_token( iv_avoid = abap_true ).
           CONTINUE.
         ENDIF.
@@ -428,8 +439,8 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
         lr_token_ext = lr_rule->get_token_ext( ).
 
         IF  zcl_app_utilities=>contains_delimiter_char(
-                 it_delimiter = lr_token_ext->delimiter
-                 iv_char      = ',' ) = abap_true.
+               it_delimiter = lr_token_ext->delimiter
+               iv_char      = ',' ) = abap_true.
 
           lr_rule->set_avoid_lb_after_this_token( iv_avoid = abap_true ).
           CONTINUE.

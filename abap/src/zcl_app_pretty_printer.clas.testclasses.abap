@@ -1249,39 +1249,44 @@ CLASS test IMPLEMENTATION.
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
     lr_settings->is_no_lb_at_co_for_simple_fu( ).
 
-  lt_source = VALUE #(
+lt_source = VALUE #(
                      ( |METHOD sel_data| )
-                     ( | BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
-                     ( | OPTIONS READ-ONLY| )
-                     ( | USING sflight.| )
-                     ( |                     | )
-                     ( |      lt_bla1 =  SELECT SUBSTRING( concat( "Bla","Blub" ),  4, 6  )  FROM sflight;| )
+                     ( |BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                     ( |OPTIONS READ-ONLY| )
+                     ( |USING sflight.| )
+                     ( |                  | )
+                     ( |   lt_bla1 =  SELECT SUBSTRING( concat( 'Bla','Blub' ),  4, 6  )  FROM sflight;| )
                      ( || )
-                     ( |      lt_bla2 =  SELECT SUBSTRING( sflight.connid,  4, 6  )  FROM sflight;| )
+                     ( |   lt_bla2 =  SELECT SUBSTRING( sflight.connid,  4, 6  )  FROM sflight;| )
                      ( || )
-                     ( |      lt_bla3 = SELECT SUBSTR_AFTER ('Hello My Friend','My ') "substr after" FROM DUMMY;| )
+                     ( |   lt_bla3 = SELECT SUBSTR_AFTER ('Hello My Friend','My ') "substr after" FROM DUMMY;| )
                      ( || )
-                     ( |      lt_bla4 = SELECT SUBSTR_BEFORE ('Hello My Friend','My') "substr before" FROM DUMMY;| )
+                     ( |   lt_bla4 = SELECT SUBSTR_BEFORE ('Hello My Friend','My') "substr before" FROM DUMMY;| )
                      ( || )
-                     ( |      lt_bla5 = SELECT RPAD ('end', 15, '12345') "right padded" FROM DUMMY;| )
+                     ( |   lt_bla5 = SELECT RPAD ('end', 15, '12345') "right padded" FROM DUMMY;| )
                      ( || )
-                     ( |      lt_bla6 = SELECT LPAD ('end', 15, '12345') "lpad" FROM DUMMY;| )
+                     ( |   lt_bla6 = SELECT LPAD ('end', 15, '12345') "lpad" FROM DUMMY;| )
                      ( || )
-                     ( |      lt_bla7 = SELECT CONCAT ('C', 'at') "concat" FROM DUMMY;| )
+                     ( |   lt_bla7 = SELECT CONCAT ('C', 'at') "concat" FROM DUMMY;| )
                      ( || )
-                     ( |      lt_bla8 = SELECT NULLIF ('diff', 'same') "nullif" FROM DUMMY;| )
+                     ( |   lt_bla8 = SELECT NULLIF ('diff', 'same') "nullif" FROM DUMMY;| )
                      ( || )
-                     ( |      lt_bla9 = SELECT IFNULL (NULL, 'same') "ifnull" FROM DUMMY;| )
-                     ( |                     | )
-                     ( |endmethod.  | ) ).
+                     ( |   lt_bla9 = SELECT IFNULL (NULL, 'same') "ifnull" FROM DUMMY;| )
+                     ( || )
+                     ( |   lt_bla10 =  SELECT SUBSTRING( rtrim(connid),3,4) FROM spfli; | )
+                     ( || )
+                     ( |   lt_bla11 =  SELECT CONCAT ('C', concat( 'A','B')) FROM DUMMY; | )
+                     ( || )
+                     ( || )
+                     ( |endmethod.| ) ).
 
-    lt_source_res_exp = VALUE #(
+lt_source_res_exp = VALUE #(
                              ( |METHOD sel_data| )
-                             ( | BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
-                             ( | OPTIONS READ-ONLY| )
-                             ( | USING sflight.| )
-                             ( |                     | )
-                             ( |    lt_bla1 = SELECT SUBSTRING( concat( "Bla","Blub" ), | )
+                             ( |BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                             ( |OPTIONS READ-ONLY| )
+                             ( |USING sflight.| )
+                             ( |                  | )
+                             ( |    lt_bla1 = SELECT SUBSTRING( concat( 'Bla','Blub' ), | )
                              ( |                                4, | )
                              ( |                                6 | )
                              ( |                              ) | )
@@ -1311,8 +1316,16 @@ CLASS test IMPLEMENTATION.
                              ( |    lt_bla9 = SELECT ifnull (NULL, 'same') "ifnull" | )
                              ( |                FROM dummy; | )
                              ( || )
-                             ( |endmethod.  | ) ).
-
+                             ( |    lt_bla10 = SELECT SUBSTRING( rtrim(connid),3,4) | )
+                             ( |                 FROM spfli; | )
+                             ( || )
+                             ( |    lt_bla11 = SELECT concat ('C', | )
+                             ( |                              concat( 'A','B')| )
+                             ( |                             ) | )
+                             ( |                 FROM dummy; | )
+                             ( || )
+                             ( || )
+                             ( |endmethod.| ) ).
     CREATE OBJECT lr_cut.
     TRY.
         lt_source_res = lr_cut->pretty_print(

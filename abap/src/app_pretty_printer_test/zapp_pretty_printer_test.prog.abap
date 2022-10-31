@@ -24,6 +24,7 @@ CLASS lcl_logic DEFINITION FINAL.
 
     METHODS create_controls.
     METHODS pretty_print.
+    METHODS add_test_method.
 ENDCLASS.
 
 CLASS lcl_logic IMPLEMENTATION.
@@ -199,6 +200,47 @@ CLASS lcl_logic IMPLEMENTATION.
       EXPORTING
         text = lv_source_res_stm
     ).
+    IF sy-subrc <> 0.
+      MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+        WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+    ENDIF.
+    cl_gui_cfw=>flush( ).
+  ENDMETHOD.
+
+  METHOD add_test_method.
+    DATA lt_source TYPE sourcetable.
+    DATA lv_source TYPE string.
+    DATA lv_source_old TYPE string.
+    lt_source = VALUE #(
+                       ( |METHOD test| )
+                       ( | BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                       ( | OPTIONS READ-ONLY.| )
+                       ( |                     | )
+                       ( |endmethod.  | ) ).
+
+
+    lv_source = zcl_app_utilities=>conv_source_tab_to_string( lt_source ).
+
+    mr_text_input->get_textstream(
+      IMPORTING
+        text                   = lv_source_old   " Text as String with Carriage Returns and Linefeeds
+*       is_modified            =                  " modify status of text
+      EXCEPTIONS
+        error_cntl_call_method = 1                " Error while retrieving a property from TextEdit control
+        not_supported_by_gui   = 2                " Method is not supported by installed GUI
+        OTHERS                 = 3
+    ).
+    IF sy-subrc <> 0.
+      MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+        WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+    ENDIF.
+    cl_gui_cfw=>flush( ).
+
+    IF lv_source_old IS NOT INITIAL.
+      CONCATENATE lv_source_old lv_source INTO lv_source SEPARATED BY cl_abap_char_utilities=>cr_lf RESPECTING BLANKS.
+    ENDIF.
+
+    mr_text_input->set_textstream( lv_source ).
     IF sy-subrc <> 0.
       MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
         WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
