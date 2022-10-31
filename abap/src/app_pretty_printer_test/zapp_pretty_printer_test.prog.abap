@@ -153,8 +153,11 @@ CLASS lcl_logic IMPLEMENTATION.
       MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
         WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
     ENDIF.
+
+
     cl_gui_cfw=>flush( ).
 
+    replace all OCCURRENCES OF CL_ABAP_CHAR_UTILITIES=>HORIZONTAL_TAB in lv_source WITH `  `.
     SPLIT lv_source AT cl_abap_char_utilities=>cr_lf INTO TABLE lt_source.
 
     lt_source_stm =   zcl_app_utilities=>conv_source_to_statement( lt_source ).
