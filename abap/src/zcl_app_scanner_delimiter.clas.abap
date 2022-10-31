@@ -60,7 +60,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_APP_SCANNER_DELIMITER IMPLEMENTATION.
+CLASS zcl_app_scanner_delimiter IMPLEMENTATION.
 
 
   METHOD get_delimiter_from_source.
@@ -151,10 +151,6 @@ CLASS ZCL_APP_SCANNER_DELIMITER IMPLEMENTATION.
 
     lv_length = ir_token_ext->col - iv_offset.
 
-    IF lv_length < 0.
-      BREAK-POINT.
-    ENDIF.
-
     rv_delimiter = ir_source->*+iv_offset(lv_length).
   ENDMETHOD.
 
@@ -172,26 +168,6 @@ CLASS ZCL_APP_SCANNER_DELIMITER IMPLEMENTATION.
 
     ir_prev_token_ext->delimiter_org = lt_delimiter.
 
-*    IF ir_token_ext IS NOT INITIAL AND ir_token_ext->sqlscript = 'S'.
-*      CLEAR lv_offset.
-*    ENDIF.
-*    IF lines( lt_delimiter ) = 1.
-*      LOOP AT lt_delimiter REFERENCE INTO lr_delimiter.
-*        IF strlen( lr_delimiter->* ) > 0
-*           AND lr_delimiter->* CO ` `.
-*          lr_delimiter->* = ` `.
-*        ELSE.
-*          lv_delimiter = lr_delimiter->*.
-*          CONDENSE lr_delimiter->*.
-*          IF strlen( lv_delimiter ) >= 1.
-*            lv_offset = strlen( lv_delimiter ) - 1.
-*            IF lv_delimiter+lv_offset(1) = ` `.
-*              CONCATENATE lr_delimiter->* space INTO lr_delimiter->* RESPECTING BLANKS.
-*            ENDIF.
-*          ENDIF.
-*        ENDIF.
-*      ENDLOOP.
-*    ENDIF.
     ir_prev_token_ext->delimiter = lt_delimiter.
 
   ENDMETHOD.
