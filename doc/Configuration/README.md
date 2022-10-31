@@ -149,8 +149,8 @@ lt_example = SELECT CONCAT ('C', concat( 'A','B')) FROM DUMMY;
 Line break in the first concat function, because the closing bracket is on the next line:
 
 ```sql
-lt_example = SELECT CONCAT ('C', concat( 'A','B'
-)) FROM DUMMY;
+lt_example = SELECT CONCAT ('C', concat( 'A','B')
+) FROM DUMMY;
 ```
 
 ```sql
