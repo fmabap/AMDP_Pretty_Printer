@@ -61,7 +61,7 @@ If nothing is configured, then a line break will be added (option 0).
 
 The unformatted AMDP source code:
 
-```abap
+```sql
 lt_spfli2 = SELECT carrid, connid, countryfr, countryto,
 ROW_NUMBER ( ) OVER( PARTITION BY carrid, connid ORDER BY "CARRID", CONNID asc ) AS "ROW_ID"
 FROM SPFLI WHERE mandt = session_context( 'CLIENT' );
@@ -69,7 +69,7 @@ FROM SPFLI WHERE mandt = session_context( 'CLIENT' );
 
 The formatted AMDP source code will look like this **with** the line break after the comma:
 
-```abap
+```sql
 lt_spfli2 = SELECT carrid, 
                     connid, 
                     countryfr, 
@@ -85,35 +85,35 @@ lt_spfli2 = SELECT carrid,
 
 The formatted AMDP source code will look like this **without** the line break after the comma:
 
-```abap
+```sql
 lt_spfli2 = SELECT carrid, connid, countryfr, countryto,
                     ROW_NUMBER ( ) OVER( PARTITION BY carrid, connid 
                                         ORDER BY "CARRID", connid ASC 
                                       ) AS "ROW_ID"
               FROM spfli 
-             WHERE mandt = SESSION_CONTEXT( 'CLIENT' );
+              WHERE mandt = SESSION_CONTEXT( 'CLIENT' );
 ```
 
 ### Examples of option 3 (no line break after comma for simple functions dep. closing bracket and sub function)
 
 No line break in the substring function, because the rtrim function conatains no comma:
 
-```abap
+```sql
 lt_example = SELECT SUBSTRING( rtrim(connid),3,4) FROM spfli;
 ```
 
-```abap
+```sql
 lt_example = SELECT SUBSTRING( RTRIM(connid),3,4) 
                FROM spfli; 
 ```
 
 Line break in the substring function, because the closing bracket is in the new line:
-```abap
+```sql
 lt_example = SELECT SUBSTRING( rtrim(connid),3,4
 ) FROM spfli;  
 ```
 
-```abap
+```sql
 lt_example = SELECT SUBSTRING( RTRIM(connid),
                                3,
                                4
@@ -123,11 +123,11 @@ lt_example = SELECT SUBSTRING( RTRIM(connid),
 
 Line break in the substring function, because the sub function concat contains a comma:
 
-```abap
+```sql
 lt_example = SELECT SUBSTRING( concat( 'Bla','Blub' ),  4, 1  )  FROM sflight;
 ```
 
-```abap
+```sql
 lt_example = SELECT SUBSTRING( CONCAT( 'Bla','Blub' ), 
                                4, 
                                1 
@@ -137,23 +137,23 @@ lt_example = SELECT SUBSTRING( CONCAT( 'Bla','Blub' ),
 ### Examples of option 4 (no line break after comma for simple functions dep. closing bracket only)
 No line break in the concat function, because the closing bracket is on the same line like the function name:
 
-```abap
+```sql
 lt_example = SELECT CONCAT ('C', concat( 'A','B')) FROM DUMMY;
 ```
 
-```abap
+```sql
     lt_example = SELECT CONCAT ('C', CONCAT( 'A','B')) 
                    FROM dummy;
 ```
 
 Line break in the first concat function, because the closing bracket is on the next line:
 
-```abap
+```sql
 lt_example = SELECT CONCAT ('C', concat( 'A','B'
 )) FROM DUMMY;
 ```
 
-```abap
+```sql
 lt_example = SELECT CONCAT ('C', 
                             CONCAT( 'A','B')
 						               ) 
@@ -162,12 +162,12 @@ lt_example = SELECT CONCAT ('C',
 
 Line break in the both concat functions, because the closing brackets are both on the next line:
 
-```abap
+```sql
 lt_example = SELECT CONCAT ('C', concat( 'A','B'
 )) FROM DUMMY;
 ```
 
-```abap
+```sql
 lt_example = SELECT CONCAT ('C', 
                             CONCAT( 'A',
                                     'B'
