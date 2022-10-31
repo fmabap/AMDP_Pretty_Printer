@@ -160,7 +160,7 @@ lt_example = SELECT CONCAT ('C',
                FROM dummy;
 ```
 
-Line break in the both concat functions, because the closing brackets are both on the next line:
+Line break in both concat functions, because the closing brackets are both on the next line:
 
 ```sql
 lt_example = SELECT CONCAT ('C', concat( 'A','B'
