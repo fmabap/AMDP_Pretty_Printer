@@ -29,7 +29,8 @@ CLASS zcl_app_rule_amdp_func_in_1_ro IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    IF mr_settings->is_no_lb_at_co_for_simple_fu( ) = abap_false.
+    IF mr_settings->is_no_lb_at_co_s_fu_dep_sfu( ) = abap_false
+       AND mr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ) = abap_false.
       RETURN.
     ENDIF.
 
@@ -37,7 +38,8 @@ CLASS zcl_app_rule_amdp_func_in_1_ro IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    IF zcl_app_amdp_rule_utilities=>contains_fu_sub_fu_w_co_or_sel( me ) = abap_true.
+    IF mr_settings->is_no_lb_at_co_s_fu_dep_sfu( ) = abap_true
+       AND zcl_app_amdp_rule_utilities=>contains_fu_sub_fu_w_co_or_sel( me ) = abap_true.
       RETURN.
     ENDIF.
 

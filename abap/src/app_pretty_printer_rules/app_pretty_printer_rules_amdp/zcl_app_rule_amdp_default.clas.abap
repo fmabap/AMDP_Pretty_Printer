@@ -173,7 +173,7 @@ CLASS zcl_app_rule_amdp_default IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    IF mr_settings->is_line_break_at_comma_req( ) = abap_true.
+    IF mr_settings->is_line_break_after_comma_req( ) = abap_true.
       IF zif_app_rule~get_token_up(  ) = ','.
         rv_result = abap_true.
         RETURN.

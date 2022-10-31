@@ -445,7 +445,7 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
           rv_result = abap_true.
           RETURN.
         WHEN ','.
-          IF mr_settings->is_line_break_at_comma_req( ) = abap_true.
+          IF mr_settings->is_line_break_after_comma_req( ) = abap_true.
             rv_result = abap_true.
             RETURN.
           ENDIF.
@@ -540,7 +540,7 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
           rv_result = abap_true.
           RETURN.
         WHEN ','.
-          IF mr_settings->is_line_break_at_comma_req( ) = abap_true.
+          IF mr_settings->is_line_break_after_comma_req( ) = abap_true.
             rv_result = abap_true.
             RETURN.
           ENDIF.
@@ -556,7 +556,7 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
         RETURN.
       ENDIF.
 
-      IF mr_settings->is_line_break_at_comma_req( ) = abap_true.
+      IF mr_settings->is_line_break_after_comma_req( ) = abap_true.
         rv_result = zcl_app_utilities=>contains_delimiter_char(
           EXPORTING
             it_delimiter = mr_token_ext->delimiter

@@ -28,7 +28,13 @@
      <VALPOS>0003</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>2</DOMVALUE_L>
-     <DDTEXT>Not at Simple Functions</DDTEXT>
+     <DDTEXT>Not at Simple Functions, Dep. on ) And Sub Function</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <VALPOS>0004</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>3</DOMVALUE_L>
+     <DDTEXT>Not at Simple Functions, Dep. on )</DDTEXT>
     </DD07V>
    </DD07V_TAB>
   </asx:values>
