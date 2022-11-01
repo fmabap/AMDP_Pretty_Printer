@@ -458,7 +458,7 @@ CLASS zcl_app_scanner IMPLEMENTATION.
             ls_token_ext-str = lr_token_ext->str(1).
             ls_token_ext-str_up = lr_token_ext->str_up(1).
             ls_token_ext-str_org = lr_token_ext->str_org(1).
-            ls_token_ext-org_tab_row = lv_prev_org_tab_row + '0.1'.
+            ls_token_ext-org_tab_row = lv_prev_org_tab_row + '0.1'  ##LITERAL.
             ls_token_ext-row = lr_token_ext->row.
             ls_token_ext-col = lr_token_ext->col.
             ls_token_ext-len = 1.
@@ -491,7 +491,7 @@ CLASS zcl_app_scanner IMPLEMENTATION.
   METHOD split_opening_bracket_token.
     DATA lr_token_ext TYPE REF TO zapp_s_stokesx_ext.
     DATA lr_prev_token_ext TYPE REF TO zapp_s_stokesx_ext.
-    DATA lv_org_tab_row TYPE zapp_d_org_tab_row.
+    DATA lv_org_tab_row TYPE zapp_d_org_tab_row. "#EC NEEDED
     DATA ls_token_ext TYPE zapp_s_stokesx_ext.
     DATA lv_found TYPE abap_bool.
     DATA lv_length TYPE i.
@@ -525,7 +525,7 @@ CLASS zcl_app_scanner IMPLEMENTATION.
         ls_token_ext-str = lr_prev_token_ext->str+lv_offset(1).
         ls_token_ext-str_up = lr_prev_token_ext->str_up+lv_offset(1).
         ls_token_ext-str_org = lr_prev_token_ext->str_up+lv_offset(1). "It is not sure how the original look so take str_up
-        ls_token_ext-org_tab_row = lr_prev_token_ext->org_tab_row - '0.01'.
+        ls_token_ext-org_tab_row = lr_prev_token_ext->org_tab_row - '0.01'  ##LITERAL.
         ls_token_ext-row = lr_prev_token_ext->row.
         ls_token_ext-col = lr_prev_token_ext->col + lr_prev_token_ext->len - 1.
         ls_token_ext-len = 1.

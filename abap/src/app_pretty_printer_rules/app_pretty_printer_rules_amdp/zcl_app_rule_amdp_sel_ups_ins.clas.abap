@@ -98,7 +98,6 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
   METHOD set_additional_indent.
 
     DATA lr_prev_select_rule TYPE REF TO zif_app_rule.
-    DATA lr_prev_insert_rule TYPE REF TO zif_app_rule.
     DATA lr_join_rule TYPE REF TO zif_app_rule.
     DATA lr_order_rule TYPE REF TO zif_app_rule.
     DATA lr_group_rule TYPE REF TO zif_app_rule.
@@ -179,7 +178,6 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
     DATA lt_token TYPE zapp_t_token.
     DATA lt_stop_token TYPE zapp_t_token.
     DATA lr_next_rule TYPE REF TO zif_app_rule.
-    DATA lv_token TYPE zapp_d_token.
     DATA lr_start_rule TYPE REF TO zif_app_rule.
 
     INSERT  iv_token INTO TABLE lt_token.

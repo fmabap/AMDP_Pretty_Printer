@@ -224,7 +224,6 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
 
   METHOD get_next_no_comment_rl_in_stm.
     DATA lr_rule TYPE REF TO zif_app_rule.
-    DATA lv_counter_open_bracket TYPE i.
 
     lr_rule = ir_start_rule.
     DO.

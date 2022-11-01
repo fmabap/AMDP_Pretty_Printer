@@ -120,19 +120,31 @@ CLASS lcl_logic IMPLEMENTATION.
     DATA lr_settings TYPE REF TO zif_app_settings.
 
 
-    mr_text_output->delete_text( ).
+    mr_text_output->delete_text(
+      EXCEPTIONS
+        error_cntl_call_method = 1
+        OTHERS                 = 2
+    ).
     IF sy-subrc <> 0.
       MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
         WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
     ENDIF.
 
-    mr_text_input_stm->delete_text( ).
+    mr_text_input_stm->delete_text(
+      EXCEPTIONS
+        error_cntl_call_method = 1
+        OTHERS                 = 2
+    ).
     IF sy-subrc <> 0.
       MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
         WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
     ENDIF.
 
-    mr_text_output_stm->delete_text( ).
+    mr_text_output_stm->delete_text(
+      EXCEPTIONS
+        error_cntl_call_method = 1
+        OTHERS                 = 2
+    ).
     IF sy-subrc <> 0.
       MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
         WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
@@ -157,7 +169,7 @@ CLASS lcl_logic IMPLEMENTATION.
 
     cl_gui_cfw=>flush( ).
 
-    replace all OCCURRENCES OF CL_ABAP_CHAR_UTILITIES=>HORIZONTAL_TAB in lv_source WITH `  `.
+    REPLACE ALL OCCURRENCES OF cl_abap_char_utilities=>horizontal_tab IN lv_source WITH `  `.
     SPLIT lv_source AT cl_abap_char_utilities=>cr_lf INTO TABLE lt_source.
 
     lt_source_stm =   zcl_app_utilities=>conv_source_to_statement( lt_source ).
@@ -165,7 +177,11 @@ CLASS lcl_logic IMPLEMENTATION.
 
     mr_text_input_stm->set_textstream(
       EXPORTING
-        text = lv_source_stm
+        text                   = lv_source_stm
+      EXCEPTIONS
+        error_cntl_call_method = 1
+        not_supported_by_gui   = 2
+        OTHERS                 = 3
     ).
     IF sy-subrc <> 0.
       MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
@@ -188,7 +204,11 @@ CLASS lcl_logic IMPLEMENTATION.
 
     mr_text_output->set_textstream(
       EXPORTING
-        text = lv_source_res
+        text                   = lv_source_res
+      EXCEPTIONS
+        error_cntl_call_method = 1
+        not_supported_by_gui   = 2
+        OTHERS                 = 3
     ).
     IF sy-subrc <> 0.
       MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
@@ -201,7 +221,11 @@ CLASS lcl_logic IMPLEMENTATION.
 
     mr_text_output_stm->set_textstream(
       EXPORTING
-        text = lv_source_res_stm
+        text                   = lv_source_res_stm
+      EXCEPTIONS
+        error_cntl_call_method = 1
+        not_supported_by_gui   = 2
+        OTHERS                 = 3
     ).
     IF sy-subrc <> 0.
       MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
@@ -220,7 +244,6 @@ CLASS lcl_logic IMPLEMENTATION.
                        ( | OPTIONS READ-ONLY.| )
                        ( |                     | )
                        ( |endmethod.  | ) ).
-
 
     lv_source = zcl_app_utilities=>conv_source_tab_to_string( lt_source ).
 
@@ -243,7 +266,14 @@ CLASS lcl_logic IMPLEMENTATION.
       CONCATENATE lv_source_old lv_source INTO lv_source SEPARATED BY cl_abap_char_utilities=>cr_lf RESPECTING BLANKS.
     ENDIF.
 
-    mr_text_input->set_textstream( lv_source ).
+    mr_text_input->set_textstream(
+      EXPORTING
+        text                   = lv_source
+      EXCEPTIONS
+        error_cntl_call_method = 1
+        not_supported_by_gui   = 2
+        OTHERS                 = 3
+    ).
     IF sy-subrc <> 0.
       MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
         WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
@@ -254,7 +284,7 @@ CLASS lcl_logic IMPLEMENTATION.
 ENDCLASS.
 
 INCLUDE zapp_pretty_printer_test_so01.
-DATA gr_logic TYPE REF TO lcl_logic.
+DATA gr_logic TYPE REF TO lcl_logic.                        "#EC NEEDED
 
 START-OF-SELECTION.
   CREATE OBJECT gr_logic.

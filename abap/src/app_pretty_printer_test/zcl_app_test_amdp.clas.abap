@@ -21,7 +21,8 @@ CLASS zcl_app_test_amdp IMPLEMENTATION.
 
   METHOD write_data.
     "Hello World 'test1' 'test2
-WRITE / 'Hello World'. "Comment
+    WRITE / 'Hello World'.                  "#EC CI_USE_WANTED "Comment
+
   ENDMETHOD.
 
   METHOD sel_data
@@ -62,14 +63,14 @@ WRITE / 'Hello World'. "Comment
     return;
     end if;
 
-lt_spfli1 = SELECT carrid, connid, countryfr, countryto,
-ROW_NUMBER ( ) OVER( ORDER BY "CARRID", CONNID asc ) AS "ROW_ID"
-FROM SPFLI WHERE mandt = session_context( 'CLIENT' );
+    lt_spfli1 = SELECT carrid, connid, countryfr, countryto,
+    ROW_NUMBER ( ) OVER( ORDER BY "CARRID", CONNID asc ) AS "ROW_ID"
+    FROM SPFLI WHERE mandt = session_context( 'CLIENT' );
 
 
-lt_spfli2 = SELECT carrid, connid, countryfr, countryto,
-ROW_NUMBER ( ) OVER( PARTITION BY carrid, connid ORDER BY "CARRID", CONNID asc ) AS "ROW_ID"
-FROM SPFLI WHERE mandt = session_context( 'CLIENT' );
+    lt_spfli2 = SELECT carrid, connid, countryfr, countryto,
+    ROW_NUMBER ( ) OVER( PARTITION BY carrid, connid ORDER BY "CARRID", CONNID asc ) AS "ROW_ID"
+    FROM SPFLI WHERE mandt = session_context( 'CLIENT' );
 
 *lt_test = select 'Bla Blup Data' from public.dummy;
     lt_test = select 'Bla Blup Data' from public.dummy;
@@ -103,7 +104,7 @@ FROM SPFLI WHERE mandt = session_context( 'CLIENT' );
     where spfli.mandt = SESSION_CONTEXT('CLIENT')
     and spfli.carrid = 'AB';
 
-lt_bla =  SELECT RIGHT( carrid,  4  )  FROM sflight;
+    lt_bla =  SELECT RIGHT( carrid,  4  )  FROM sflight;
     --ENDMETHOD.
   ENDMETHOD.
 ENDCLASS.

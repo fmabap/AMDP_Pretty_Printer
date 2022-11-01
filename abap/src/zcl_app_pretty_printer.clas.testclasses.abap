@@ -1,5 +1,5 @@
 *"* use this source file for your ABAP unit test classes
-CLASS test DEFINITION FINAL FOR TESTING
+CLASS lcl_test DEFINITION FINAL FOR TESTING
   DURATION SHORT
   RISK LEVEL HARMLESS.
 
@@ -22,7 +22,7 @@ CLASS test DEFINITION FINAL FOR TESTING
 ENDCLASS.
 
 
-CLASS test IMPLEMENTATION.
+CLASS lcl_test IMPLEMENTATION.
 
   METHOD over_take_abap_as_is.
 

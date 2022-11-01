@@ -1,5 +1,5 @@
 *"* use this source file for your ABAP unit test classes
-CLASS test DEFINITION FINAL FOR TESTING
+CLASS lcl_test DEFINITION FINAL FOR TESTING
   DURATION SHORT
   RISK LEVEL HARMLESS.
 
@@ -9,16 +9,13 @@ CLASS test DEFINITION FINAL FOR TESTING
 ENDCLASS.
 
 
-CLASS test IMPLEMENTATION.
+CLASS lcl_test IMPLEMENTATION.
 
   METHOD scan_test.
 
     DATA lt_source TYPE sourcetable.
     DATA lr_cut TYPE REF TO zcl_app_scanner.
     DATA lr_ex TYPE REF TO zcx_app_exception.
-    DATA lt_token_ext TYPE zapp_t_stokesx_ext_st.
-    DATA lt_statement TYPE sstmnt_tab.
-    DATA lt_structure TYPE sstruc_tab.
 
     lt_source = VALUE #( ( |CLASS zcl_app_test_amdp DEFINITION| )
                          ( |  PUBLIC| )
@@ -80,11 +77,8 @@ CLASS test IMPLEMENTATION.
     TRY.
         lr_cut->scan(
           EXPORTING
-            it_source    = lt_source
-          IMPORTING
-            et_token_ext = lt_token_ext
-            et_statement = lt_statement
-            et_structure = lt_structure ).
+            it_source = lt_source
+        ).
       CATCH zcx_app_exception INTO lr_ex.
         cl_abap_unit_assert=>fail( lr_ex->get_text( ) ).
     ENDTRY.

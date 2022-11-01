@@ -41,7 +41,6 @@ CLASS zcl_app_scanner_sqlscript DEFINITION
         ir_prev_token_ext TYPE REF TO zapp_s_stokesx_ext
         ir_token_ext      TYPE REF TO zapp_s_stokesx_ext
         it_statement      TYPE sstmnt_tab
-        it_token_ext      TYPE zapp_t_stokesx_ext_st
       RETURNING
         VALUE(rv_result)  TYPE abap_bool
       RAISING
@@ -49,7 +48,6 @@ CLASS zcl_app_scanner_sqlscript DEFINITION
     METHODS is_sqlscript_still_pending
       IMPORTING
         ir_prev_token_ext TYPE REF TO zapp_s_stokesx_ext
-        ir_token_ext      TYPE REF TO zapp_s_stokesx_ext
       RETURNING
         VALUE(rv_result)  TYPE abap_bool.
     METHODS is_end_of_sqlscript
@@ -62,7 +60,6 @@ CLASS zcl_app_scanner_sqlscript DEFINITION
     METHODS is_sqlscript
       IMPORTING
         ir_prev_token_ext TYPE REF TO zapp_s_stokesx_ext
-        ir_token_ext      TYPE REF TO zapp_s_stokesx_ext
       RETURNING
         VALUE(rv_result)  TYPE abap_bool.
 
@@ -107,16 +104,13 @@ CLASS zcl_app_scanner_sqlscript IMPLEMENTATION.
       EXPORTING
         ir_prev_token_ext = ir_prev_token_ext
         ir_token_ext      = ir_token_ext
-        it_statement      = it_statement
-        it_token_ext      = it_token_ext ) = abap_true.
+        it_statement      = it_statement ) = abap_true.
 
       ir_token_ext->sqlscript = cos_sqlscript-end_of_pending.
       RETURN.
     ENDIF.
 
-    IF is_sqlscript_still_pending(
-        ir_prev_token_ext = ir_prev_token_ext
-        ir_token_ext      = ir_token_ext ) = abap_true.
+    IF is_sqlscript_still_pending( ir_prev_token_ext ) = abap_true.
 
       ir_token_ext->sqlscript = cos_sqlscript-pending.
       RETURN.
@@ -130,9 +124,7 @@ CLASS zcl_app_scanner_sqlscript IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    IF is_sqlscript(
-        ir_prev_token_ext = ir_prev_token_ext
-        ir_token_ext      = ir_token_ext ) = abap_true.
+    IF is_sqlscript( ir_prev_token_ext ) = abap_true.
 
       ir_token_ext->sqlscript = cos_sqlscript-sqlscript.
       RETURN.
@@ -177,7 +169,7 @@ CLASS zcl_app_scanner_sqlscript IMPLEMENTATION.
 
     READ TABLE it_token_ext
     REFERENCE INTO lr_token_ext
-    WITH TABLE KEY org_tab_row = lr_statement->from.
+    WITH TABLE KEY org_tab_row = lr_statement->from ##WARN_OK.
     IF sy-subrc = 0.
 
       IF zcl_app_utilities=>is_str_eq_upper_case(

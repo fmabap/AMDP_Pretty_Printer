@@ -192,10 +192,10 @@ ENDCLASS.
 TABLES zapp_settings.
 
 PARAMETERS p_set_g RADIOBUTTON GROUP g1 DEFAULT 'X'.
-PARAMETERS p_set_u RADIOBUTTON GROUP g1.
-DATA gr_settings TYPE REF TO lcl_settings.
-DATA gr_ex TYPE REF TO zcx_app_exception.
-DATA gv_okcode TYPE sy-ucomm.
+PARAMETERS p_set_u RADIOBUTTON GROUP g1. "#EC NEEDED
+DATA gr_settings TYPE REF TO lcl_settings. "#EC NEEDED
+DATA gr_ex TYPE REF TO zcx_app_exception. "#EC NEEDED
+DATA gv_okcode TYPE sy-ucomm. "#EC NEEDED
 
 AT SELECTION-SCREEN.
 
@@ -212,7 +212,7 @@ AT SELECTION-SCREEN.
     TRY.
         gr_settings->lock( ).
       CATCH zcx_app_exception INTO gr_ex. " Pretty Printer Exception
-        MESSAGE gr_ex.
+        MESSAGE gr_ex->get_text( ) type 'E'.
     ENDTRY.
   ENDIF.
 

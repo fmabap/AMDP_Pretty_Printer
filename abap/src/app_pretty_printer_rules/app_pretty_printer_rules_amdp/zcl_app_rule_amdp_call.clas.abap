@@ -50,7 +50,6 @@ CLASS zcl_app_rule_amdp_call IMPLEMENTATION.
   METHOD get_first_parameter.
     DATA lr_rule TYPE REF TO zif_app_rule.
     DATA lv_catch_next TYPE abap_bool.
-    DATA lv_counter_next_open_bracket TYPE i.
 
     lr_rule = me.
     DO.
@@ -173,8 +172,6 @@ CLASS zcl_app_rule_amdp_call IMPLEMENTATION.
 
   METHOD get_arrow_of_parameter.
     DATA lr_rule TYPE REF TO zif_app_rule.
-    DATA lv_catch_next TYPE abap_bool.
-    DATA lv_counter_open_bracket TYPE i.
 
     lr_rule = ir_parameter.
     DO.
@@ -204,7 +201,6 @@ CLASS zcl_app_rule_amdp_call IMPLEMENTATION.
 
   METHOD set_add_indent_add_arrows.
     DATA lr_parameter TYPE REF TO zif_app_rule.
-    DATA lv_length TYPE i.
 
     lr_parameter = get_first_parameter( ).
     IF lr_parameter IS INITIAL.

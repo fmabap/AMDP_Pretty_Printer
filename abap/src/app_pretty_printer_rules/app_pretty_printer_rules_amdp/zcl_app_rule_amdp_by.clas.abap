@@ -14,7 +14,6 @@ INHERITING FROM zcl_app_rule_amdp_default_no_c
 
     METHODS adjust_prev_rule
       IMPORTING ir_open_bracket_rule TYPE REF TO zif_app_rule
-      RETURNING VALUE(rv_result)     TYPE abap_bool
       RAISING   zcx_app_exception.
 ENDCLASS.
 

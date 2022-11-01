@@ -388,7 +388,6 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
 
 
   METHOD zif_app_rule~is_end_of_statement.
-    DATA lr_delimiter TYPE REF TO string.
     DATA lv_statement_end TYPE char1.
 
 
@@ -499,7 +498,7 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
 
 
   METHOD zif_app_rule~validate.
-
+    return.
   ENDMETHOD.
 
 

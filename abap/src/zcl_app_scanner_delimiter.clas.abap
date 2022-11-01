@@ -157,9 +157,6 @@ CLASS zcl_app_scanner_delimiter IMPLEMENTATION.
 
   METHOD set_delimiter_from_source.
     DATA lt_delimiter TYPE zapp_t_delimiter.
-    DATA lr_delimiter TYPE REF TO string.
-    DATA lv_delimiter TYPE string.
-    DATA lv_offset TYPE i.
 
     lt_delimiter = get_delimiter_from_source(
       it_source         = it_source
