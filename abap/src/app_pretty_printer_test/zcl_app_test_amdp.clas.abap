@@ -21,7 +21,7 @@ CLASS zcl_app_test_amdp IMPLEMENTATION.
 
   METHOD write_data.
     "Hello World 'test1' 'test2
-    WRITE / 'Hello World'.                  "#EC CI_USE_WANTED "Comment
+    WRITE / 'Hello World'.    "#EC CI_USE_WANTED "Comment
 
   ENDMETHOD.
 
