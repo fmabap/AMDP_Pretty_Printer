@@ -24,7 +24,8 @@ CLASS zcl_app_pretty_printer DEFINITION
         et_statement TYPE sstmnt_tab
         et_structure TYPE sstruc_tab
       RAISING
-        zcx_app_exception .
+        zcx_app_exception.
+
     METHODS get_and_apply_rules
       IMPORTING
         it_source        TYPE sourcetable
@@ -37,6 +38,7 @@ CLASS zcl_app_pretty_printer DEFINITION
         VALUE(rt_source) TYPE sourcetable
       RAISING
         zcx_app_exception .
+
     METHODS get_rules
       IMPORTING
         it_source        TYPE sourcetable
@@ -49,6 +51,7 @@ CLASS zcl_app_pretty_printer DEFINITION
         VALUE(rt_result) TYPE zapp_t_rule_instances
       RAISING
         zcx_app_exception .
+
     METHODS get_source_code_from_rules
       IMPORTING
         it_rules         TYPE zapp_t_rule_instances
@@ -56,6 +59,7 @@ CLASS zcl_app_pretty_printer DEFINITION
         VALUE(rt_result) TYPE sourcetable
       RAISING
         zcx_app_exception .
+
     METHODS get_act_source_row
       IMPORTING
         ir_rule    TYPE REF TO zif_app_rule
@@ -65,6 +69,7 @@ CLASS zcl_app_pretty_printer DEFINITION
         cv_act_row TYPE int4
       RAISING
         zcx_app_exception .
+
     METHODS add_rule_to_source
       IMPORTING
         ir_rule    TYPE REF TO zif_app_rule
@@ -74,14 +79,12 @@ CLASS zcl_app_pretty_printer DEFINITION
         cv_act_row TYPE int4
       RAISING
         zcx_app_exception .
+
     METHODS calc_rule_result
       IMPORTING
         it_rules TYPE zapp_t_rule_instances
       RAISING
         zcx_app_exception .
-
-
-
 
 ENDCLASS.
 

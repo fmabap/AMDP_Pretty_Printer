@@ -25,9 +25,9 @@
       <OBJECT>ZAPP_D_LB_AFTER_COMMA_RULE</OBJECT>
       <LANGU>E</LANGU>
       <TYP>E</TYP>
-      <VERSION>0006</VERSION>
+      <VERSION>0008</VERSION>
       <MASTERLANG>X</MASTERLANG>
-      <TXTLINES>00067</TXTLINES>
+      <TXTLINES>00065</TXTLINES>
       <DOKSTATE>A</DOKSTATE>
      </DOKIL>
      <HEAD>
@@ -37,7 +37,7 @@
       <TDSPRAS>E</TDSPRAS>
       <TDFORM>S_DOCU_SHOW</TDFORM>
       <TDSTYLE>S_DOCUS1</TDSTYLE>
-      <TDVERSION>00006</TDVERSION>
+      <TDVERSION>00008</TDVERSION>
       <TDLINESIZE>072</TDLINESIZE>
      </HEAD>
      <LINES>
@@ -94,6 +94,14 @@
       </TLINE>
       <TLINE>
        <TDFORMAT>M3</TDFORMAT>
+       <TDLINE>LEFT</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>M3</TDFORMAT>
+       <TDLINE>RIGHT</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>M3</TDFORMAT>
        <TDLINE>RPAD</TDLINE>
       </TLINE>
       <TLINE>
@@ -145,6 +153,14 @@
       </TLINE>
       <TLINE>
        <TDFORMAT>M3</TDFORMAT>
+       <TDLINE>LEFT</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>M3</TDFORMAT>
+       <TDLINE>RIGHT</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>M3</TDFORMAT>
        <TDLINE>RPAD</TDLINE>
       </TLINE>
       <TLINE>
@@ -162,9 +178,6 @@
       <TLINE>
        <TDFORMAT>M3</TDFORMAT>
        <TDLINE>IFNULL</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
       </TLINE>
       <TLINE>
        <TDFORMAT>M1</TDFORMAT>
@@ -206,35 +219,11 @@
       </TLINE>
       <TLINE>
        <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>RPAD</TDLINE>
+       <TDLINE>LEFT</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>LPAD</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>CONCAT</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>NULLIF</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>IFNULL</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>SUBSTRING</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>SUBSTR_AFTER</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>SUBSTR_BEFORE</TDLINE>
+       <TDLINE>RIGHT</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>M3</TDFORMAT>
@@ -285,14 +274,14 @@
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
-       <TDLINE>substring(concat(&apos;Bla&apos;&lt;(&gt;,&lt;)&gt;&apos;Blub&apos;),2,3) =&gt; line break, because the sub</TDLINE>
+       <TDLINE>substring(concat(&apos;Bla&apos;,&apos;Blub&apos;),2,3) =&gt; line break, because the sub</TDLINE>
       </TLINE>
       <TLINE>
        <TDLINE>function concat contains a comma</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
-       <TDLINE>concat(rtrim(&apos;Bla &apos;)&lt;(&gt;,&lt;)&gt;rtrim(&apos;Blub &apos;)) =&gt; no line break</TDLINE>
+       <TDLINE>concat(rtrim(&apos;Bla &apos;),rtrim(&apos;Blub &apos;)) =&gt; no line break</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>M1</TDFORMAT>
@@ -323,9 +312,6 @@
       </TLINE>
       <TLINE>
        <TDLINE>keywords (rtrim) in the function</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M1</TDFORMAT>
       </TLINE>
      </LINES>
     </item>

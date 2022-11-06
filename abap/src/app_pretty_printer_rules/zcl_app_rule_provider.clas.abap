@@ -215,7 +215,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     ls_result-rule_name = 'AMDP LEFT JOIN or LEFT Function'.
     ls_result-token = 'LEFT'.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
-    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_NL_LFT_COND'.
+    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_LEFT_RIGHT'.
     ls_result-rule_cond_class = 'ZCL_APP_RULE_COND_N_RL_IS_NO_B'.
     ls_result-add_indent = -16.
     INSERT ls_result INTO TABLE rt_result.
@@ -224,7 +224,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     ls_result-rule_name = 'AMDP RIGHT JOIN or RIGHT Function'.
     ls_result-token = 'RIGHT'.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
-    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_NL_LFT_COND'.
+    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_LEFT_RIGHT'.
     ls_result-rule_cond_class = 'ZCL_APP_RULE_COND_N_RL_IS_NO_B'.
     ls_result-add_indent = -17.
     INSERT ls_result INTO TABLE rt_result.
