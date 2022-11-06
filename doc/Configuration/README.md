@@ -33,7 +33,6 @@ The following options are possible:
 - 1 => add no line break after a comma
 - 2 => add no line break after a comma at simple functions, if the following criterions are fulfilled:
   - the closing bracket is originally in the same row as the function name
-  - **a possible sub function contains no comma and no select statement**
   - it is one of the following functions:
     - SUBSTRING
     - SUBSTR_AFTER
@@ -45,6 +44,20 @@ The following options are possible:
     - IFNULL
 - 3 => add no line break after a comma at simple functions, if the following criterions are fulfilled:
   - the closing bracket is originally in the same row as the function name
+  - **a possible sub function contains no comma and no select statement**
+  - it is one of the following functions:
+    - SUBSTRING
+    - SUBSTR_AFTER
+    - SUBSTR_BEFORE
+    - RPAD
+    - LPAD
+    - CONCAT
+    - NULLIF
+    - IFNULL
+- 4 => add no line break after a comma at simple functions, if the following criterions are fulfilled:
+  - the closing bracket is originally in the same row as the function name
+  - **the function contains in total not more than one keyword (in the brackets)**
+  - **a possible sub function contains no comma and no select statement**
   - it is one of the following functions:
     - SUBSTRING
     - SUBSTR_AFTER
@@ -94,7 +107,49 @@ lt_spfli2 = SELECT carrid, connid, countryfr, countryto,
               WHERE mandt = SESSION_CONTEXT( 'CLIENT' );
 ```
 
-### Examples of option 2 (no line break after comma for simple functions dep. closing bracket and sub function)
+### Examples of option 2 (no line break after comma for simple functions dep. closing bracket only)
+No line break in the concat function, because the closing bracket is on the same line like the function name:
+
+```sql
+lt_example = SELECT CONCAT ('C', concat( 'A','B')) FROM public.dummy;
+```
+
+```sql
+    lt_example = SELECT CONCAT ('C', CONCAT( 'A','B')) 
+                   FROM public.dummy;
+```
+
+Line break in the first concat function, because the closing bracket is on the next line:
+
+```sql
+lt_example = SELECT CONCAT ('C', concat( 'A','B')
+) FROM public.dummy;
+```
+
+```sql
+lt_example = SELECT CONCAT ('C', 
+                            CONCAT( 'A','B')
+						               ) 
+               FROM public.dummy;
+```
+
+Line break in both concat functions, because the closing brackets are both on the next line:
+
+```sql
+lt_example = SELECT CONCAT ('C', concat( 'A','B'
+)) FROM public.dummy;
+```
+
+```sql
+lt_example = SELECT CONCAT ('C', 
+                            CONCAT( 'A',
+                                    'B'
+                                  )
+                            ) 
+               FROM public.dummy;
+```
+
+### Examples of option 3 (no line break after comma for simple functions dep. closing bracket and sub function)
 
 No line break in the substring function, because the rtrim function conatains no comma:
 
@@ -124,7 +179,7 @@ lt_example = SELECT SUBSTRING( RTRIM(connid),
 Line break in the substring function, because the sub function concat contains a comma:
 
 ```sql
-lt_example = SELECT SUBSTRING( concat( 'Bla','Blub' ),  4, 1  )  FROM sflight;
+lt_example = SELECT SUBSTRING( concat( 'Bla','Blub' ),  4, 1  )  FROM public.dummy;
 ```
 
 ```sql
@@ -132,46 +187,70 @@ lt_example = SELECT SUBSTRING( CONCAT( 'Bla','Blub' ),
                                4, 
                                1 
                              ) 
-               FROM sflight;
-```
-### Examples of option 3 (no line break after comma for simple functions dep. closing bracket only)
-No line break in the concat function, because the closing bracket is on the same line like the function name:
-
-```sql
-lt_example = SELECT CONCAT ('C', concat( 'A','B')) FROM DUMMY;
+               FROM public.dummy;
 ```
 
-```sql
-    lt_example = SELECT CONCAT ('C', CONCAT( 'A','B')) 
-                   FROM dummy;
-```
-
-Line break in the first concat function, because the closing bracket is on the next line:
+No Line break, because the number of keywords is not relevant:
 
 ```sql
-lt_example = SELECT CONCAT ('C', concat( 'A','B')
-) FROM DUMMY;
+lt_example = SELECT CONCAT ( rtrim('BLA '), rtrim('BLUB ') )  FROM public.dummy;
 ```
 
 ```sql
-lt_example = SELECT CONCAT ('C', 
-                            CONCAT( 'A','B')
-						               ) 
-               FROM dummy;
+lt_example = SELECT CONCAT ( RTRIM('BLA '), RTRIM('BLUB ') ) 
+               FROM public.dummy;
 ```
 
-Line break in both concat functions, because the closing brackets are both on the next line:
+### Examples of option 4 (no line break after comma for simple functions dep. closing bracket and sub function and keywords)
+
+No line break in the substring function, because the rtrim function conatains no comma:
 
 ```sql
-lt_example = SELECT CONCAT ('C', concat( 'A','B'
-)) FROM DUMMY;
+lt_example = SELECT SUBSTRING( rtrim(connid),3,4) FROM spfli;
 ```
 
 ```sql
-lt_example = SELECT CONCAT ('C', 
-                            CONCAT( 'A',
-                                    'B'
-                                  )
-                            ) 
-               FROM dummy;
+lt_example = SELECT SUBSTRING( RTRIM(connid),3,4) 
+               FROM spfli; 
+```
+
+Line break in the substring function, because the closing bracket is in the new line:
+```sql
+lt_example = SELECT SUBSTRING( rtrim(connid),3,4
+) FROM spfli;  
+```
+
+```sql
+lt_example = SELECT SUBSTRING( RTRIM(connid),
+                               3,
+                               4
+                             ) 
+               FROM spfli; 
+```
+
+Line break in the substring function, because the sub function concat contains a comma:
+
+```sql
+lt_example = SELECT SUBSTRING( concat( 'Bla','Blub' ),  4, 1  )  FROM public.dummy;
+```
+
+```sql
+lt_example = SELECT SUBSTRING( CONCAT( 'Bla','Blub' ), 
+                               4, 
+                               1 
+                             ) 
+               FROM public.dummy;
+```
+
+Line break, because there is more than one keyword in the function (rtrim):
+
+```sql
+lt_example = SELECT CONCAT ( rtrim('BLA '), rtrim('BLUB ') )  FROM public.dummy;
+```
+
+```sql
+lt_example = SELECT CONCAT ( RTRIM('BLA '), 
+                             RTRIM('BLUB ') 
+                           )
+               FROM public.dummy;
 ```
