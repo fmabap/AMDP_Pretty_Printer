@@ -37,6 +37,8 @@ The following options are possible:
     - SUBSTRING
     - SUBSTR_AFTER
     - SUBSTR_BEFORE
+    - LEFT
+    - RIGHT
     - RPAD
     - LPAD
     - CONCAT
@@ -49,6 +51,8 @@ The following options are possible:
     - SUBSTRING
     - SUBSTR_AFTER
     - SUBSTR_BEFORE
+    - LEFT
+    - RIGHT
     - RPAD
     - LPAD
     - CONCAT
@@ -62,6 +66,8 @@ The following options are possible:
     - SUBSTRING
     - SUBSTR_AFTER
     - SUBSTR_BEFORE
+    - LEFT
+    - RIGHT
     - RPAD
     - LPAD
     - CONCAT
