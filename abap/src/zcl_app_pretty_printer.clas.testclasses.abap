@@ -18,7 +18,7 @@ CLASS lcl_test DEFINITION FINAL FOR TESTING
     METHODS comment_with_new_line_indent FOR TESTING RAISING cx_static_check.
     METHODS no_lb_aft_co_in_si_fu_dep_sub FOR TESTING RAISING cx_static_check.
     METHODS no_lb_aft_co_in_si_fu_dep_cl_b FOR TESTING RAISING cx_static_check.
-
+    METHODS no_lb_aft_co_in_s_fu_dep_sf_kw  FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 
 
@@ -39,6 +39,8 @@ CLASS lcl_test IMPLEMENTATION.
     lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
     lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
 
 
     lt_source = VALUE #( ( |CLASS| )
@@ -108,6 +110,8 @@ CLASS lcl_test IMPLEMENTATION.
     lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
     lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
 
  lt_source = VALUE #(
                      ( || )
@@ -454,6 +458,8 @@ lt_source_res_exp = VALUE #(
     lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
     lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
 
  lt_source = VALUE #(
                      ( || )
@@ -763,6 +769,8 @@ lt_source_res_exp = VALUE #(
     lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
     lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
 
     lt_source = VALUE #(
                          ( |METHOD INSERT PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
@@ -819,6 +827,8 @@ lt_source_res_exp = VALUE #(
     lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
     lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
 
     lt_source = VALUE #(
                          ( |METHOD INSERT PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
@@ -870,6 +880,8 @@ lt_source_res_exp = VALUE #(
     lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
     lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
 
     lt_source = VALUE #(
                      ( |  METHOD sel_data| )
@@ -999,6 +1011,8 @@ lt_source_res_exp = VALUE #(
     lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
     lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
 
     lt_source = VALUE #(
                          ( |  METHOD sel_data| )
@@ -1051,6 +1065,8 @@ lt_source_res_exp = VALUE #(
     lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
     lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
 
     lt_source = VALUE #(
                          ( |  METHOD sel_data| )
@@ -1102,6 +1118,8 @@ lt_source_res_exp = VALUE #(
     lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
     lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
 
     lt_source = VALUE #(
                          ( |  METHOD sel_data| )
@@ -1156,6 +1174,8 @@ lt_source_res_exp = VALUE #(
     lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
     lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
 
     lt_source = VALUE #(
                          ( |  METHOD sel_data| )
@@ -1211,6 +1231,8 @@ lt_source_res_exp = VALUE #(
     lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
     lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
 
     lt_source = VALUE #(
                          ( |  METHOD sel_data| )
@@ -1278,46 +1300,50 @@ lt_source_res_exp = VALUE #(
     lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
     lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
 
 lt_source = VALUE #(
                      ( |METHOD sel_data| )
-                     ( |BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
-                     ( |OPTIONS READ-ONLY| )
-                     ( |USING sflight.| )
+                     ( |                     BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                     ( |                     OPTIONS READ-ONLY| )
+                     ( |                     USING sflight.| )
+                     ( |                     | )
+                     ( |                        lt_bla1 =  SELECT SUBSTRING( concat( 'Bla','Blub' ),  4, 6  )  FROM sflight;| )
+                     ( |                     | )
+                     ( |                        lt_bla2 =  SELECT SUBSTRING( sflight.connid,  4, 6  )  FROM sflight;| )
+                     ( |                     | )
+                     ( |                        lt_bla3 = SELECT SUBSTR_AFTER ('Hello My Friend','My ') "substr after" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |                        lt_bla4 = SELECT SUBSTR_BEFORE ('Hello My Friend','My') "substr before" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |                        lt_bla5 = SELECT RPAD ('end', 15, '12345') "right padded" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |                        lt_bla6 = SELECT LPAD ('end', 15, '12345') "lpad" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |                        lt_bla7 = SELECT CONCAT ('C', 'at') "concat" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |                        lt_bla8 = SELECT NULLIF ('diff', 'same') "nullif" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |                        lt_bla9 = SELECT IFNULL (NULL, 'same') "ifnull" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |                        lt_bla10 =  SELECT SUBSTRING( rtrim(connid),3,4) FROM spfli; | )
+                     ( |                     | )
+                     ( |                        lt_bla11 =  SELECT CONCAT ('C', concat( 'A','B')) FROM DUMMY; | )
+                     ( |                        | )
+                     ( |                        lt_bla12 = SELECT SUBSTRING( concat( 'Bla','Blub' ),  4, 6| )
+                     ( |                                   )  FROM sflight;| )
+                     ( |                     | )
+                     ( |                        lt_bla13 = SELECT CONCAT ( rtrim('BLA '), rtrim('BLUB ') )  FROM DUMMY;| )
                      ( || )
-                     ( |   lt_bla1 =  SELECT SUBSTRING( concat( 'Bla','Blub' ),  4, 6  )  FROM sflight;| )
-                     ( || )
-                     ( |   lt_bla2 =  SELECT SUBSTRING( sflight.connid,  4, 6  )  FROM sflight;| )
-                     ( || )
-                     ( |   lt_bla3 = SELECT SUBSTR_AFTER ('Hello My Friend','My ') "substr after" FROM DUMMY;| )
-                     ( || )
-                     ( |   lt_bla4 = SELECT SUBSTR_BEFORE ('Hello My Friend','My') "substr before" FROM DUMMY;| )
-                     ( || )
-                     ( |   lt_bla5 = SELECT RPAD ('end', 15, '12345') "right padded" FROM DUMMY;| )
-                     ( || )
-                     ( |   lt_bla6 = SELECT LPAD ('end', 15, '12345') "lpad" FROM DUMMY;| )
-                     ( || )
-                     ( |   lt_bla7 = SELECT CONCAT ('C', 'at') "concat" FROM DUMMY;| )
-                     ( || )
-                     ( |   lt_bla8 = SELECT NULLIF ('diff', 'same') "nullif" FROM DUMMY;| )
-                     ( || )
-                     ( |   lt_bla9 = SELECT IFNULL (NULL, 'same') "ifnull" FROM DUMMY;| )
-                     ( || )
-                     ( |   lt_bla10 =  SELECT SUBSTRING( rtrim(connid),3,4) FROM spfli; | )
-                     ( || )
-                     ( |   lt_bla11 =  SELECT CONCAT ('C', concat( 'A','B')) FROM DUMMY; | )
-                     ( |   | )
-                     ( |   lt_bla12 = SELECT SUBSTRING( concat( 'Bla','Blub' ),  4, 6| )
-                     ( |              )  FROM sflight;| )
-                     ( || )
-                     ( |endmethod.| ) ).
+                     ( |                     endmethod.| ) ).
 
 lt_source_res_exp = VALUE #(
                              ( |METHOD sel_data| )
-                             ( |BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
-                             ( |OPTIONS READ-ONLY| )
-                             ( |USING sflight.| )
-                             ( || )
+                             ( |                     BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                             ( |                     OPTIONS READ-ONLY| )
+                             ( |                     USING sflight.| )
+                             ( |                     | )
                              ( |    lt_bla1 = SELECT SUBSTRING( CONCAT( 'Bla','Blub' ), | )
                              ( |                                4, | )
                              ( |                                6 | )
@@ -1360,9 +1386,12 @@ lt_source_res_exp = VALUE #(
                              ( |                                 4, | )
                              ( |                                 6 | )
                              ( |                               ) | )
-                             ( |                 FROM sflight;| )
+                             ( |                 FROM sflight; | )
                              ( || )
-                             ( |endmethod.| ) ).
+                             ( |    lt_bla13 = SELECT CONCAT ( RTRIM('BLA '), RTRIM('BLUB ') ) | )
+                             ( |                 FROM dummy; | )
+                             ( || )
+                             ( |                     endmethod.| ) ).
     CREATE OBJECT lr_cut.
     TRY.
         lt_source_res = lr_cut->pretty_print(
@@ -1396,6 +1425,8 @@ lt_source_res_exp = VALUE #(
     lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
     lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
 
     lt_source = VALUE #(
                          ( |METHOD sel_data| )
@@ -1503,6 +1534,133 @@ lt_source_res_exp = VALUE #(
                                  ( || )
                                  ( || )
                                  ( |endmethod.| ) ).
+    CREATE OBJECT lr_cut.
+    TRY.
+        lt_source_res = lr_cut->pretty_print(
+          it_source   = lt_source
+          ir_settings = lr_settings ).
+
+      CATCH zcx_app_exception INTO lr_ex.
+        cl_abap_unit_assert=>fail( lr_ex->get_text( ) ).
+    ENDTRY.
+    cl_abap_unit_assert=>assert_equals(
+      EXPORTING
+        act = lt_source_res
+        exp = lt_source_res_exp
+        msg = 'Tables differs' ).
+
+  ENDMETHOD.
+
+   METHOD no_lb_aft_co_in_s_fu_dep_sf_kw.
+    "Check setting no line break after comma in simple function dep. on closing bracket, sub functions and keyword
+    DATA lt_source TYPE sourcetable.
+    DATA lt_source_res TYPE sourcetable.
+    DATA lt_source_res_exp TYPE sourcetable.
+    DATA lr_cut TYPE REF TO zcl_app_pretty_printer.
+    DATA lr_ex TYPE REF TO zcx_app_exception.
+    DATA lr_settings TYPE REF TO zif_app_settings.
+
+    lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
+    lr_settings->is_line_break_after_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
+
+lt_source = VALUE #(
+                     ( |METHOD sel_data| )
+                     ( |                     BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                     ( |                     OPTIONS READ-ONLY| )
+                     ( |                     USING sflight.| )
+                     ( |                     | )
+                     ( |                        lt_bla1 =  SELECT SUBSTRING( concat( 'Bla','Blub' ),  4, 6  )  FROM sflight;| )
+                     ( |                     | )
+                     ( |                        lt_bla2 =  SELECT SUBSTRING( sflight.connid,  4, 6  )  FROM sflight;| )
+                     ( |                     | )
+                     ( |                        lt_bla3 = SELECT SUBSTR_AFTER ('Hello My Friend','My ') "substr after" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |                        lt_bla4 = SELECT SUBSTR_BEFORE ('Hello My Friend','My') "substr before" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |                        lt_bla5 = SELECT RPAD ('end', 15, '12345') "right padded" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |                        lt_bla6 = SELECT LPAD ('end', 15, '12345') "lpad" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |                        lt_bla7 = SELECT CONCAT ('C', 'at') "concat" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |                        lt_bla8 = SELECT NULLIF ('diff', 'same') "nullif" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |                        lt_bla9 = SELECT IFNULL (NULL, 'same') "ifnull" FROM DUMMY;| )
+                     ( |                     | )
+                     ( |                        lt_bla10 =  SELECT SUBSTRING( rtrim(connid),3,4) FROM spfli; | )
+                     ( |                     | )
+                     ( |                        lt_bla11 =  SELECT CONCAT ('C', concat( 'A','B')) FROM DUMMY; | )
+                     ( |                        | )
+                     ( |                        lt_bla12 = SELECT SUBSTRING( concat( 'Bla','Blub' ),  4, 6| )
+                     ( |                                   )  FROM sflight;| )
+                     ( |                     | )
+                     ( |                        lt_bla13 = SELECT CONCAT ( rtrim('BLA '), rtrim('BLUB ') )  FROM DUMMY;| )
+                     ( || )
+                     ( |                     endmethod.| ) ).
+
+lt_source_res_exp = VALUE #(
+                             ( |METHOD sel_data| )
+                             ( |                     BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                             ( |                     OPTIONS READ-ONLY| )
+                             ( |                     USING sflight.| )
+                             ( |                     | )
+                             ( |    lt_bla1 = SELECT SUBSTRING( CONCAT( 'Bla','Blub' ), | )
+                             ( |                                4, | )
+                             ( |                                6 | )
+                             ( |                              ) | )
+                             ( |                FROM sflight; | )
+                             ( || )
+                             ( |    lt_bla2 = SELECT SUBSTRING( sflight.connid, 4, 6 ) | )
+                             ( |                FROM sflight; | )
+                             ( || )
+                             ( |    lt_bla3 = SELECT SUBSTR_AFTER ('Hello My Friend','My ') "substr after" | )
+                             ( |                FROM dummy; | )
+                             ( || )
+                             ( |    lt_bla4 = SELECT SUBSTR_BEFORE ('Hello My Friend','My') "substr before" | )
+                             ( |                FROM dummy; | )
+                             ( || )
+                             ( |    lt_bla5 = SELECT RPAD ('end', 15, '12345') "right padded" | )
+                             ( |                FROM dummy; | )
+                             ( || )
+                             ( |    lt_bla6 = SELECT LPAD ('end', 15, '12345') "lpad" | )
+                             ( |                FROM dummy; | )
+                             ( || )
+                             ( |    lt_bla7 = SELECT CONCAT ('C', 'at') "concat" | )
+                             ( |                FROM dummy; | )
+                             ( || )
+                             ( |    lt_bla8 = SELECT NULLIF ('diff', 'same') "nullif" | )
+                             ( |                FROM dummy; | )
+                             ( || )
+                             ( |    lt_bla9 = SELECT IFNULL (NULL, 'same') "ifnull" | )
+                             ( |                FROM dummy; | )
+                             ( || )
+                             ( |    lt_bla10 = SELECT SUBSTRING( RTRIM(connid),3,4) | )
+                             ( |                 FROM spfli; | )
+                             ( || )
+                             ( |    lt_bla11 = SELECT CONCAT ('C', | )
+                             ( |                              CONCAT( 'A','B')| )
+                             ( |                             ) | )
+                             ( |                 FROM dummy; | )
+                             ( || )
+                             ( |    lt_bla12 = SELECT SUBSTRING( CONCAT( 'Bla','Blub' ), | )
+                             ( |                                 4, | )
+                             ( |                                 6 | )
+                             ( |                               ) | )
+                             ( |                 FROM sflight; | )
+                             ( || )
+                             ( |    lt_bla13 = SELECT CONCAT ( RTRIM('BLA '), | )
+                             ( |                               RTRIM('BLUB ') | )
+                             ( |                             ) | )
+                             ( |                 FROM dummy; | )
+                             ( || )
+                             ( |                     endmethod.| ) ).
     CREATE OBJECT lr_cut.
     TRY.
         lt_source_res = lr_cut->pretty_print(

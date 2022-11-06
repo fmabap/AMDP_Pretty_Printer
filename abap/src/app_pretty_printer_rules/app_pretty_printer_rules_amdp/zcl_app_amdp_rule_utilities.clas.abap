@@ -27,7 +27,7 @@ CLASS zcl_app_amdp_rule_utilities DEFINITION
       RAISING   zcx_app_exception .
 
 
-    CLASS-METHODS get_next_no_comment_rl_in_stm
+    CLASS-METHODS get_next_no_comment_amdp_rule
       IMPORTING
                 ir_start_rule    TYPE REF TO zif_app_rule
       RETURNING VALUE(rr_result) TYPE REF TO zif_app_rule
@@ -65,6 +65,16 @@ CLASS zcl_app_amdp_rule_utilities DEFINITION
     "! @parameter IR_START_RULE | <p class="shorttext synchronized" lang="en">Start rule must be function name before the bracket</p>
     "! @parameter RV_RESULT | <p class="shorttext synchronized" lang="en"></p>
     CLASS-METHODS contains_fu_sub_fu_w_co_or_sel
+      IMPORTING
+                ir_start_rule    TYPE REF TO zif_app_rule
+      RETURNING VALUE(rv_result) TYPE abap_bool
+      RAISING   zcx_app_exception .
+
+    "! <p class="shorttext synchronized" lang="en">Contains function keywords or sub func. with comma or select statement</p>
+    "!
+    "! @parameter IR_START_RULE | <p class="shorttext synchronized" lang="en">Start rule must be function name before the bracket</p>
+    "! @parameter RV_RESULT | <p class="shorttext synchronized" lang="en"></p>
+    CLASS-METHODS cnts_fu_kw_or_sfu_w_co_or_sel
       IMPORTING
                 ir_start_rule    TYPE REF TO zif_app_rule
       RETURNING VALUE(rv_result) TYPE abap_bool
@@ -222,7 +232,7 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD get_next_no_comment_rl_in_stm.
+  METHOD get_next_no_comment_amdp_rule.
     DATA lr_rule TYPE REF TO zif_app_rule.
 
     lr_rule = ir_start_rule.
@@ -282,7 +292,7 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
     DATA lr_func_token_ext TYPE REF TO zapp_s_stokesx_ext.
     DATA lr_close_bracket_token_ext TYPE REF TO zapp_s_stokesx_ext.
 
-    lr_next_rule = zcl_app_amdp_rule_utilities=>get_next_no_comment_rl_in_stm( ir_start_rule = ir_start_rule ).
+    lr_next_rule = zcl_app_amdp_rule_utilities=>get_next_no_comment_amdp_rule( ir_start_rule = ir_start_rule ).
     IF lr_next_rule IS INITIAL.
       RETURN.
     ENDIF.
@@ -315,7 +325,7 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
     DATA lv_counter_open_bracket TYPE i.
     DATA lv_token TYPE zapp_d_token.
 
-    lr_open_bracket_rule = zcl_app_amdp_rule_utilities=>get_next_no_comment_rl_in_stm( ir_start_rule = ir_start_rule ).
+    lr_open_bracket_rule = zcl_app_amdp_rule_utilities=>get_next_no_comment_amdp_rule( ir_start_rule = ir_start_rule ).
 
     IF lr_open_bracket_rule IS INITIAL.
       RETURN.
@@ -328,21 +338,13 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
     lr_rule = lr_open_bracket_rule.
     lv_counter_open_bracket = 1.
     DO.
-      lr_rule = lr_rule->get_next_rule( ).
+      lr_rule = zcl_app_amdp_rule_utilities=>get_next_no_comment_amdp_rule( ir_start_rule = lr_rule ).
 
       IF lr_rule IS INITIAL.
         RETURN.
       ENDIF.
 
       lv_token = lr_rule->get_token_up(  ).
-
-      IF zcl_app_utilities=>is_sqlscript_rule( lr_rule ) = abap_false.
-        RETURN.
-      ENDIF.
-
-      IF lr_rule->is_comment(  ) = abap_true.
-        CONTINUE.
-      ENDIF.
 
       CASE lv_token.
         WHEN '('.
@@ -381,6 +383,87 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
 
   ENDMETHOD.
 
+
+  METHOD cnts_fu_kw_or_sfu_w_co_or_sel.
+    DATA lr_open_bracket_rule TYPE REF TO zif_app_rule.
+    DATA lr_token_ext TYPE REF TO zapp_s_stokesx_ext.
+    DATA lr_rule TYPE REF TO zif_app_rule.
+    DATA lv_counter_open_bracket TYPE i.
+    DATA lv_token TYPE zapp_d_token.
+    DATA lr_keyword_scanner_amdp TYPE REF TO zif_app_keyword_scanner.
+    DATA lv_key_words TYPE i.
+
+
+    lr_open_bracket_rule = zcl_app_amdp_rule_utilities=>get_next_no_comment_amdp_rule( ir_start_rule = ir_start_rule ).
+
+    IF lr_open_bracket_rule IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    IF lr_open_bracket_rule->get_token_up( ) <> '('.
+      RETURN.
+    ENDIF.
+
+    CREATE OBJECT lr_keyword_scanner_amdp TYPE ('ZCL_APP_KEYWORD_SCANNER_AMDP').
+
+
+    lr_rule = lr_open_bracket_rule.
+    lv_counter_open_bracket = 1.
+    DO.
+      lr_rule = zcl_app_amdp_rule_utilities=>get_next_no_comment_amdp_rule( ir_start_rule = lr_rule ).
+
+      IF lr_rule IS INITIAL.
+        RETURN.
+      ENDIF.
+
+      lv_token = lr_rule->get_token_up(  ).
+
+      CASE lv_token.
+        WHEN '('.
+          lv_counter_open_bracket = lv_counter_open_bracket + 1.
+        WHEN ')'.
+          lv_counter_open_bracket = lv_counter_open_bracket - 1.
+          IF lv_counter_open_bracket = 0.
+            "End of Function
+            RETURN.
+          ENDIF.
+      ENDCASE.
+      IF lv_counter_open_bracket > 1.
+        IF lv_token = ',' OR lv_token = 'SELECT'.
+          rv_result = abap_true.
+          RETURN.
+        ENDIF.
+
+        lr_token_ext = lr_rule->get_token_ext( ).
+
+        IF zcl_app_utilities=>contains_delimiter_char(
+               it_delimiter = lr_token_ext->delimiter
+               iv_char      = ',' ) = abap_true.
+
+          rv_result = abap_true.
+          RETURN.
+
+        ENDIF.
+      ELSEIF lv_counter_open_bracket = 1.
+
+        IF lr_keyword_scanner_amdp->is_keyword( iv_token_up = lv_token ) = abap_true.
+          lv_key_words = lv_key_words + 1.
+          IF lv_key_words = 2.
+            rv_result = abap_true.
+            RETURN.
+          ENDIF.
+        ENDIF.
+
+      ENDIF.
+
+      IF lr_rule->is_end_of_statement(  ) = abap_true.
+        RETURN.
+      ENDIF.
+
+    ENDDO.
+
+  ENDMETHOD.
+
   METHOD avoid_lb_after_comma_in_func.
     DATA lr_open_bracket_rule TYPE REF TO zif_app_rule.
     DATA lr_token_ext TYPE REF TO zapp_s_stokesx_ext.
@@ -388,7 +471,7 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
     DATA lv_counter_open_bracket TYPE i.
     DATA lv_token TYPE zapp_d_token.
 
-    lr_open_bracket_rule = zcl_app_amdp_rule_utilities=>get_next_no_comment_rl_in_stm( ir_start_rule = ir_start_rule ).
+    lr_open_bracket_rule = zcl_app_amdp_rule_utilities=>get_next_no_comment_amdp_rule( ir_start_rule = ir_start_rule ).
 
     IF lr_open_bracket_rule IS INITIAL.
       RETURN.

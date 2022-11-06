@@ -62,4 +62,7 @@ CLASS zcl_app_settings IMPLEMENTATION.
     rv_result = xsdbool( ss_settings-lb_after_comma_rule = zif_app_settings~cos_lb_rules_at_comma-dep_on_cls_bracket_only ).
   ENDMETHOD.
 
+  METHOD zif_app_settings~is_no_lb_at_co_s_fu_dep_sfu_kw.
+    rv_result = xsdbool( ss_settings-lb_after_comma_rule = zif_app_settings~cos_lb_rules_at_comma-dep_on_cls_br_sf_and_keywrd ).
+  ENDMETHOD.
 ENDCLASS.
