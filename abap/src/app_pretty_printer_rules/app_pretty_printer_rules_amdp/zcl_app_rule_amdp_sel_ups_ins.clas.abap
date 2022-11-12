@@ -52,9 +52,6 @@ CLASS zcl_app_rule_amdp_sel_ups_ins DEFINITION
       RETURNING VALUE(rr_result) TYPE REF TO zif_app_rule
       RAISING   zcx_app_exception .
 
-    DATA mv_add_indent_set TYPE abap_bool.
-
-
 ENDCLASS.
 
 CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.

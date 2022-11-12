@@ -36,12 +36,7 @@ CLASS zcl_app_rule_provider DEFINITION
       RETURNING VALUE(rt_result) TYPE zapp_t_rule_sort
       RAISING   zcx_app_exception.
 
-    METHODS get_amdp_simple_rules
-      RETURNING VALUE(rt_result) TYPE zapp_t_rule_sort
-      RAISING   zcx_app_exception.
 ENDCLASS.
-
-
 
 CLASS zcl_app_rule_provider IMPLEMENTATION.
   METHOD zif_app_rule_provider~get_rules.
@@ -80,7 +75,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     INSERT LINES OF get_amdp_select_rules( ) INTO TABLE rt_result.
     INSERT LINES OF get_amdp_control_rules( ) INTO TABLE rt_result.
     INSERT LINES OF get_amdp_special_rules( ) INTO TABLE rt_result.
-    INSERT LINES OF get_amdp_simple_rules( ) INTO TABLE rt_result.
+
   ENDMETHOD.
 
   METHOD get_amdp_default_rules.
@@ -88,7 +83,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     CLEAR ls_result.
     ls_result-rule_name = 'AMDP DEFAULT'.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
-    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_DEFAULT'.
+    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_FUNC_IN_1_RO'.
     INSERT ls_result INTO TABLE rt_result.
   ENDMETHOD.
 
@@ -107,7 +102,6 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
     ls_result-rule_class = 'ZCL_APP_RULE_AMDP_CLSE_BRACKET'.
     INSERT ls_result INTO TABLE rt_result.
-
 
   ENDMETHOD.
 
@@ -398,65 +392,6 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     INSERT ls_result INTO TABLE rt_result.
   ENDMETHOD.
 
-  METHOD get_amdp_simple_rules.
-    DATA ls_result TYPE zapp_s_rule.
 
-    CLEAR ls_result.
-    ls_result-rule_name = 'AMDP Substring'.
-    ls_result-token = 'SUBSTRING'.
-    ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
-    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_FUNC_IN_1_RO'.
-    INSERT ls_result INTO TABLE rt_result.
-
-    CLEAR ls_result.
-    ls_result-rule_name = 'AMDP Substring After'.
-    ls_result-token = 'SUBSTR_AFTER'.
-    ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
-    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_FUNC_IN_1_RO'.
-    INSERT ls_result INTO TABLE rt_result.
-
-    CLEAR ls_result.
-    ls_result-rule_name = 'AMDP Substring Before'.
-    ls_result-token = 'SUBSTR_BEFORE'.
-    ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
-    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_FUNC_IN_1_RO'.
-    INSERT ls_result INTO TABLE rt_result.
-
-    CLEAR ls_result.
-    ls_result-rule_name = 'AMDP RPAD'.
-    ls_result-token = 'RPAD'.
-    ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
-    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_FUNC_IN_1_RO'.
-    INSERT ls_result INTO TABLE rt_result.
-
-    CLEAR ls_result.
-    ls_result-rule_name = 'AMDP LPAD'.
-    ls_result-token = 'LPAD'.
-    ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
-    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_FUNC_IN_1_RO'.
-    INSERT ls_result INTO TABLE rt_result.
-
-    CLEAR ls_result.
-    ls_result-rule_name = 'AMDP Concat'.
-    ls_result-token = 'CONCAT'.
-    ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
-    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_FUNC_IN_1_RO'.
-    INSERT ls_result INTO TABLE rt_result.
-
-    CLEAR ls_result.
-    ls_result-rule_name = 'AMDP NULLIF'.
-    ls_result-token = 'NULLIF'.
-    ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
-    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_FUNC_IN_1_RO'.
-    INSERT ls_result INTO TABLE rt_result.
-
-    CLEAR ls_result.
-    ls_result-rule_name = 'AMDP IFNULL'.
-    ls_result-token = 'IFNULL'.
-    ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
-    ls_result-rule_class = 'ZCL_APP_RULE_AMDP_FUNC_IN_1_RO'.
-    INSERT ls_result INTO TABLE rt_result.
-
-  ENDMETHOD.
 
 ENDCLASS.

@@ -25,10 +25,10 @@
       <OBJECT>ZAPP_D_LB_AFTER_COMMA_RULE</OBJECT>
       <LANGU>E</LANGU>
       <TYP>E</TYP>
-      <VERSION>0008</VERSION>
+      <VERSION>0011</VERSION>
       <MASTERLANG>X</MASTERLANG>
-      <TXTLINES>00065</TXTLINES>
-      <DOKSTATE>A</DOKSTATE>
+      <TXTLINES>00032</TXTLINES>
+      <DOKSTATE>R</DOKSTATE>
      </DOKIL>
      <HEAD>
       <TDOBJECT>DOKU</TDOBJECT>
@@ -37,7 +37,7 @@
       <TDSPRAS>E</TDSPRAS>
       <TDFORM>S_DOCU_SHOW</TDFORM>
       <TDSTYLE>S_DOCUS1</TDSTYLE>
-      <TDVERSION>00008</TDVERSION>
+      <TDVERSION>00011</TDVERSION>
       <TDLINESIZE>072</TDLINESIZE>
      </HEAD>
      <LINES>
@@ -77,50 +77,6 @@
        <TDLINE>the closing bracket is originally in the same row as the function name</TDLINE>
       </TLINE>
       <TLINE>
-       <TDFORMAT>M2</TDFORMAT>
-       <TDLINE>it is one of the following functions:</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>SUBSTRING</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>SUBSTR_AFTER</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>SUBSTR_BEFORE</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>LEFT</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>RIGHT</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>RPAD</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>LPAD</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>CONCAT</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>NULLIF</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>IFNULL</TDLINE>
-      </TLINE>
-      <TLINE>
        <TDFORMAT>M1</TDFORMAT>
        <TDLINE>3 =&gt; add no line break after a comma at simple functions if the</TDLINE>
       </TLINE>
@@ -136,50 +92,6 @@
        <TDLINE>a possible sub function contains no comma and no select statement</TDLINE>
       </TLINE>
       <TLINE>
-       <TDFORMAT>M2</TDFORMAT>
-       <TDLINE>it is one of the following functions:</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>SUBSTRING</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>SUBSTR_AFTER</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>SUBSTR_BEFORE</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>LEFT</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>RIGHT</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>RPAD</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>LPAD</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>CONCAT</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>NULLIF</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>IFNULL</TDLINE>
-      </TLINE>
-      <TLINE>
        <TDFORMAT>M1</TDFORMAT>
        <TDLINE>4 =&gt; add no line break after a comma at simple functions if the</TDLINE>
       </TLINE>
@@ -192,58 +104,14 @@
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
-       <TDLINE>the function contains in total not more than one keyword (in the</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDLINE>brackets)</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M2</TDFORMAT>
        <TDLINE>a possible sub function contains no comma and no select statement</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
-       <TDLINE>it is one of the following functions:</TDLINE>
+       <TDLINE>the function contains in total not more than one keyword (in the</TDLINE>
       </TLINE>
       <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>SUBSTRING</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>SUBSTR_AFTER</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>SUBSTR_BEFORE</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>LEFT</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>RIGHT</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>RPAD</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>LPAD</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>CONCAT</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>NULLIF</TDLINE>
-      </TLINE>
-      <TLINE>
-       <TDFORMAT>M3</TDFORMAT>
-       <TDLINE>IFNULL</TDLINE>
+       <TDLINE>brackets)</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>U1</TDFORMAT>

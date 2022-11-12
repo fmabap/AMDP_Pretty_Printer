@@ -28,6 +28,11 @@
      <DESCRIPT>Contains function sub func. with comma or select statement</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
+     <CMPNAME>IS_AVD_LB_AFT_COMMA_IN_FU_ACT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Is avoid line break after comma in function active</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
      <CMPNAME>IS_CLS_BRA_OF_FU_IN_SAME_LINE</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Is closing bracket of function original in the same line</DESCRIPT>
@@ -47,16 +52,52 @@
      <DESCRIPT>Start rule must be function name before the bracket</DESCRIPT>
     </SEOSUBCOTX>
     <SEOSUBCOTX>
+     <CMPNAME>CNTS_FU_KW_OR_SFU_W_CO_OR_SEL</CMPNAME>
+     <SCONAME>RV_RESULT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Result</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
      <CMPNAME>CONTAINS_FU_SUB_FU_W_CO_OR_SEL</CMPNAME>
      <SCONAME>IR_START_RULE</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Start rule must be function name before the bracket</DESCRIPT>
     </SEOSUBCOTX>
     <SEOSUBCOTX>
+     <CMPNAME>CONTAINS_FU_SUB_FU_W_CO_OR_SEL</CMPNAME>
+     <SCONAME>RV_RESULT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Result</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>IS_AVD_LB_AFT_COMMA_IN_FU_ACT</CMPNAME>
+     <SCONAME>IR_SETTINGS</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>AMDP Pretty Printer Settings</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>IS_AVD_LB_AFT_COMMA_IN_FU_ACT</CMPNAME>
+     <SCONAME>IR_START_RULE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Pretty Printer Rule</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>IS_AVD_LB_AFT_COMMA_IN_FU_ACT</CMPNAME>
+     <SCONAME>RV_RESULT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Result</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
      <CMPNAME>IS_CLS_BRA_OF_FU_IN_SAME_LINE</CMPNAME>
      <SCONAME>IR_START_RULE</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Start rule must be function name before the bracket</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>IS_CLS_BRA_OF_FU_IN_SAME_LINE</CMPNAME>
+     <SCONAME>RV_RESULT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Result</DESCRIPT>
     </SEOSUBCOTX>
    </DESCRIPTIONS_SUB>
   </asx:values>

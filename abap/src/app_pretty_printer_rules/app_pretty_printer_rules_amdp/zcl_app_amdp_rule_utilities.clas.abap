@@ -33,6 +33,12 @@ CLASS zcl_app_amdp_rule_utilities DEFINITION
       RETURNING VALUE(rr_result) TYPE REF TO zif_app_rule
       RAISING   zcx_app_exception .
 
+    CLASS-METHODS get_prev_no_comment_amdp_rule
+      IMPORTING
+                ir_start_rule    TYPE REF TO zif_app_rule
+      RETURNING VALUE(rr_result) TYPE REF TO zif_app_rule
+      RAISING   zcx_app_exception .
+
 
     CLASS-METHODS get_1_rule_in_stm_on_same_lvl
       IMPORTING
@@ -50,10 +56,12 @@ CLASS zcl_app_amdp_rule_utilities DEFINITION
       RETURNING VALUE(rr_result) TYPE REF TO zif_app_rule
       RAISING   zcx_app_exception .
 
+
+
     "! <p class="shorttext synchronized" lang="en">Is closing bracket of function original in the same line</p>
     "!
     "! @parameter IR_START_RULE | <p class="shorttext synchronized" lang="en">Start rule must be function name before the bracket</p>
-    "! @parameter RV_RESULT | <p class="shorttext synchronized" lang="en"></p>
+    "! @parameter RV_RESULT | <p class="shorttext synchronized" lang="en">Result</p>
     CLASS-METHODS is_cls_bra_of_fu_in_same_line
       IMPORTING
                 ir_start_rule    TYPE REF TO zif_app_rule
@@ -63,7 +71,7 @@ CLASS zcl_app_amdp_rule_utilities DEFINITION
     "! <p class="shorttext synchronized" lang="en">Contains function sub func. with comma or select statement</p>
     "!
     "! @parameter IR_START_RULE | <p class="shorttext synchronized" lang="en">Start rule must be function name before the bracket</p>
-    "! @parameter RV_RESULT | <p class="shorttext synchronized" lang="en"></p>
+    "! @parameter RV_RESULT | <p class="shorttext synchronized" lang="en">Result</p>
     CLASS-METHODS contains_fu_sub_fu_w_co_or_sel
       IMPORTING
                 ir_start_rule    TYPE REF TO zif_app_rule
@@ -73,7 +81,7 @@ CLASS zcl_app_amdp_rule_utilities DEFINITION
     "! <p class="shorttext synchronized" lang="en">Contains function keywords or sub func. with comma or select statement</p>
     "!
     "! @parameter IR_START_RULE | <p class="shorttext synchronized" lang="en">Start rule must be function name before the bracket</p>
-    "! @parameter RV_RESULT | <p class="shorttext synchronized" lang="en"></p>
+    "! @parameter RV_RESULT | <p class="shorttext synchronized" lang="en">Result</p>
     CLASS-METHODS cnts_fu_kw_or_sfu_w_co_or_sel
       IMPORTING
                 ir_start_rule    TYPE REF TO zif_app_rule
@@ -86,6 +94,19 @@ CLASS zcl_app_amdp_rule_utilities DEFINITION
     CLASS-METHODS avoid_lb_after_comma_in_func
       IMPORTING
                 ir_start_rule TYPE REF TO zif_app_rule
+      RAISING   zcx_app_exception .
+
+
+    "! <p class="shorttext synchronized" lang="en">Is avoid line break after comma in function active</p>
+    "!
+    "! @parameter IR_START_RULE | <p class="shorttext synchronized" lang="en">Pretty Printer Rule</p>
+    "! @parameter IR_SETTINGS | <p class="shorttext synchronized" lang="en">AMDP Pretty Printer Settings</p>
+    "! @parameter RV_RESULT | <p class="shorttext synchronized" lang="en">Result</p>
+    CLASS-METHODS is_avd_lb_aft_comma_in_fu_act
+      IMPORTING
+                ir_start_rule    TYPE REF TO zif_app_rule
+                ir_settings      TYPE REF TO zif_app_settings
+      RETURNING VALUE(rv_result) TYPE abap_bool
       RAISING   zcx_app_exception .
 
   PROTECTED SECTION.
@@ -256,6 +277,30 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
     rr_result = lr_rule.
   ENDMETHOD.
 
+  METHOD get_prev_no_comment_amdp_rule.
+    DATA lr_rule TYPE REF TO zif_app_rule.
+
+    lr_rule = ir_start_rule.
+    DO.
+      lr_rule = lr_rule->get_prev_rule( ).
+
+      IF lr_rule IS INITIAL.
+        RETURN.
+      ENDIF.
+
+      IF zcl_app_utilities=>is_sqlscript_rule( lr_rule ) = abap_false.
+        RETURN.
+      ENDIF.
+
+      IF lr_rule->is_comment(  ) = abap_true.
+        CONTINUE.
+      ENDIF.
+      "Found
+      EXIT.
+    ENDDO.
+    rr_result = lr_rule.
+  ENDMETHOD.
+
   METHOD get_1_rule_in_stm_on_same_lvl.
 
     DATA lt_token TYPE zapp_t_token.
@@ -284,6 +329,7 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
     ).
 
   ENDMETHOD.
+
 
   METHOD is_cls_bra_of_fu_in_same_line.
 
@@ -534,6 +580,30 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
         RETURN.
       ENDIF.
     ENDDO.
+  ENDMETHOD.
+
+  METHOD is_avd_lb_aft_comma_in_fu_act.
+    IF ir_settings->is_no_lb_at_co_s_fu_dep_sfu( ) = abap_false
+          AND ir_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ) = abap_false
+          AND ir_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ) = abap_false.
+      RETURN.
+    ENDIF.
+
+    IF zcl_app_amdp_rule_utilities=>is_cls_bra_of_fu_in_same_line( ir_start_rule ) = abap_false.
+      RETURN.
+    ENDIF.
+
+    IF ir_settings->is_no_lb_at_co_s_fu_dep_sfu( ) = abap_true
+       AND zcl_app_amdp_rule_utilities=>contains_fu_sub_fu_w_co_or_sel( ir_start_rule ) = abap_true.
+      RETURN.
+    ENDIF.
+
+    IF ir_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ) = abap_true
+       AND zcl_app_amdp_rule_utilities=>cnts_fu_kw_or_sfu_w_co_or_sel( ir_start_rule ) = abap_true.
+      RETURN.
+    ENDIF.
+
+    rv_result = abap_true.
   ENDMETHOD.
 
 ENDCLASS.

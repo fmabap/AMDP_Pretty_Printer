@@ -28,6 +28,7 @@ CLASS zcl_app_base_rule DEFINITION
     DATA mv_end_row_set TYPE abap_bool.
     DATA mv_end_row TYPE i.
     DATA mv_add_indent TYPE i.
+    DATA mv_add_indent_set TYPE abap_bool.
     DATA mr_settings TYPE REF TO zif_app_settings.
     DATA mv_avoid_lb_after_this_token TYPE abap_bool.
 
@@ -485,6 +486,7 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
 
   METHOD zif_app_rule~set_additional_indent.
     mv_add_indent = iv_indent.
+    mv_add_indent_set = abap_true.
   ENDMETHOD.
 
   METHOD zif_app_rule~get_additional_indent.
