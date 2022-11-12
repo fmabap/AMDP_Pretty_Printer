@@ -25,10 +25,10 @@
       <OBJECT>ZAPP_D_LB_AFTER_COMMA_RULE</OBJECT>
       <LANGU>E</LANGU>
       <TYP>E</TYP>
-      <VERSION>0011</VERSION>
+      <VERSION>0013</VERSION>
       <MASTERLANG>X</MASTERLANG>
       <TXTLINES>00032</TXTLINES>
-      <DOKSTATE>R</DOKSTATE>
+      <DOKSTATE>A</DOKSTATE>
      </DOKIL>
      <HEAD>
       <TDOBJECT>DOKU</TDOBJECT>
@@ -37,7 +37,7 @@
       <TDSPRAS>E</TDSPRAS>
       <TDFORM>S_DOCU_SHOW</TDFORM>
       <TDSTYLE>S_DOCUS1</TDSTYLE>
-      <TDVERSION>00011</TDVERSION>
+      <TDVERSION>00013</TDVERSION>
       <TDLINESIZE>072</TDLINESIZE>
      </HEAD>
      <LINES>
@@ -70,7 +70,7 @@
        <TDLINE>2 =&gt; add no line break after a comma at simple functions if the</TDLINE>
       </TLINE>
       <TLINE>
-       <TDLINE>following criterions are fulfilled:</TDLINE>
+       <TDLINE>following criterion is fulfilled:</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
@@ -179,7 +179,7 @@
        <TDLINE>concat(rtrim(&apos;Bla &apos;),rtrim(&apos;Blub &apos;)) =&gt; line break, because we have two</TDLINE>
       </TLINE>
       <TLINE>
-       <TDLINE>keywords (rtrim) in the function</TDLINE>
+       <TDLINE>keywords (rtrim) in the function concat</TDLINE>
       </TLINE>
      </LINES>
     </item>
