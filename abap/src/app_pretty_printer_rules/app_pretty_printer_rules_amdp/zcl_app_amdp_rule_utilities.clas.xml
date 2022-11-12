@@ -18,14 +18,19 @@
      <DESCRIPT>Avoid line break after comma in function</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
-     <CMPNAME>CNTS_FU_KW_OR_SFU_W_CO_OR_SEL</CMPNAME>
+     <CMPNAME>CONTAINS_FU_KW_OR_SFU_W_COMMA</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Contains function keywords or sub func. with comma or select</DESCRIPT>
+     <DESCRIPT>Contains function keywords or sub func. with comma</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
-     <CMPNAME>CONTAINS_FU_SUB_FU_W_CO_OR_SEL</CMPNAME>
+     <CMPNAME>CONTAINS_FU_OR_SUB_FU_SELECT</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Contains function sub func. with comma or select statement</DESCRIPT>
+     <DESCRIPT>Contains function or sub func. SELECT</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>CONTAINS_FU_SUB_FU_W_COMMA</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Contains function sub func. with comma</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>IS_AVD_LB_AFT_COMMA_IN_FU_ACT</CMPNAME>
@@ -46,25 +51,37 @@
      <DESCRIPT>Start rule must be function name before the bracket</DESCRIPT>
     </SEOSUBCOTX>
     <SEOSUBCOTX>
-     <CMPNAME>CNTS_FU_KW_OR_SFU_W_CO_OR_SEL</CMPNAME>
+     <CMPNAME>CONTAINS_FU_KW_OR_SFU_W_COMMA</CMPNAME>
      <SCONAME>IR_START_RULE</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Start rule must be function name before the bracket</DESCRIPT>
     </SEOSUBCOTX>
     <SEOSUBCOTX>
-     <CMPNAME>CNTS_FU_KW_OR_SFU_W_CO_OR_SEL</CMPNAME>
+     <CMPNAME>CONTAINS_FU_KW_OR_SFU_W_COMMA</CMPNAME>
      <SCONAME>RV_RESULT</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Result</DESCRIPT>
     </SEOSUBCOTX>
     <SEOSUBCOTX>
-     <CMPNAME>CONTAINS_FU_SUB_FU_W_CO_OR_SEL</CMPNAME>
+     <CMPNAME>CONTAINS_FU_OR_SUB_FU_SELECT</CMPNAME>
      <SCONAME>IR_START_RULE</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Start rule must be function name before the bracket</DESCRIPT>
     </SEOSUBCOTX>
     <SEOSUBCOTX>
-     <CMPNAME>CONTAINS_FU_SUB_FU_W_CO_OR_SEL</CMPNAME>
+     <CMPNAME>CONTAINS_FU_OR_SUB_FU_SELECT</CMPNAME>
+     <SCONAME>RV_RESULT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Result</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CONTAINS_FU_SUB_FU_W_COMMA</CMPNAME>
+     <SCONAME>IR_START_RULE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Start rule must be function name before the bracket</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CONTAINS_FU_SUB_FU_W_COMMA</CMPNAME>
      <SCONAME>RV_RESULT</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Result</DESCRIPT>

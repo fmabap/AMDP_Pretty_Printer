@@ -68,21 +68,31 @@ CLASS zcl_app_amdp_rule_utilities DEFINITION
       RETURNING VALUE(rv_result) TYPE abap_bool
       RAISING   zcx_app_exception .
 
-    "! <p class="shorttext synchronized" lang="en">Contains function sub func. with comma or select statement</p>
+    "! <p class="shorttext synchronized" lang="en">Contains function sub func. with comma</p>
     "!
     "! @parameter IR_START_RULE | <p class="shorttext synchronized" lang="en">Start rule must be function name before the bracket</p>
     "! @parameter RV_RESULT | <p class="shorttext synchronized" lang="en">Result</p>
-    CLASS-METHODS contains_fu_sub_fu_w_co_or_sel
+    CLASS-METHODS contains_fu_sub_fu_w_comma
       IMPORTING
                 ir_start_rule    TYPE REF TO zif_app_rule
       RETURNING VALUE(rv_result) TYPE abap_bool
       RAISING   zcx_app_exception .
 
-    "! <p class="shorttext synchronized" lang="en">Contains function keywords or sub func. with comma or select statement</p>
+    "! <p class="shorttext synchronized" lang="en">Contains function or sub func. SELECT</p>
     "!
     "! @parameter IR_START_RULE | <p class="shorttext synchronized" lang="en">Start rule must be function name before the bracket</p>
     "! @parameter RV_RESULT | <p class="shorttext synchronized" lang="en">Result</p>
-    CLASS-METHODS cnts_fu_kw_or_sfu_w_co_or_sel
+    CLASS-METHODS contains_fu_or_sub_fu_select
+      IMPORTING
+                ir_start_rule    TYPE REF TO zif_app_rule
+      RETURNING VALUE(rv_result) TYPE abap_bool
+      RAISING   zcx_app_exception .
+
+    "! <p class="shorttext synchronized" lang="en">Contains function keywords or sub func. with comma</p>
+    "!
+    "! @parameter IR_START_RULE | <p class="shorttext synchronized" lang="en">Start rule must be function name before the bracket</p>
+    "! @parameter RV_RESULT | <p class="shorttext synchronized" lang="en">Result</p>
+    CLASS-METHODS contains_fu_kw_or_sfu_w_comma
       IMPORTING
                 ir_start_rule    TYPE REF TO zif_app_rule
       RETURNING VALUE(rv_result) TYPE abap_bool
@@ -331,6 +341,7 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
   ENDMETHOD.
 
 
+
   METHOD is_cls_bra_of_fu_in_same_line.
 
     DATA lr_next_rule TYPE REF TO zif_app_rule.
@@ -363,8 +374,57 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
+  METHOD contains_fu_or_sub_fu_select.
+    DATA lr_open_bracket_rule TYPE REF TO zif_app_rule.
+    DATA lr_token_ext TYPE REF TO zapp_s_stokesx_ext.
+    DATA lr_rule TYPE REF TO zif_app_rule.
+    DATA lv_counter_open_bracket TYPE i.
+    DATA lv_token TYPE zapp_d_token.
 
-  METHOD contains_fu_sub_fu_w_co_or_sel.
+    lr_open_bracket_rule = zcl_app_amdp_rule_utilities=>get_next_no_comment_amdp_rule( ir_start_rule = ir_start_rule ).
+
+    IF lr_open_bracket_rule IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    IF lr_open_bracket_rule->get_token_up( ) <> '('.
+      RETURN.
+    ENDIF.
+
+    lr_rule = lr_open_bracket_rule.
+    lv_counter_open_bracket = 1.
+    DO.
+      lr_rule = zcl_app_amdp_rule_utilities=>get_next_no_comment_amdp_rule( ir_start_rule = lr_rule ).
+
+      IF lr_rule IS INITIAL.
+        RETURN.
+      ENDIF.
+
+      lv_token = lr_rule->get_token_up(  ).
+
+      CASE lv_token.
+        WHEN 'SELECT'.
+          rv_result = abap_true.
+          return.
+        WHEN '('.
+          lv_counter_open_bracket = lv_counter_open_bracket + 1.
+        WHEN ')'.
+          lv_counter_open_bracket = lv_counter_open_bracket - 1.
+          IF lv_counter_open_bracket = 0.
+            "End of Function
+            RETURN.
+          ENDIF.
+      ENDCASE.
+
+      IF lr_rule->is_end_of_statement(  ) = abap_true.
+        RETURN.
+      ENDIF.
+
+    ENDDO.
+
+  ENDMETHOD.
+
+  METHOD contains_fu_sub_fu_w_comma.
     DATA lr_open_bracket_rule TYPE REF TO zif_app_rule.
     DATA lr_token_ext TYPE REF TO zapp_s_stokesx_ext.
     DATA lr_rule TYPE REF TO zif_app_rule.
@@ -403,7 +463,7 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
           ENDIF.
       ENDCASE.
       IF lv_counter_open_bracket > 1.
-        IF lv_token = ',' OR lv_token = 'SELECT'.
+        IF lv_token = ','.
           rv_result = abap_true.
           RETURN.
         ENDIF.
@@ -430,7 +490,7 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD cnts_fu_kw_or_sfu_w_co_or_sel.
+  METHOD contains_fu_kw_or_sfu_w_comma.
     DATA lr_open_bracket_rule TYPE REF TO zif_app_rule.
     DATA lr_token_ext TYPE REF TO zapp_s_stokesx_ext.
     DATA lr_rule TYPE REF TO zif_app_rule.
@@ -475,7 +535,7 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
           ENDIF.
       ENDCASE.
       IF lv_counter_open_bracket > 1.
-        IF lv_token = ',' OR lv_token = 'SELECT'.
+        IF lv_token = ','.
           rv_result = abap_true.
           RETURN.
         ENDIF.
@@ -593,13 +653,17 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
       RETURN.
     ENDIF.
 
+    IF zcl_app_amdp_rule_utilities=>contains_fu_or_sub_fu_select( ir_start_rule ) = abap_true.
+      RETURN.
+    ENDIF.
+
     IF ir_settings->is_no_lb_at_co_s_fu_dep_sfu( ) = abap_true
-       AND zcl_app_amdp_rule_utilities=>contains_fu_sub_fu_w_co_or_sel( ir_start_rule ) = abap_true.
+       AND zcl_app_amdp_rule_utilities=>contains_fu_sub_fu_w_comma( ir_start_rule ) = abap_true.
       RETURN.
     ENDIF.
 
     IF ir_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ) = abap_true
-       AND zcl_app_amdp_rule_utilities=>cnts_fu_kw_or_sfu_w_co_or_sel( ir_start_rule ) = abap_true.
+       AND zcl_app_amdp_rule_utilities=>contains_fu_kw_or_sfu_w_comma( ir_start_rule ) = abap_true.
       RETURN.
     ENDIF.
 

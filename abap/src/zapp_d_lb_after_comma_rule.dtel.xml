@@ -25,10 +25,10 @@
       <OBJECT>ZAPP_D_LB_AFTER_COMMA_RULE</OBJECT>
       <LANGU>E</LANGU>
       <TYP>E</TYP>
-      <VERSION>0013</VERSION>
+      <VERSION>0014</VERSION>
       <MASTERLANG>X</MASTERLANG>
-      <TXTLINES>00032</TXTLINES>
-      <DOKSTATE>A</DOKSTATE>
+      <TXTLINES>00035</TXTLINES>
+      <DOKSTATE>R</DOKSTATE>
      </DOKIL>
      <HEAD>
       <TDOBJECT>DOKU</TDOBJECT>
@@ -37,7 +37,7 @@
       <TDSPRAS>E</TDSPRAS>
       <TDFORM>S_DOCU_SHOW</TDFORM>
       <TDSTYLE>S_DOCUS1</TDSTYLE>
-      <TDVERSION>00013</TDVERSION>
+      <TDVERSION>00014</TDVERSION>
       <TDLINESIZE>072</TDLINESIZE>
      </HEAD>
      <LINES>
@@ -70,7 +70,11 @@
        <TDLINE>2 =&gt; add no line break after a comma at simple functions if the</TDLINE>
       </TLINE>
       <TLINE>
-       <TDLINE>following criterion is fulfilled:</TDLINE>
+       <TDLINE>following criterions are fulfilled:</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>M2</TDFORMAT>
+       <TDLINE>the function including sub functions contains no select statement</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
@@ -85,11 +89,15 @@
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
+       <TDLINE>the function including sub functions contains no select statement</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>M2</TDFORMAT>
        <TDLINE>the closing bracket is originally in the same row as the function name</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
-       <TDLINE>a possible sub function contains no comma and no select statement</TDLINE>
+       <TDLINE>a possible sub function contains no comma</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>M1</TDFORMAT>
@@ -100,11 +108,15 @@
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
+       <TDLINE>the function including sub functions contains no select statement</TDLINE>
+      </TLINE>
+      <TLINE>
+       <TDFORMAT>M2</TDFORMAT>
        <TDLINE>the closing bracket is originally in the same row as the function name</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
-       <TDLINE>a possible sub function contains no comma and no select statement</TDLINE>
+       <TDLINE>a possible sub function contains no comma</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>

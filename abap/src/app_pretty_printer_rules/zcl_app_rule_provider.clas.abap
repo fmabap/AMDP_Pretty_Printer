@@ -305,6 +305,7 @@ CLASS zcl_app_rule_provider IMPLEMENTATION.
     ls_result-sqlscript = zcl_app_scanner_sqlscript=>cos_sqlscript-sqlscript.
     ls_result-rule_class = 'ZCL_APP_RULE_AMDP_NEW_LINE_LFT'.
     INSERT ls_result INTO TABLE rt_result.
+
   ENDMETHOD.
 
   METHOD get_amdp_control_rules.
