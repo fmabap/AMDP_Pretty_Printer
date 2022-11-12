@@ -31,48 +31,16 @@ The following options are possible:
 
 - 0 => add a line break after a comma
 - 1 => add no line break after a comma
-- 2 => add no line break after a comma at simple functions, if the following criterions are fulfilled:
+- 2 => add no line break after a comma at simple functions, if the following criterion is fulfilled:
   - the closing bracket is originally in the same row as the function name
-  - it is one of the following functions:
-    - SUBSTRING
-    - SUBSTR_AFTER
-    - SUBSTR_BEFORE
-    - LEFT
-    - RIGHT
-    - RPAD
-    - LPAD
-    - CONCAT
-    - NULLIF
-    - IFNULL
 - 3 => add no line break after a comma at simple functions, if the following criterions are fulfilled:
   - the closing bracket is originally in the same row as the function name
-  - **a possible sub function contains no comma and no select statement**
-  - it is one of the following functions:
-    - SUBSTRING
-    - SUBSTR_AFTER
-    - SUBSTR_BEFORE
-    - LEFT
-    - RIGHT
-    - RPAD
-    - LPAD
-    - CONCAT
-    - NULLIF
-    - IFNULL
+  - a possible sub function contains no comma and no select statement
 - 4 => add no line break after a comma at simple functions, if the following criterions are fulfilled:
   - the closing bracket is originally in the same row as the function name
-  - **the function contains in total not more than one keyword (in the brackets)**
-  - **a possible sub function contains no comma and no select statement**
-  - it is one of the following functions:
-    - SUBSTRING
-    - SUBSTR_AFTER
-    - SUBSTR_BEFORE
-    - LEFT
-    - RIGHT
-    - RPAD
-    - LPAD
-    - CONCAT
-    - NULLIF
-    - IFNULL
+  - a possible sub function contains no comma and no select statement
+  - the function contains in total not more than one keyword (in the brackets)
+  
 
 If nothing is configured, then a line break will be added (option 0).
 
@@ -248,7 +216,7 @@ lt_example = SELECT SUBSTRING( CONCAT( 'Bla','Blub' ),
                FROM public.dummy;
 ```
 
-Line break, because there is more than one keyword in the function (rtrim):
+Line break, because there is more than one keyword in the function concat (rtrim):
 
 ```sql
 lt_example = SELECT CONCAT ( rtrim('BLA '), rtrim('BLUB ') )  FROM public.dummy;
