@@ -32,14 +32,14 @@ The following options are possible:
 - 0 => add a line break after a comma
 - 1 => add no line break after a comma
 - 2 => add no line break after a comma at simple functions, if the following criterions are fulfilled:
-  -	the function including sub functions contains no select statement
+  -	the function contains no select statement
   - the closing bracket is originally in the same row as the function name
 - 3 => add no line break after a comma at simple functions, if the following criterions are fulfilled:
-  - the function including sub functions contains no select statement
+  - the function contains no select statement
   - the closing bracket is originally in the same row as the function name
   - a possible sub function contains no comma
 - 4 => add no line break after a comma at simple functions, if the following criterions are fulfilled:
-  - the function including sub functions contains no select statement
+  - the function contains no select statement
   - the closing bracket is originally in the same row as the function name
   - a possible sub function contains no comma
   - the function contains in total not more than one keyword (in the brackets)
