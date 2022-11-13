@@ -74,7 +74,7 @@
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
-       <TDLINE>the function contains no select statement</TDLINE>
+       <TDLINE>the function contains no select or by (like partition by) statement</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
@@ -89,7 +89,7 @@
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
-       <TDLINE>the function contains no select statement</TDLINE>
+       <TDLINE>the function contains no select or by (like partition by) statement</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
@@ -108,7 +108,7 @@
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>
-       <TDLINE>the function contains no select statement</TDLINE>
+       <TDLINE>the function contains no select or by (like partition by) statement</TDLINE>
       </TLINE>
       <TLINE>
        <TDFORMAT>M2</TDFORMAT>

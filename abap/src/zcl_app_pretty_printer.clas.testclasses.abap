@@ -21,6 +21,7 @@ CLASS lcl_test DEFINITION FINAL FOR TESTING
     METHODS no_lb_aft_co_in_s_fu_dep_sf_kw  FOR TESTING RAISING cx_static_check.
     METHODS no_lb_aft_co_left_right FOR TESTING RAISING cx_static_check.
     METHODS no_lb_aft_co_select FOR TESTING RAISING cx_static_check.
+    METHODS no_lb_aft_co_by FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 
 
@@ -1743,7 +1744,7 @@ CLASS lcl_test IMPLEMENTATION.
 
   ENDMETHOD.
 
-   METHOD no_lb_aft_co_select.
+  METHOD no_lb_aft_co_select.
     DATA lt_source TYPE sourcetable.
     DATA lt_source_res TYPE sourcetable.
     DATA lt_source_res_exp TYPE sourcetable.
@@ -1761,34 +1762,95 @@ CLASS lcl_test IMPLEMENTATION.
     cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
     lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
 
-lt_source = VALUE #(
-                     ( |METHOD test| )
-                     ( | BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
-                     ( | OPTIONS READ-ONLY.| )
-                     ( |    lt_spfli1 = SELECT carrid, connid, countryfr, countryto, | )
-                     ( |                  FROM spfli | )
-                     ( |                 WHERE mandt = SESSION_CONTEXT( 'CLIENT' );| )
-                     ( |         and exists ( select bla, blub from dummy where bla = '4' order by bla,blub );| )
-                     ( |endmethod.| ) ).
+    lt_source = VALUE #(
+                         ( |METHOD test| )
+                         ( | BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                         ( | OPTIONS READ-ONLY.| )
+                         ( |    lt_spfli1 = SELECT carrid, connid, countryfr, countryto, | )
+                         ( |                  FROM spfli | )
+                         ( |                 WHERE mandt = SESSION_CONTEXT( 'CLIENT' );| )
+                         ( |         and exists ( select bla, blub from dummy where bla = '4' order by bla,blub );| )
+                         ( |endmethod.| ) ).
 
-lt_source_res_exp = VALUE #(
-                             ( |METHOD test| )
-                             ( | BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
-                             ( | OPTIONS READ-ONLY.| )
-                             ( |    lt_spfli1 = SELECT carrid, | )
-                             ( |                       connid, | )
-                             ( |                       countryfr, | )
-                             ( |                       countryto, | )
-                             ( |                  FROM spfli | )
-                             ( |                 WHERE mandt = SESSION_CONTEXT( 'CLIENT' ); | )
-                             ( |    AND EXISTS (   SELECT bla, | )
-                             ( |                          blub | )
-                             ( |                     FROM dummy | )
-                             ( |                    WHERE bla = '4' | )
-                             ( |                 ORDER BY bla,| )
-                             ( |                          blub | )
-                             ( |               );| )
-                             ( |endmethod.| ) ).
+    lt_source_res_exp = VALUE #(
+                                 ( |METHOD test| )
+                                 ( | BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                                 ( | OPTIONS READ-ONLY.| )
+                                 ( |    lt_spfli1 = SELECT carrid, | )
+                                 ( |                       connid, | )
+                                 ( |                       countryfr, | )
+                                 ( |                       countryto, | )
+                                 ( |                  FROM spfli | )
+                                 ( |                 WHERE mandt = SESSION_CONTEXT( 'CLIENT' ); | )
+                                 ( |    AND EXISTS (   SELECT bla, | )
+                                 ( |                          blub | )
+                                 ( |                     FROM dummy | )
+                                 ( |                    WHERE bla = '4' | )
+                                 ( |                 ORDER BY bla,| )
+                                 ( |                          blub | )
+                                 ( |               );| )
+                                 ( |endmethod.| ) ).
+
+    CREATE OBJECT lr_cut.
+    TRY.
+        lt_source_res = lr_cut->pretty_print(
+          it_source   = lt_source
+          ir_settings = lr_settings ).
+
+      CATCH zcx_app_exception INTO lr_ex.
+        cl_abap_unit_assert=>fail( lr_ex->get_text( ) ).
+    ENDTRY.
+    cl_abap_unit_assert=>assert_equals(
+      EXPORTING
+        act = lt_source_res
+        exp = lt_source_res_exp
+        msg = 'Tables differs' ).
+
+  ENDMETHOD.
+
+  METHOD no_lb_aft_co_by.
+    DATA lt_source TYPE sourcetable.
+    DATA lt_source_res TYPE sourcetable.
+    DATA lt_source_res_exp TYPE sourcetable.
+    DATA lr_cut TYPE REF TO zcl_app_pretty_printer.
+    DATA lr_ex TYPE REF TO zcx_app_exception.
+    DATA lr_settings TYPE REF TO zif_app_settings.
+
+    lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
+    lr_settings->is_line_break_after_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
+
+    lt_source = VALUE #(
+                         ( |METHOD test| )
+                         ( | BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                         ( | OPTIONS READ-ONLY.| )
+                         ( |                         lt_spfli2 = SELECT carrid, connid, countryfr, countryto,| )
+                         ( |    ROW_NUMBER ( ) OVER( PARTITION BY carrid, connid ORDER BY "CARRID", CONNID asc ) AS "ROW_ID"| )
+                         ( |    FROM SPFLI WHERE mandt = session_context( 'CLIENT' );| )
+                         ( |endmethod.| ) ).
+
+    lt_source_res_exp = VALUE #(
+                                 ( |METHOD test| )
+                                 ( | BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                                 ( | OPTIONS READ-ONLY.| )
+                                 ( |    lt_spfli2 = SELECT carrid, | )
+                                 ( |                       connid, | )
+                                 ( |                       countryfr, | )
+                                 ( |                       countryto, | )
+                                 ( |                       ROW_NUMBER ( ) OVER( PARTITION BY carrid, | )
+                                 ( |                                                         connid | )
+                                 ( |                                            ORDER BY "CARRID", | )
+                                 ( |                                                     connid ASC | )
+                                 ( |                                          ) AS "ROW_ID" | )
+                                 ( |                  FROM spfli | )
+                                 ( |                 WHERE mandt = SESSION_CONTEXT( 'CLIENT' );| )
+                                 ( |endmethod.| ) ).
 
     CREATE OBJECT lr_cut.
     TRY.

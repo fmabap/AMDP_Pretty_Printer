@@ -83,7 +83,7 @@ CLASS zcl_app_amdp_rule_utilities DEFINITION
     "!
     "! @parameter IR_START_RULE | <p class="shorttext synchronized" lang="en">Start rule must be function name before the bracket</p>
     "! @parameter RV_RESULT | <p class="shorttext synchronized" lang="en">Result</p>
-    CLASS-METHODS contains_function_select
+    CLASS-METHODS contains_function_lb_exception
       IMPORTING
                 ir_start_rule    TYPE REF TO zif_app_rule
       RETURNING VALUE(rv_result) TYPE abap_bool
@@ -378,10 +378,12 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD contains_function_select.
+  METHOD contains_function_lb_exception.
     DATA lr_next_rule TYPE REF TO zif_app_rule.
-    DATA lr_select_rule TYPE REF TO zif_app_rule.
-
+    DATA lr_exception_rule TYPE REF TO zif_app_rule.
+    DATA lt_token TYPE zapp_t_token.
+    DATA lv_token  TYPE zapp_d_token.
+    data lt_stop_token  type zapp_t_token.
 
     lr_next_rule = zcl_app_amdp_rule_utilities=>get_next_no_comment_amdp_rule( ir_start_rule = ir_start_rule ).
     IF lr_next_rule IS INITIAL.
@@ -391,12 +393,21 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    lr_select_rule = zcl_app_amdp_rule_utilities=>get_1_rule_in_stm_on_same_lvl(
+    lv_token = 'BY'.
+    INSERT  lv_token into table lt_token.
+
+        lv_token = 'SELECT'.
+    INSERT  lv_token into table lt_token.
+
+    lr_exception_rule = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
       EXPORTING
         ir_start_rule = lr_next_rule
-        iv_token      = 'SELECT'
+        it_token      = lt_token
+        it_stop_token = lt_stop_token
     ).
-    IF lr_select_rule IS INITIAL.
+
+
+    IF lr_exception_rule IS INITIAL.
       RETURN.
     ENDIF.
     rv_result = abap_true.
@@ -632,7 +643,7 @@ CLASS zcl_app_amdp_rule_utilities IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    IF zcl_app_amdp_rule_utilities=>contains_function_select( ir_start_rule ) = abap_true.
+    IF zcl_app_amdp_rule_utilities=>contains_function_lb_exception( ir_start_rule ) = abap_true.
       RETURN.
     ENDIF.
 
