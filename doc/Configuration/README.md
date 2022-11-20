@@ -128,7 +128,7 @@ lt_example = SELECT CONCAT ('C',
 
 ### Examples of option 3 (no line break after comma for simple functions dep. closing bracket and sub function)
 
-No line break in the substring function, because the rtrim function conatains no comma:
+No line break in the substring function, because the rtrim function contains no comma:
 
 ```sql
 lt_example = SELECT SUBSTRING( rtrim(connid),3,4) FROM spfli;
@@ -180,7 +180,7 @@ lt_example = SELECT CONCAT ( RTRIM('BLA '), RTRIM('BLUB ') )
 
 ### Examples of option 4 (no line break after comma for simple functions dep. closing bracket and sub function and keywords)
 
-No line break in the substring function, because the rtrim function conatains no comma:
+No line break in the substring function, because the rtrim function contains no comma:
 
 ```sql
 lt_example = SELECT SUBSTRING( rtrim(connid),3,4) FROM spfli;
