@@ -8,10 +8,12 @@
 *----------------------------------------------------------------------*
 MODULE user_command_0100 INPUT.
 
-  case sy-ucomm.
-  when 'EXIT'.
-    LEAVE TO SCREEN 0.
-  when 'PP'.
-  gr_logic->pretty_print( ).
-  endcase.
+  CASE sy-ucomm.
+    WHEN 'EXIT'.
+      LEAVE TO SCREEN 0.
+    WHEN 'PP'.
+      gr_logic->pretty_print( ).
+    WHEN 'ATM'.
+    gr_logic->add_test_method( ).
+  ENDCASE.
 ENDMODULE.

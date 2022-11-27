@@ -52,9 +52,6 @@ CLASS zcl_app_rule_amdp_sel_ups_ins DEFINITION
       RETURNING VALUE(rr_result) TYPE REF TO zif_app_rule
       RAISING   zcx_app_exception .
 
-    DATA mv_add_indent_set TYPE abap_bool.
-
-
 ENDCLASS.
 
 CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
@@ -98,7 +95,6 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
   METHOD set_additional_indent.
 
     DATA lr_prev_select_rule TYPE REF TO zif_app_rule.
-    DATA lr_prev_insert_rule TYPE REF TO zif_app_rule.
     DATA lr_join_rule TYPE REF TO zif_app_rule.
     DATA lr_order_rule TYPE REF TO zif_app_rule.
     DATA lr_group_rule TYPE REF TO zif_app_rule.
@@ -109,14 +105,6 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
     IF mv_add_indent_set = abap_true.
       RETURN.
     ENDIF.
-
-    " Not longer required because we set the select to a new line #5
-*    lr_prev_insert_rule = get_prev_ups_ins_rule( ).
-*    IF lr_prev_insert_rule IS NOT INITIAL.
-*      mv_add_indent = -7.
-*      mv_add_indent_set = abap_true.
-*      RETURN.
-*    ENDIF.
 
     lr_prev_select_rule = get_prev_select_rule(  ).
     IF lr_prev_select_rule IS NOT INITIAL.
@@ -187,7 +175,6 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
     DATA lt_token TYPE zapp_t_token.
     DATA lt_stop_token TYPE zapp_t_token.
     DATA lr_next_rule TYPE REF TO zif_app_rule.
-    DATA lv_token TYPE zapp_d_token.
     DATA lr_start_rule TYPE REF TO zif_app_rule.
 
     INSERT  iv_token INTO TABLE lt_token.
@@ -222,52 +209,30 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_order_rule.
-    DATA lt_token TYPE zapp_t_token.
-    DATA lt_stop_token TYPE zapp_t_token.
-    DATA lv_token TYPE zapp_d_token.
-    lv_token = 'ORDER'.
-    INSERT  lv_token INTO TABLE lt_token.
-
-    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
-      EXPORTING
-        ir_start_rule = me
-        it_token      = lt_token
-        it_stop_token = lt_stop_token
+    rr_result = zcl_app_amdp_rule_utilities=>get_1_rule_in_stm_on_same_lvl(
+      ir_start_rule = me
+      iv_token      = 'ORDER'
     ).
+
 
   ENDMETHOD.
 
   METHOD get_default_rule.
-    DATA lt_token TYPE zapp_t_token.
-    DATA lt_stop_token TYPE zapp_t_token.
-    DATA lv_token TYPE zapp_d_token.
-    lv_token = 'DEFAULT'.
-    INSERT  lv_token INTO TABLE lt_token.
-
-    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
-      EXPORTING
-        ir_start_rule = me
-        it_token      = lt_token
-        it_stop_token = lt_stop_token
+    rr_result = zcl_app_amdp_rule_utilities=>get_1_rule_in_stm_on_same_lvl(
+      ir_start_rule = me
+      iv_token      = 'DEFAULT'
     ).
+
 
   ENDMETHOD.
 
   METHOD get_union_all_rule.
-    DATA lt_token TYPE zapp_t_token.
-    DATA lt_stop_token TYPE zapp_t_token.
-    DATA lv_token TYPE zapp_d_token.
     DATA lr_rule TYPE REF TO zif_app_rule.
     DATA lr_next_rule TYPE REF TO zif_app_rule.
 
-    lv_token = 'UNION'.
-    INSERT  lv_token INTO TABLE lt_token.
-
-    lr_rule = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
-      EXPORTING
-        ir_start_rule = me
-        it_token      = lt_token
-        it_stop_token = lt_stop_token
+    lr_rule = zcl_app_amdp_rule_utilities=>get_1_rule_in_stm_on_same_lvl(
+      ir_start_rule = me
+      iv_token      = 'UNION'
     ).
 
     IF lr_rule IS NOT INITIAL.
@@ -325,49 +290,28 @@ CLASS zcl_app_rule_amdp_sel_ups_ins IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_group_rule.
-    DATA lt_token TYPE zapp_t_token.
-    DATA lt_stop_token TYPE zapp_t_token.
-    DATA lv_token TYPE zapp_d_token.
-    lv_token = 'GROUP'.
-    INSERT  lv_token INTO TABLE lt_token.
 
-    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
-      EXPORTING
-        ir_start_rule = me
-        it_token      = lt_token
-        it_stop_token = lt_stop_token
+    rr_result = zcl_app_amdp_rule_utilities=>get_1_rule_in_stm_on_same_lvl(
+      ir_start_rule = me
+      iv_token      = 'GROUP'
     ).
 
   ENDMETHOD.
 
   METHOD get_distinct_rule.
-    DATA lt_token TYPE zapp_t_token.
-    DATA lt_stop_token TYPE zapp_t_token.
-    DATA lv_token TYPE zapp_d_token.
-    lv_token = 'DISTINCT'.
-    INSERT  lv_token INTO TABLE lt_token.
 
-    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_level(
-      EXPORTING
-        ir_start_rule = me
-        it_token      = lt_token
-        it_stop_token = lt_stop_token
+    rr_result = zcl_app_amdp_rule_utilities=>get_1_rule_in_stm_on_same_lvl(
+      ir_start_rule = me
+      iv_token      = 'DISTINCT'
     ).
+
 
   ENDMETHOD.
   METHOD get_prev_select_rule.
 
-    DATA lt_token TYPE zapp_t_token.
-    DATA lt_stop_token TYPE zapp_t_token.
-    DATA lv_token TYPE zapp_d_token.
-    lv_token = 'SELECT'.
-    INSERT  lv_token INTO TABLE lt_token.
-
-    rr_result = zcl_app_amdp_rule_utilities=>get_rule_in_stm_on_same_lvl_rw(
-      EXPORTING
-        ir_start_rule = me
-        it_token      = lt_token
-        it_stop_token = lt_stop_token
+    rr_result = zcl_app_amdp_rule_utilities=>get_1_rl_in_stm_on_same_lvl_rw(
+      ir_start_rule = me
+      iv_token      = 'SELECT'
     ).
 
   ENDMETHOD.

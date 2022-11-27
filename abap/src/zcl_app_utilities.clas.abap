@@ -90,7 +90,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_APP_UTILITIES IMPLEMENTATION.
+CLASS zcl_app_utilities IMPLEMENTATION.
 
 
   METHOD contains_delimiter_char.
@@ -133,7 +133,6 @@ CLASS ZCL_APP_UTILITIES IMPLEMENTATION.
   METHOD conv_source_to_statement.
     DATA lv_source TYPE string.
     DATA lr_source TYPE REF TO string.
-    DATA lv_len TYPE i.
     DATA lv_spaces TYPE string.
     DATA lv_lines TYPE i.
 
@@ -172,8 +171,6 @@ CLASS ZCL_APP_UTILITIES IMPLEMENTATION.
 
 
   METHOD get_prev_token_ext.
-    DATA lv_prev_index   TYPE sytabix.
-
 
     READ TABLE it_token_ext TRANSPORTING NO FIELDS
          WITH TABLE KEY row_col
@@ -247,7 +244,7 @@ CLASS ZCL_APP_UTILITIES IMPLEMENTATION.
 
 
   METHOD is_comment_rule.
-    DATA lr_token_ext TYPE REF TO zapp_s_stokesx_ext.
+
     IF ir_rule IS INITIAL.
       RETURN.
     ENDIF.

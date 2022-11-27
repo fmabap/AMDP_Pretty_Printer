@@ -8,7 +8,7 @@ CLASS zcl_app_rule_amdp_opn_bracket DEFINITION
     METHODS zif_app_rule~finalize_init REDEFINITION.
     METHODS zif_app_rule~get_cur_row REDEFINITION.
     METHODS zif_app_rule~is_new_line_req REDEFINITION.
-    METHODS get_mv_special_logic RETURNING VALUE(r_result) TYPE zapp_d_spec_bracket_logic.
+    METHODS get_mv_special_logic RETURNING VALUE(rv_result) TYPE zapp_d_spec_bracket_logic.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -91,7 +91,6 @@ CLASS zcl_app_rule_amdp_opn_bracket IMPLEMENTATION.
 
   METHOD zif_app_rule~is_new_line_req.
 
-    DATA lr_rule TYPE REF TO zif_app_rule.
     rv_result = super->zif_app_rule~is_new_line_req( ).
 
     IF rv_result = abap_true.
@@ -105,7 +104,7 @@ CLASS zcl_app_rule_amdp_opn_bracket IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_mv_special_logic.
-    r_result = me->mv_special_logic.
+    rv_result = me->mv_special_logic.
   ENDMETHOD.
 
   METHOD is_new_line_req_for_call_statm.

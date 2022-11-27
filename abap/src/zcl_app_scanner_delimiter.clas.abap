@@ -60,7 +60,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_APP_SCANNER_DELIMITER IMPLEMENTATION.
+CLASS zcl_app_scanner_delimiter IMPLEMENTATION.
 
 
   METHOD get_delimiter_from_source.
@@ -150,15 +150,13 @@ CLASS ZCL_APP_SCANNER_DELIMITER IMPLEMENTATION.
     DATA lv_length TYPE i.
 
     lv_length = ir_token_ext->col - iv_offset.
+
     rv_delimiter = ir_source->*+iv_offset(lv_length).
   ENDMETHOD.
 
 
   METHOD set_delimiter_from_source.
     DATA lt_delimiter TYPE zapp_t_delimiter.
-    DATA lr_delimiter TYPE REF TO string.
-    DATA lv_delimiter TYPE string.
-    DATA lv_offset TYPE i.
 
     lt_delimiter = get_delimiter_from_source(
       it_source         = it_source
@@ -167,26 +165,6 @@ CLASS ZCL_APP_SCANNER_DELIMITER IMPLEMENTATION.
 
     ir_prev_token_ext->delimiter_org = lt_delimiter.
 
-*    IF ir_token_ext IS NOT INITIAL AND ir_token_ext->sqlscript = 'S'.
-*      CLEAR lv_offset.
-*    ENDIF.
-*    IF lines( lt_delimiter ) = 1.
-*      LOOP AT lt_delimiter REFERENCE INTO lr_delimiter.
-*        IF strlen( lr_delimiter->* ) > 0
-*           AND lr_delimiter->* CO ` `.
-*          lr_delimiter->* = ` `.
-*        ELSE.
-*          lv_delimiter = lr_delimiter->*.
-*          CONDENSE lr_delimiter->*.
-*          IF strlen( lv_delimiter ) >= 1.
-*            lv_offset = strlen( lv_delimiter ) - 1.
-*            IF lv_delimiter+lv_offset(1) = ` `.
-*              CONCATENATE lr_delimiter->* space INTO lr_delimiter->* RESPECTING BLANKS.
-*            ENDIF.
-*          ENDIF.
-*        ENDIF.
-*      ENDLOOP.
-*    ENDIF.
     ir_prev_token_ext->delimiter = lt_delimiter.
 
   ENDMETHOD.

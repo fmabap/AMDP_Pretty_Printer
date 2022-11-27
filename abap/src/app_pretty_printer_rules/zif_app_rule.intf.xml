@@ -104,7 +104,7 @@
     <SEOCOMPOTX>
      <CMPNAME>GET_TOKEN_UP</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Get the token string upper case</DESCRIPT>
+     <DESCRIPT>Get the token string in upper case</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>HAS_MULTLINE_DELIMITER</CMPNAME>
@@ -150,6 +150,11 @@
      <CMPNAME>SET_ADDITIONAL_INDENT</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Set additional indent of the token into the buffer</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>SET_AVOID_LB_AFTER_THIS_TOKEN</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Set avoid line break after this token</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>SET_CUR_OFFSET_START</CMPNAME>

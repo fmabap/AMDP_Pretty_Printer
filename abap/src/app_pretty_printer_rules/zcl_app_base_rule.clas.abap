@@ -28,7 +28,9 @@ CLASS zcl_app_base_rule DEFINITION
     DATA mv_end_row_set TYPE abap_bool.
     DATA mv_end_row TYPE i.
     DATA mv_add_indent TYPE i.
+    DATA mv_add_indent_set TYPE abap_bool.
     DATA mr_settings TYPE REF TO zif_app_settings.
+    DATA mv_avoid_lb_after_this_token TYPE abap_bool.
 
     METHODS set_cur_offset_end
       IMPORTING iv_cur_offset_end TYPE i.
@@ -387,8 +389,6 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
 
 
   METHOD zif_app_rule~is_end_of_statement.
-    DATA lr_delimiter TYPE REF TO string.
-*    DATA lr_next_token_ext TYPE REF TO zapp_s_stokesx_ext.
     DATA lv_statement_end TYPE char1.
 
 
@@ -398,16 +398,6 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
         RETURN.
       ENDIF.
     ENDIF.
-
-*
-*      IF mr_next_rule IS NOT INITIAL.
-*        lr_next_token_ext = mr_next_rule->get_token_ext(  ).
-*        IF lr_next_token_ext->comment_detail <> zcl_app_scanner_comment=>cos_comment_detail-part.
-*          rv_result = abap_true.
-*        ENDIF.
-*      ENDIF.
-*      RETURN.
-*    ENDIF.
 
     IF zcl_app_utilities=>is_abap_token( mr_token_ext->sqlscript ) = abap_true.
       lv_statement_end = '.'.
@@ -434,6 +424,9 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_app_rule~is_line_breaking_token.
+    IF mv_avoid_lb_after_this_token = abap_true.
+      RETURN.
+    ENDIF.
     IF is_comment( ) = abap_true.
       RETURN.
     ENDIF.
@@ -452,7 +445,7 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
           rv_result = abap_true.
           RETURN.
         WHEN ','.
-          IF mr_settings->is_line_break_at_comma_req( ) = abap_true.
+          IF mr_settings->is_line_break_after_comma_req( ) = abap_true.
             rv_result = abap_true.
             RETURN.
           ENDIF.
@@ -462,6 +455,9 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
 
 
   METHOD zif_app_rule~is_new_line_req.
+    IF mv_avoid_lb_after_this_token = abap_true.
+      RETURN.
+    ENDIF.
     IF is_comment(  ) = abap_true.
       rv_result = abap_true.
       RETURN.
@@ -490,6 +486,7 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
 
   METHOD zif_app_rule~set_additional_indent.
     mv_add_indent = iv_indent.
+    mv_add_indent_set = abap_true.
   ENDMETHOD.
 
   METHOD zif_app_rule~get_additional_indent.
@@ -503,11 +500,15 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
 
 
   METHOD zif_app_rule~validate.
-
+    return.
   ENDMETHOD.
 
 
   METHOD zif_app_rule~is_lb_token_resp_delimiter.
+    IF mv_avoid_lb_after_this_token = abap_true.
+      RETURN.
+    ENDIF.
+
     IF is_comment( ) = abap_true.
       RETURN.
     ENDIF.
@@ -540,7 +541,7 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
           rv_result = abap_true.
           RETURN.
         WHEN ','.
-          IF mr_settings->is_line_break_at_comma_req( ) = abap_true.
+          IF mr_settings->is_line_break_after_comma_req( ) = abap_true.
             rv_result = abap_true.
             RETURN.
           ENDIF.
@@ -556,7 +557,7 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
         RETURN.
       ENDIF.
 
-      IF mr_settings->is_line_break_at_comma_req( ) = abap_true.
+      IF mr_settings->is_line_break_after_comma_req( ) = abap_true.
         rv_result = zcl_app_utilities=>contains_delimiter_char(
           EXPORTING
             it_delimiter = mr_token_ext->delimiter
@@ -564,6 +565,10 @@ CLASS zcl_app_base_rule IMPLEMENTATION.
       ENDIF.
     ENDIF.
 
+  ENDMETHOD.
+
+  METHOD zif_app_rule~set_avoid_lb_after_this_token.
+    mv_avoid_lb_after_this_token = iv_avoid.
   ENDMETHOD.
 
 ENDCLASS.

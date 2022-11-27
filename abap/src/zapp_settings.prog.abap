@@ -26,8 +26,7 @@ CLASS lcl_settings DEFINITION FINAL.
       RETURNING VALUE(rs_settings) TYPE zapp_settings.
 
     METHODS handle_exit
-      IMPORTING is_settings TYPE zapp_settings
-      RAISING   zcx_app_exception.
+      IMPORTING is_settings TYPE zapp_settings.
 
     METHODS save
       IMPORTING is_settings TYPE zapp_settings.
@@ -127,15 +126,8 @@ CLASS lcl_settings IMPLEMENTATION.
           text_not_found = 1
           OTHERS         = 2.
       IF sy-subrc <> 0.
-        RAISE EXCEPTION TYPE zcx_app_exception
-          MESSAGE ID sy-msgid
-          TYPE sy-msgty
-          NUMBER sy-msgno
-          WITH
-          sy-msgv1
-          sy-msgv2
-          sy-msgv3
-          sy-msgv4.
+        MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+                WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
       ENDIF.
 
       CASE lv_answer.
@@ -192,10 +184,10 @@ ENDCLASS.
 TABLES zapp_settings.
 
 PARAMETERS p_set_g RADIOBUTTON GROUP g1 DEFAULT 'X'.
-PARAMETERS p_set_u RADIOBUTTON GROUP g1.
-DATA gr_settings TYPE REF TO lcl_settings.
-DATA gr_ex TYPE REF TO zcx_app_exception.
-DATA gv_okcode TYPE sy-ucomm.
+PARAMETERS p_set_u RADIOBUTTON GROUP g1.                    "#EC NEEDED
+DATA gr_settings TYPE REF TO lcl_settings.                  "#EC NEEDED
+DATA gr_ex TYPE REF TO zcx_app_exception.                   "#EC NEEDED
+DATA gv_okcode TYPE sy-ucomm.                               "#EC NEEDED
 
 AT SELECTION-SCREEN.
 
@@ -212,7 +204,7 @@ AT SELECTION-SCREEN.
     TRY.
         gr_settings->lock( ).
       CATCH zcx_app_exception INTO gr_ex. " Pretty Printer Exception
-        MESSAGE gr_ex.
+        MESSAGE gr_ex->get_text( ) TYPE 'E'.
     ENDTRY.
   ENDIF.
 

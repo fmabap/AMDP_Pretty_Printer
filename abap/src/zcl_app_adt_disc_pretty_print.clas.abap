@@ -1,4 +1,4 @@
-CLASS ZCL_APP_ADT_DISC_PRETTY_PRINT DEFINITION
+CLASS zcl_app_adt_disc_pretty_print DEFINITION
   PUBLIC
   INHERITING FROM cl_adt_disc_res_app_base
 
@@ -19,11 +19,11 @@ ENDCLASS.
 
 
 
-CLASS ZCL_APP_ADT_DISC_PRETTY_PRINT IMPLEMENTATION.
+CLASS zcl_app_adt_disc_pretty_print IMPLEMENTATION.
 
 
   METHOD get_application_title.
-    result = 'ABAP and AMDP Pretty Printer'(001).
+    result = 'AMDP Pretty Printer'(001).
   ENDMETHOD.
 
 
@@ -33,9 +33,8 @@ CLASS ZCL_APP_ADT_DISC_PRETTY_PRINT IMPLEMENTATION.
 
 
   METHOD register_resources.
-    DATA: accepted_types     TYPE if_adt_discovery_collection=>ty_accepts.
 
-    DATA(lr_collection) = registry->register_discoverable_resource(
+    registry->register_discoverable_resource(
       url             = '/zapp_pretty_printer'
       handler_class   = 'ZCL_APP_ADT_REST_PRETTY_PRINT'
       description     = 'Pretty Printer'

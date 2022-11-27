@@ -6,12 +6,12 @@ CLASS zcl_app_keyword_scanner_amdp DEFINITION
   PUBLIC SECTION.
     INTERFACES zif_app_keyword_scanner.
 
-    METHODS constructor.
+    CLASS-METHODS class_constructor.
   PROTECTED SECTION.
   PRIVATE SECTION.
-    METHODS get_keywords
+    CLASS-METHODS get_keywords
       RETURNING VALUE(rt_keywords) TYPE zapp_t_keywords_sort.
-    DATA mt_keywords TYPE zapp_t_keywords_sort.
+    CLASS-DATA st_keywords TYPE zapp_t_keywords_sort.
 ENDCLASS.
 
 
@@ -105,6 +105,7 @@ CLASS zcl_app_keyword_scanner_amdp IMPLEMENTATION.
    ( |COMMAND_FUNCTION_CODE| )
    ( |COMMIT| )
    ( |COMMITTED| )
+   ( |CONCAT| )
    ( |CONDITION| )
    ( |CONDITION_NUMBER| )
    ( |CONNECT| )
@@ -240,6 +241,7 @@ CLASS zcl_app_keyword_scanner_amdp IMPLEMENTATION.
    ( |HOUR| )
    ( |IDENTITY| )
    ( |IF| )
+   ( |IFNULL| )
    ( |IGNORE| )
    ( |IMMEDIATE| )
    ( |IMMEDIATELY| )
@@ -270,7 +272,6 @@ CLASS zcl_app_keyword_scanner_amdp IMPLEMENTATION.
    ( |ISOLATION| )
    ( |JOIN| )
    ( |KEY| )
-   ( |KEY| )
    ( |KEY_MEMBER| )
    ( |KEY_TYPE| )
    ( |LAG| )
@@ -293,6 +294,8 @@ CLASS zcl_app_keyword_scanner_amdp IMPLEMENTATION.
    ( |LOCALTIMESTAMP| )
    ( |LOCATOR| )
    ( |LOWER| )
+   ( |LPAD| )
+   ( |LTRIM| )
    ( |MAP| )
    ( |MATCH| )
    ( |MATCHED| )
@@ -444,6 +447,8 @@ CLASS zcl_app_keyword_scanner_amdp IMPLEMENTATION.
    ( |ROW_COUNT| )
    ( |ROW_NUMBER| )
    ( |ROWS| )
+   ( |RPAD| )
+   ( |RTRIM| )
    ( |SAVEPOINT| )
    ( |SCALE| )
    ( |SCHEMA| )
@@ -510,6 +515,8 @@ CLASS zcl_app_keyword_scanner_amdp IMPLEMENTATION.
    ( |SUBMULTISET| )
    ( |SUBSTRING| )
    ( |SUBSTRING_REGEX| )
+   ( |SUBSTR_AFTER| )
+   ( |SUBSTR_BEFORE| )
    ( |SUCCEEDS| )
    ( |SUM| )
    ( |SWITCH| )
@@ -601,8 +608,8 @@ CLASS zcl_app_keyword_scanner_amdp IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
-  METHOD constructor.
-    mt_keywords = get_keywords( ).
+  METHOD class_constructor.
+    st_keywords = get_keywords( ).
   ENDMETHOD.
 
   METHOD zif_app_keyword_scanner~scan_keyword.
@@ -620,12 +627,20 @@ CLASS zcl_app_keyword_scanner_amdp IMPLEMENTATION.
 
     ir_token_ext->str = ir_token_ext->str_up.
 
-    READ TABLE mt_keywords TRANSPORTING NO FIELDS
+    READ TABLE st_keywords TRANSPORTING NO FIELDS
     WITH TABLE KEY keyword =  ir_token_ext->str_up.
     IF sy-subrc <> 0.
       TRANSLATE ir_token_ext->str TO LOWER CASE.
     ENDIF.
 
+  ENDMETHOD.
+
+  METHOD zif_app_keyword_scanner~is_keyword.
+    READ TABLE st_keywords TRANSPORTING NO FIELDS
+     WITH TABLE KEY keyword = iv_token_up.
+    IF sy-subrc = 0.
+      rv_result = abap_true.
+    ENDIF.
   ENDMETHOD.
 
 ENDCLASS.

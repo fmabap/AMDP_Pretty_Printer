@@ -81,7 +81,6 @@ CLASS zcl_app_scanner_comment DEFINITION
     METHODS is_part_of_sql_multi_line_com
       IMPORTING
         ir_prev_token_ext TYPE REF TO zapp_s_stokesx_ext
-        ir_token_ext      TYPE REF TO zapp_s_stokesx_ext
       RETURNING
         VALUE(rv_result)  TYPE abap_bool.
 
@@ -144,9 +143,7 @@ CLASS zcl_app_scanner_comment IMPLEMENTATION.
 
   METHOD set_comment_sqlscript.
 
-    IF is_part_of_sql_multi_line_com(
-            ir_prev_token_ext =  ir_prev_token_ext
-            ir_token_ext      = ir_token_ext ) = abap_true.
+    IF is_part_of_sql_multi_line_com( ir_prev_token_ext ) = abap_true.
 
       ir_token_ext->comment = cos_comment-multi_line.
       ir_token_ext->comment_detail = cos_comment_detail-part.
@@ -245,10 +242,7 @@ CLASS zcl_app_scanner_comment IMPLEMENTATION.
 
   METHOD is_comment_sqlscript.
 
-    IF is_part_of_sql_multi_line_com(
-         ir_prev_token_ext = ir_prev_token_ext
-         ir_token_ext      = ir_token_ext ) = abap_true.
-
+    IF is_part_of_sql_multi_line_com( ir_prev_token_ext ) = abap_true.
       rv_result = abap_true.
       RETURN.
     ENDIF.

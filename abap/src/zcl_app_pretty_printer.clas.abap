@@ -24,7 +24,8 @@ CLASS zcl_app_pretty_printer DEFINITION
         et_statement TYPE sstmnt_tab
         et_structure TYPE sstruc_tab
       RAISING
-        zcx_app_exception .
+        zcx_app_exception.
+
     METHODS get_and_apply_rules
       IMPORTING
         it_source        TYPE sourcetable
@@ -37,6 +38,7 @@ CLASS zcl_app_pretty_printer DEFINITION
         VALUE(rt_source) TYPE sourcetable
       RAISING
         zcx_app_exception .
+
     METHODS get_rules
       IMPORTING
         it_source        TYPE sourcetable
@@ -49,6 +51,7 @@ CLASS zcl_app_pretty_printer DEFINITION
         VALUE(rt_result) TYPE zapp_t_rule_instances
       RAISING
         zcx_app_exception .
+
     METHODS get_source_code_from_rules
       IMPORTING
         it_rules         TYPE zapp_t_rule_instances
@@ -56,6 +59,7 @@ CLASS zcl_app_pretty_printer DEFINITION
         VALUE(rt_result) TYPE sourcetable
       RAISING
         zcx_app_exception .
+
     METHODS get_act_source_row
       IMPORTING
         ir_rule    TYPE REF TO zif_app_rule
@@ -65,6 +69,7 @@ CLASS zcl_app_pretty_printer DEFINITION
         cv_act_row TYPE int4
       RAISING
         zcx_app_exception .
+
     METHODS add_rule_to_source
       IMPORTING
         ir_rule    TYPE REF TO zif_app_rule
@@ -74,20 +79,12 @@ CLASS zcl_app_pretty_printer DEFINITION
         cv_act_row TYPE int4
       RAISING
         zcx_app_exception .
+
     METHODS calc_rule_result
       IMPORTING
         it_rules TYPE zapp_t_rule_instances
       RAISING
         zcx_app_exception .
-
-    METHODS execute_standard_pretty_print
-      IMPORTING
-        it_source        TYPE sourcetable
-      RETURNING
-        VALUE(rt_source) TYPE sourcetable
-      RAISING
-        zcx_app_exception .
-
 
 ENDCLASS.
 
@@ -170,39 +167,6 @@ CLASS zcl_app_pretty_printer IMPLEMENTATION.
       MESSAGE ID 'ZAPP_MC_PRETTY_PRINT'
       TYPE 'E'
       NUMBER '013'.
-
-  ENDMETHOD.
-
-
-  METHOD execute_standard_pretty_print.
-    DATA lt_normal_app_res TYPE rswsourcet.
-    DATA lt_app_res TYPE sourcetable.
-    DATA lr_settings TYPE REF TO if_pretty_printer_settings.
-    DATA lt_source_code TYPE swbse_max_line_tab.
-    DATA lr_case_mode_settings TYPE REF TO if_pretty_printer_settings.
-
-
-    lr_settings = NEW cl_pretty_printer_wb_settings( ).
-
-    lt_source_code = it_source.
-    CALL FUNCTION 'GET_PRETTY_PRINTER_CASE_MODE'
-      EXPORTING
-        source_code        = lt_source_code
-        settings           = lr_settings
-      IMPORTING
-        case_mode_settings = lr_case_mode_settings.
-
-
-    TRY.
-        lt_normal_app_res = it_source.
-        NEW cl_sedi_pretty_printer( )->format_source( EXPORTING i_settings = lr_case_mode_settings CHANGING c_source = lt_normal_app_res ).
-      CATCH cx_sedi_pretty_printer.
-
-        RAISE EXCEPTION TYPE zcx_app_exception
-          EXPORTING
-            textid = cx_adt_rest_data_invalid=>create_textid_from_msg_params( ).
-    ENDTRY.
-    rt_source = lt_normal_app_res.
 
   ENDMETHOD.
 

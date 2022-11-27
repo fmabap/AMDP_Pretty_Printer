@@ -132,6 +132,15 @@
     </STA>
     <FUN>
      <RSMPE_FUNT>
+      <CODE>ATM</CODE>
+      <TEXTNO>001</TEXTNO>
+      <TEXT_TYPE>S</TEXT_TYPE>
+      <TEXT_NAME>ICON_DOC_POSITION_PROPOSAL</TEXT_NAME>
+      <ICON_ID>@F7@</ICON_ID>
+      <FUN_TEXT>Add Test Method</FUN_TEXT>
+      <ICON_TEXT>Add Test Method</ICON_TEXT>
+     </RSMPE_FUNT>
+     <RSMPE_FUNT>
       <CODE>EXIT</CODE>
       <TEXTNO>001</TEXTNO>
       <TYPE>E</TYPE>
@@ -158,7 +167,10 @@
       <CODE>PP</CODE>
       <TEXTNO>001</TEXTNO>
       <TEXT_TYPE>S</TEXT_TYPE>
+      <TEXT_NAME>ICON_REPORT_TEMPLATE</TEXT_NAME>
+      <ICON_ID>@QH@</ICON_ID>
       <FUN_TEXT>Pretty Print</FUN_TEXT>
+      <ICON_TEXT>Pretty Print</ICON_TEXT>
      </RSMPE_FUNT>
     </FUN>
     <BUT>
@@ -167,6 +179,12 @@
       <CODE>0001</CODE>
       <NO>01</NO>
       <PFNO>13</PFNO>
+     </RSMPE_BUT>
+     <RSMPE_BUT>
+      <PFK_CODE>000001</PFK_CODE>
+      <CODE>0001</CODE>
+      <NO>02</NO>
+      <PFNO>14</PFNO>
      </RSMPE_BUT>
     </BUT>
     <PFK>
@@ -190,12 +208,22 @@
      </RSMPE_PFK>
      <RSMPE_PFK>
       <CODE>000001</CODE>
+      <PFNO>14</PFNO>
+      <FUNCODE>ATM</FUNCODE>
+      <FUNNO>001</FUNNO>
+     </RSMPE_PFK>
+     <RSMPE_PFK>
+      <CODE>000001</CODE>
       <PFNO>15</PFNO>
       <FUNCODE>EXIT</FUNCODE>
       <FUNNO>002</FUNNO>
      </RSMPE_PFK>
     </PFK>
     <SET>
+     <RSMPE_STAF>
+      <STATUS>0100</STATUS>
+      <FUNCTION>ATM</FUNCTION>
+     </RSMPE_STAF>
      <RSMPE_STAF>
       <STATUS>0100</STATUS>
       <FUNCTION>EXIT</FUNCTION>

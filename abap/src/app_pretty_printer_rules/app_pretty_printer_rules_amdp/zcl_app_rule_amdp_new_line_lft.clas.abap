@@ -18,9 +18,6 @@ CLASS zcl_app_rule_amdp_new_line_lft IMPLEMENTATION.
 
   METHOD zif_app_rule~get_cur_offset_start.
 
-    DATA lt_text TYPE sourcetable.
-    DATA lr_text TYPE REF TO string.
-
     IF mv_cur_offset_start_set = abap_true.
       rv_result = mv_cur_offset_start.
       RETURN.
