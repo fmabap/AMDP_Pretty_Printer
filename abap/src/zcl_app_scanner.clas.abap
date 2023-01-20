@@ -78,6 +78,21 @@ CLASS zcl_app_scanner DEFINITION
       RAISING
         zcx_app_exception.
 
+    METHODS correct_sql_comment_tokens
+      CHANGING
+        ct_token_ext TYPE zapp_t_stokesx_ext_st
+      RAISING
+        zcx_app_exception.
+
+    METHODS correct_sql_comment_token
+      IMPORTING
+        ir_token_ext        TYPE REF TO zapp_s_stokesx_ext
+        ir_prev_token_ext   TYPE REF TO zapp_s_stokesx_ext
+      RETURNING
+        VALUE(rv_corrected) TYPE abap_bool
+      RAISING
+        zcx_app_exception.
+
     METHODS correct_token_with_double_dot
       IMPORTING
         it_source    TYPE sourcetable
@@ -267,24 +282,31 @@ CLASS zcl_app_scanner IMPLEMENTATION.
       lr_prev_token_ext = lr_token_ext.
 
     ENDLOOP.
+    CLEAR lr_prev_token_ext.
+    correct_sql_comment_tokens(
+      CHANGING
+        ct_token_ext = ct_token_ext
+    ).
+
 
     LOOP AT ct_token_ext
       REFERENCE INTO lr_token_ext
       USING KEY row_col.
-      lr_scanner_sqlscript->set_sqlscript(
-        EXPORTING
-          ir_prev_token_ext = lr_prev_token_ext
-          ir_token_ext      = lr_token_ext
-          it_statement      = it_statement
-          it_token_ext      = ct_token_ext ).
+      IF lr_prev_token_ext IS NOT INITIAL.
+        lr_scanner_sqlscript->set_sqlscript(
+          EXPORTING
+            ir_prev_token_ext = lr_prev_token_ext
+            ir_token_ext      = lr_token_ext
+            it_statement      = it_statement
+            it_token_ext      = ct_token_ext ).
 
-      lr_scanner_comment->set_comment(
-        EXPORTING
-          ir_token_ext      = lr_token_ext
-          ir_prev_token_ext = lr_prev_token_ext ).
+        lr_scanner_comment->set_comment(
+          EXPORTING
+            ir_token_ext      = lr_token_ext
+            ir_prev_token_ext = lr_prev_token_ext ).
 
-      set_token_end_of_sql_statement( ir_token_ext = lr_token_ext ).
-
+        set_token_end_of_sql_statement( ir_token_ext = lr_token_ext ).
+      ENDIF.
       lr_prev_token_ext = lr_token_ext.
 
     ENDLOOP.
@@ -491,7 +513,7 @@ CLASS zcl_app_scanner IMPLEMENTATION.
   METHOD split_opening_bracket_token.
     DATA lr_token_ext TYPE REF TO zapp_s_stokesx_ext.
     DATA lr_prev_token_ext TYPE REF TO zapp_s_stokesx_ext.
-    DATA lv_org_tab_row TYPE zapp_d_org_tab_row. "#EC NEEDED
+    DATA lv_org_tab_row TYPE zapp_d_org_tab_row.            "#EC NEEDED
     DATA ls_token_ext TYPE zapp_s_stokesx_ext.
     DATA lv_found TYPE abap_bool.
     DATA lv_length TYPE i.
@@ -627,6 +649,99 @@ CLASS zcl_app_scanner IMPLEMENTATION.
         TRANSLATE ir_prev_token_ext->str_up TO UPPER CASE.
       ENDIF.
 
+    ENDIF.
+  ENDMETHOD.
+
+
+  METHOD correct_sql_comment_token.
+    DATA lv_offset TYPE i.
+    DATA lv_rest_token TYPE zapp_d_token.
+    DATA lv_len_rest TYPE i.
+    DATA lv_org_prev_token TYPE zapp_d_token.
+    DATA lv_delimiter TYPE i.
+    DATA lv_org_token TYPE zapp_d_token.
+
+    IF ir_token_ext->row = ir_prev_token_ext->row.
+
+      FIND ';--' IN ir_prev_token_ext->str MATCH OFFSET lv_offset.
+      IF sy-subrc = 0.
+        " '--' must be moved to the next line else
+        " the where from example
+        " select * from  sflight;-- where
+        " will be moved to the next line and will not be handled as sql comment
+
+        lv_delimiter = ir_token_ext->col - ir_prev_token_ext->col - ir_prev_token_ext->len.
+
+        lv_org_prev_token = ir_prev_token_ext->str.
+        lv_offset = lv_offset + 1.
+        lv_rest_token = ir_prev_token_ext->str+lv_offset.
+        lv_len_rest = strlen( lv_rest_token ).
+
+        ir_prev_token_ext->str = ir_prev_token_ext->str+0(lv_offset).
+        ir_prev_token_ext->len =  ir_prev_token_ext->len - lv_len_rest.
+        ir_prev_token_ext->str_org =  ir_prev_token_ext->str.
+        ir_prev_token_ext->str_up = ir_prev_token_ext->str_org.
+        TRANSLATE ir_prev_token_ext->str_up TO UPPER CASE.
+
+        lv_org_token = ir_token_ext->str.
+
+        ir_token_ext->str = lv_rest_token.
+        "Add delimiter spaces
+        DO lv_delimiter TIMES.
+          CONCATENATE ir_token_ext->str ` ` INTO ir_token_ext->str RESPECTING BLANKS.
+        ENDDO.
+
+        CONCATENATE ir_token_ext->str lv_org_token INTO ir_token_ext->str RESPECTING BLANKS.
+        ir_token_ext->col = ir_token_ext->col - lv_len_rest - lv_delimiter.
+
+        IF ir_token_ext->col <= 0.
+          RAISE EXCEPTION TYPE zcx_app_exception
+            MESSAGE ID 'ZAPP_MC_PRETTY_PRINT'
+            TYPE 'E'
+            NUMBER '019'
+            WITH lv_org_prev_token
+            ir_prev_token_ext->row
+            ir_prev_token_ext->col.
+        ENDIF.
+        ir_token_ext->len =  ir_token_ext->len + lv_len_rest + lv_delimiter.
+        ir_token_ext->str_org =  ir_token_ext->str.
+        ir_token_ext->str_up = ir_token_ext->str_org.
+        TRANSLATE ir_token_ext->str_up TO UPPER CASE.
+        rv_corrected = abap_true.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD correct_sql_comment_tokens.
+
+    DATA lt_token_ext_unsorted TYPE STANDARD TABLE OF zapp_s_stokesx_ext.
+    DATA lr_token_ext TYPE REF TO zapp_s_stokesx_ext.
+    DATA lr_prev_token_ext TYPE REF TO zapp_s_stokesx_ext.
+    DATA lv_corrected TYPE abap_bool.
+
+    lt_token_ext_unsorted = ct_token_ext.
+    SORT lt_token_ext_unsorted BY row col org_tab_row.
+
+    LOOP AT lt_token_ext_unsorted
+      REFERENCE INTO lr_token_ext.
+
+      IF lr_prev_token_ext IS NOT INITIAL.
+        IF     correct_sql_comment_token(
+                  EXPORTING
+                    ir_token_ext      = lr_token_ext
+                    ir_prev_token_ext = lr_prev_token_ext
+                ) = abap_true.
+
+          lv_corrected = abap_true.
+
+        ENDIF.
+      ENDIF.
+      lr_prev_token_ext = lr_token_ext.
+
+    ENDLOOP.
+    IF lv_corrected = abap_true.
+      CLEAR ct_token_ext.
+      INSERT LINES OF lt_token_ext_unsorted INTO TABLE ct_token_ext.
     ENDIF.
   ENDMETHOD.
 
