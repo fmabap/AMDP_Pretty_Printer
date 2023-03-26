@@ -110,6 +110,12 @@
      <MSGNR>018</MSGNR>
      <TEXT>Settings deleted.</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZAPP_MC_PRETTY_PRINT</ARBGB>
+     <MSGNR>019</MSGNR>
+     <TEXT>Could not correct sql comment token &amp; length 0 row &amp; col &amp;</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

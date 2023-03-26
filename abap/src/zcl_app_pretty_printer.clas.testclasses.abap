@@ -22,6 +22,7 @@ CLASS lcl_test DEFINITION FINAL FOR TESTING
     METHODS no_lb_aft_co_left_right FOR TESTING RAISING cx_static_check.
     METHODS no_lb_aft_co_select FOR TESTING RAISING cx_static_check.
     METHODS no_lb_aft_co_by FOR TESTING RAISING cx_static_check.
+    METHODS correct_sql_comment_token FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 
 
@@ -1868,4 +1869,96 @@ CLASS lcl_test IMPLEMENTATION.
         msg = 'Tables differs' ).
 
   ENDMETHOD.
+  METHOD correct_sql_comment_token.
+DATA lt_source TYPE sourcetable.
+    DATA lt_source_res TYPE sourcetable.
+    DATA lt_source_res_exp TYPE sourcetable.
+    DATA lr_cut TYPE REF TO zcl_app_pretty_printer.
+    DATA lr_ex TYPE REF TO zcx_app_exception.
+    DATA lr_settings TYPE REF TO zif_app_settings.
+
+    lr_settings ?= cl_abap_testdouble=>create( 'ZIF_APP_SETTINGS' ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_true ).
+    lr_settings->is_line_break_after_comma_req( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_cbr_o( ).
+    cl_abap_testdouble=>configure_call( lr_settings )->returning( abap_false ).
+    lr_settings->is_no_lb_at_co_s_fu_dep_sfu_kw( ).
+
+lt_source = VALUE #(
+                     ( |METHOD test1.| )
+                     ( |write 'Hello;-- World'.| )
+                     ( |write 'Hello;--World'.| )
+                     ( |"hello;--world.| )
+                     ( |"hello ;-- world.| )
+                     ( |*hello;--world.| )
+                     ( |*hello ;-- world.| )
+                     ( |endmethod.| )
+                     ( |METHOD test| )
+                     ( | BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                     ( | OPTIONS READ-ONLY.| )
+                     ( |           select * from  sflight;-- where carrid = 'BLA'| )
+                     ( || )
+                     ( |select * from  sflight; -- where carrid = 'BLA'    | )
+                     ( || )
+                     ( |select * from  sflight;-- where carrid = 'BLA'      | )
+                     ( || )
+                     ( |select * from  sflight ;-- where carrid = 'BLA'     | )
+                     ( || )
+                     ( |select * from  sflight;--| )
+                     ( || )
+                     ( |select * from  sflight ;--| )
+                     ( || )
+                     ( |endmethod.  | ) ).
+
+lt_source_res_exp = VALUE #(
+                             ( |METHOD test1.| )
+                             ( |write 'Hello;-- World'.| )
+                             ( |write 'Hello;--World'.| )
+                             ( |"hello;--world.| )
+                             ( |"hello ;-- world.| )
+                             ( |*hello;--world.| )
+                             ( |*hello ;-- world.| )
+                             ( |endmethod.| )
+                             ( |METHOD test| )
+                             ( | BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT| )
+                             ( | OPTIONS READ-ONLY.| )
+                             ( |    SELECT * | )
+                             ( |      FROM sflight;-- where carrid = 'BLA'| )
+                             ( || )
+                             ( |    SELECT * | )
+                             ( |      FROM sflight; -- where carrid = 'BLA' | )
+                             ( || )
+                             ( |    SELECT * | )
+                             ( |      FROM sflight;-- where carrid = 'BLA' | )
+                             ( || )
+                             ( |    SELECT * | )
+                             ( |      FROM sflight ;-- where carrid = 'BLA' | )
+                             ( || )
+                             ( |    SELECT * | )
+                             ( |      FROM sflight;--| )
+                             ( || )
+                             ( |           SELECT * | )
+                             ( |             FROM sflight ;--| )
+                             ( || )
+                             ( |endmethod.  | ) ).
+
+    CREATE OBJECT lr_cut.
+    TRY.
+        lt_source_res = lr_cut->pretty_print(
+          it_source   = lt_source
+          ir_settings = lr_settings ).
+
+      CATCH zcx_app_exception INTO lr_ex.
+        cl_abap_unit_assert=>fail( lr_ex->get_text( ) ).
+    ENDTRY.
+    cl_abap_unit_assert=>assert_equals(
+      EXPORTING
+        act = lt_source_res
+        exp = lt_source_res_exp
+        msg = 'Tables differs' ).
+  ENDMETHOD.
+
 ENDCLASS.
