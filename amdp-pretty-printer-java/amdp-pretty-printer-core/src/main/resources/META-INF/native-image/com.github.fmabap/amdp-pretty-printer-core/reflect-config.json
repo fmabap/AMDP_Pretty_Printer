@@ -1,0 +1,74 @@
+[
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.abap.AbapDummyRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpByRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpCallRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpCloseBracketRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpControlStructureRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpDefaultNoCommentRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpDefaultRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpDefaultTokenRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpFuncInOneRowRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpLeftRightRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpNewLineLeftCondRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpNewLineLeftRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpNewLineRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpOpenBracketRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpSelectUpsertInsertRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.AmdpUnionAllRule",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.RuleCondFromTokenReverseWalk",
+        "allDeclaredConstructors": true
+    },
+    {
+        "name": "com.github.fmabap.amdpprettyprinter.prettyprinter.rules.amdp.RuleCondNextRuleIsNoBracket",
+        "allDeclaredConstructors": true
+    }
+]

@@ -1,0 +1,11 @@
+# lib/
+
+Place the built fat-JAR here before running the extension:
+
+    amdp-pretty-printer-app-2.0-SNAPSHOT.jar
+
+Build command (from amdp-pretty-printer-java/):
+
+    mvn package
+
+The build.ps1 script in amdp-pretty-printer-java/ copies the JAR here automatically.

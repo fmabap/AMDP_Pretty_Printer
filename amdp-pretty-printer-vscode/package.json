@@ -1,0 +1,89 @@
+{
+    "name": "amdp-pretty-printer",
+    "displayName": "AMDP Pretty Printer",
+    "description": "Formats ABAP Managed Database Procedure (AMDP / SQLScript) source code by using the AMDP Pretty Printer core engine (Java)",
+    "version": "2.0.0",
+    "publisher": "fmabap",
+    "license": "MIT",
+    "icon": "icons/icon.png",
+    "engines": {
+        "vscode": "^1.85.0"
+    },
+    "categories": [
+        "Formatters"
+    ],
+    "configurationDefaults": {
+        "[abap]": {
+            "editor.defaultFormatter": "fmabap.amdp-pretty-printer"
+        }
+    },
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "amdp-pretty-printer.formatDocument",
+                "title": "Format with the AMDP Pretty Printer",
+                "icon": "icons/icon.png"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "amdp-pretty-printer.formatDocument",
+                "key": "ctrl+alt+shift+0",
+                "when": "editorFocus"
+            }
+        ],
+        "configuration": {
+            "title": "AMDP Pretty Printer",
+            "properties": {
+                "amdp-pretty-printer.lbRule": {
+                    "type": "number",
+                    "default": 4,
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4
+                    ],
+                    "enumDescriptions": [
+                        "Always insert line break after comma",
+                        "Never insert line break after comma",
+                        "Depends on closing bracket only",
+                        "Depends on closing bracket and sub-function",
+                        "Depends on closing bracket, sub-function, and keyword"
+                    ],
+                    "description": "Line-break-after-comma rule (0-4). Default: 4."
+                },
+                "amdp-pretty-printer.javaPath": {
+                    "type": "string",
+                    "default": "java",
+                    "description": "Path to the Java 21+ executable. Default: 'java' (must be on PATH)."
+                },
+                "amdp-pretty-printer.trace": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable trace output from the AMDP Pretty Printer JAR (passes --trace to the process)."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "vscode:prepublish": "npm run compile",
+        "package": "npx @vscode/vsce package"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/fmabap/AMDP_Pretty_Printer"
+    },
+    "devDependencies": {
+        "@types/node": "^25.8.0",
+        "@types/vscode": "^1.85.0",
+        "typescript": "^6.0.3"
+    }
+}

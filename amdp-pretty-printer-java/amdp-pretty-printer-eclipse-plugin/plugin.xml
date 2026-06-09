@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+    <!-- Command declaration -->
+    <extension point="org.eclipse.ui.commands">
+        <category id="com.github.fmabap.amdpprettyprinter.eclipse.commands.category" name="AMDP Pretty Printer Category">
+        </category>
+        <command categoryId="com.github.fmabap.amdpprettyprinter.eclipse.commands.category" name="AMDP Pretty Printer Command" id="com.github.fmabap.amdpprettyprinter.eclipse.commands.prettyPrinterCommand">
+        </command>
+    </extension>
+
+    <!-- Handler: uses local Java pretty printer core (no SAP backend call) -->
+    <extension point="org.eclipse.ui.handlers">
+        <handler class="com.github.fmabap.amdpprettyprinter.eclipse.handlers.AmdpPrettyPrinterHandler" commandId="com.github.fmabap.amdpprettyprinter.eclipse.commands.prettyPrinterCommand">
+        </handler>
+    </extension>
+
+    <!-- Keyboard shortcut: Ctrl+0 (same as original plugin) -->
+    <extension point="org.eclipse.ui.bindings">
+        <key commandId="com.github.fmabap.amdpprettyprinter.eclipse.commands.prettyPrinterCommand" schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" contextId="org.eclipse.ui.contexts.window" sequence="M1+0">
+        </key>
+    </extension>
+
+    <!-- Menu and toolbar contributions -->
+    <extension point="org.eclipse.ui.menus">
+        <menuContribution locationURI="menu:com.sap.adt.tools.abapsource.ui.source?after=editGroup">
+            <command commandId="com.github.fmabap.amdpprettyprinter.eclipse.commands.prettyPrinterCommand" icon="icons/amdp pretty printer.png" id="com.github.fmabap.amdpprettyprinter.eclipse.menus.prettyPrinterCommand" label="%plugin.name" mnemonic="P">
+            </command>
+        </menuContribution>
+        <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+            <toolbar id="com.github.fmabap.amdpprettyprinter.eclipse.toolbars.prettyPrinterToolbar">
+                <command id="com.github.fmabap.amdpprettyprinter.eclipse.toolbars.prettyPrinterCommand" commandId="com.github.fmabap.amdpprettyprinter.eclipse.commands.prettyPrinterCommand" icon="icons/amdp pretty printer.png" tooltip="%plugin.name">
+                </command>
+            </toolbar>
+        </menuContribution>
+    </extension>
+
+    <!-- Preferences page -->
+    <extension point="org.eclipse.ui.preferencePages">
+        <page id="com.github.fmabap.amdpprettyprinter.eclipse.preferences" class="com.github.fmabap.amdpprettyprinter.eclipse.preferences.AmdpPreferencePage" name="%plugin.name">
+        </page>
+    </extension>
+
+    <!-- Preference initializer (sets defaults) -->
+    <extension point="org.eclipse.core.runtime.preferences">
+        <initializer class="com.github.fmabap.amdpprettyprinter.eclipse.preferences.PreferenceInitializer">
+        </initializer>
+    </extension>
+
+</plugin>

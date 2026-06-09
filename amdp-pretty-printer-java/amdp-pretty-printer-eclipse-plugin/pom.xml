@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.fmabap</groupId>
+    <artifactId>com.github.fmabap.amdpprettyprinter.eclipse</artifactId>
+    <version>2.0.0</version>
+    <packaging>eclipse-plugin</packaging>
+
+    <name>AMDP Pretty Printer - Eclipse Plugin (Local Java Core)</name>
+
+    <properties>
+        <tycho.version>4.0.7</tycho.version>
+        <!--
+      Version of amdp-pretty-printer-core to embed.
+      Run `mvn install` in amdp-pretty-printer-core first so the jar is in
+      your local Maven repository, then build this plugin with:
+        mvn package -Declipse.install.dir=/path/to/your/eclipse
+    -->
+        <core.version>2.0.0</core.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--
+      Path to your Eclipse installation directory (must have SAP ADT installed).
+      Override on the command line: -Declipse.install.dir=C:/path/to/eclipse
+    -->
+        <eclipse.install.dir>C:/eclipse/eclipse</eclipse.install.dir>
+    </properties>
+
+    <build>
+        <plugins>
+
+            <!-- Tycho - enables eclipse-plugin packaging -->
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-maven-plugin</artifactId>
+                <version>${tycho.version}</version>
+                <extensions>true</extensions>
+            </plugin>
+
+            <!-- Target platform: local Eclipse installation (covers Eclipse + SAP ADT bundles) -->
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>target-platform-configuration</artifactId>
+                <version>${tycho.version}</version>
+                <configuration>
+                    <target>
+                        <file>amdp-pretty-printer-eclipse-plugin.target</file>
+                    </target>
+                    <environments>
+                        <environment>
+                            <os>win32</os>
+                            <ws>win32</ws>
+                            <arch>x86_64</arch>
+                        </environment>
+                    </environments>
+                </configuration>
+            </plugin>
+
+            <!-- Copy amdp-pretty-printer-core jar into lib/ before compilation -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-core-jar</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.github.fmabap</groupId>
+                                    <artifactId>amdp-pretty-printer-core</artifactId>
+                                    <version>${core.version}</version>
+                                    <outputDirectory>${project.basedir}/lib</outputDirectory>
+                                    <destFileName>amdp-pretty-printer-core-${core.version}.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                            <overWrite>true</overWrite>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Compile with JavaSE-17 -->
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-compiler-plugin</artifactId>
+                <version>${tycho.version}</version>
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>

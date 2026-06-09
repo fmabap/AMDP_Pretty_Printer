@@ -1,0 +1,7 @@
+src/
+node_modules/
+.vscode-test/
+tsconfig.json
+*.vsix
+**/*.map
+images/extension.gif
