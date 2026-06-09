@@ -10,9 +10,20 @@ There is now also a CLI tool for mass formatting of files and a Visual Studio Co
 
 If you still need Version 1.2.1, then you can find it in the [releases](https://github.com/fmabap/AMDP_Pretty_Printer/releases/tag/v.1.2.1).
 
-![AMDP Pretty Printer](/doc/images/amdp_pretty_printer.gif)
+---
+### Demo VS Code Extension
 
-You can find here the details to AMDP Pretty Printer artifacts:
+![VS Code Extension](/doc/images/vs_code_extension.gif)
+
+---
+
+### Demo Eclipse Plugin
+
+![Eclipse Plugin](/doc/images/amdp_pretty_printer.gif)
+
+---
+
+You can find here the details of the AMDP Pretty Printer artifacts:
 
 - [Eclipse Plugin](./doc/eclipse%20plugin.md)
 - [CLI Tool](./doc/cli.md)
