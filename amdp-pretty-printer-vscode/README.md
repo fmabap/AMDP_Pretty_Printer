@@ -2,7 +2,7 @@
 
 Formats ABAP Managed Database Procedure (AMDP / SQLScript) source code by using the AMDP Pretty Printer core engine (Java)
 
-![extension in action](../doc/images/vs_code_extension.gif)
+![extension in action](https://github.com/fmabap/AMDP_Pretty_Printer/raw/HEAD/doc/images/vs_code_extension.gif)
 
 ---
 
