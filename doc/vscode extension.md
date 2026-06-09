@@ -6,18 +6,26 @@ Formats **ABAP Managed Database Procedure (AMDP)** source code directly inside V
 
 ---
 
-## Installation
-
-Coming soon
-
 ## Requirements
 
 | Requirement | Details |
 | --- | --- |
 | VS Code | 1.85.0 or newer |
-| Java | 21 or newer on your `PATH` (or configure the path manually – see [Settings](#settings)) |
+| Java | 21 or newer on your `PATH` environment variable (or configure the path manually – see [settings](#settings)) |
 
 ---
+
+## Installation
+
+Search in the VS Code Extensions for AMDP and press the install button.
+
+![Search Extension](./images/vs_code_install_extension.png)
+
+You can install it also from the marketplace.
+
+<https://marketplace.visualstudio.com/items?itemName=fmabap.amdp-pretty-printer>
+
+Configure the [settings](#settings).
 
 ## Features
 
@@ -43,26 +51,18 @@ Coming soon
 
 All settings are under the `amdp-pretty-printer` namespace and can be configured in your `settings.json` or via *File → Preferences → Settings*.
 
-### `amdp-pretty-printer.lbRule`
+Alternatively, click on the control wheel of the extension and then on settings.
 
-Controls when a line break is inserted **after a comma**.
+![open Settings](./images/vs_code_open_settings.png)
 
-| Value | Behaviour |
-| --- | --- |
-| `0` | Always insert a line break after a comma |
-| `1` | Never insert a line break after a comma |
-| `2` | Depends on the closing bracket |
-| `3` | Depends on the closing bracket and sub-functions |
-| `4` *(default)* | Depends on the closing bracket, sub-functions, and keywords |
-
-**Type:** `number` · **Default:** `4`
+![settings](./images/vs_code_settings.png)
 
 ---
 
 ### `amdp-pretty-printer.javaPath`
 
 Path to the Java 21+ executable used to run the formatter JAR.  
-Set this if `java` is not on your system `PATH` or if you want to use a specific JRE/JDK installation.
+Set this if `java` is not on your system `PATH` environment variable or if you want to use a specific JRE/JDK installation.
 
 You must escape the '\' with '\\'
 
@@ -83,6 +83,22 @@ The path depends on your Eclipse version.
 ```json
 "amdp-pretty-printer.javaPath": "C:\\eclipse\\plugins\\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.10.v20260205-0638\\jre\\bin\\java.exe"
 ```
+
+---
+
+### `amdp-pretty-printer.lbRule`
+
+Controls when a line break is inserted **after a comma**.
+
+| Value | Behaviour |
+| --- | --- |
+| `0` | Always insert a line break after a comma |
+| `1` | Never insert a line break after a comma |
+| `2` | Depends on the closing bracket |
+| `3` | Depends on the closing bracket and sub-functions |
+| `4` *(default)* | Depends on the closing bracket, sub-functions, and keywords |
+
+**Type:** `number` · **Default:** `4`
 
 ---
 
