@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: AMDP Pretty Printer
 Bundle-SymbolicName: com.github.fmabap.amdpprettyprinter.eclipse;singleton:=true
-Bundle-Version: 2.0.0
+Bundle-Version: 2.1.0
 Bundle-Activator: com.github.fmabap.amdpprettyprinter.eclipse.Activator
 Bundle-ClassPath: .,
- lib/amdp-pretty-printer-core-2.0.0.jar
+ lib/amdp-pretty-printer-core-2.1.0.jar
 Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.console,
  org.eclipse.core.runtime,
