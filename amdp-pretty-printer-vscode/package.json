@@ -2,7 +2,7 @@
     "name": "amdp-pretty-printer",
     "displayName": "AMDP Pretty Printer",
     "description": "Formats ABAP Managed Database Procedure (AMDP / SQLScript) source code by using the AMDP Pretty Printer core engine (Java)",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "publisher": "fmabap",
     "license": "MIT",
     "icon": "icons/icon.png",

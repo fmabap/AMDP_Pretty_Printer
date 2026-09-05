@@ -1,4 +1,4 @@
-# AMDP Pretty Printer CLI Tool
+﻿# AMDP Pretty Printer CLI Tool
 
 You can use the AMDP Pretty Printer CLI tool to format multiple files at once.
 
@@ -48,7 +48,7 @@ java -jar <path to the jar file> \
 
 ### Examples
 
-You have stored the jar file in "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.0.0.jar".
+You have stored the jar file in "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.1.0.jar".
 And you are in the CLI path where your ABAP classes are stored.
 
 #### Single-file mode
@@ -56,19 +56,19 @@ And you are in the CLI path where your ABAP classes are stored.
 Format a file in-place:
 
 ```bash
-java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.0.0.jar" zcl_my_amdp.abap
+java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.1.0.jar" zcl_my_amdp.abap
 ```
 
 Write formatted output to a separate file:
 
 ```bash
-java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.0.0.jar" zcl_my_amdp.abap zcl_my_amdp_formatted.abap
+java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.1.0.jar" zcl_my_amdp.abap zcl_my_amdp_formatted.abap
 ```
 
 Disable line breaks after commas:
 
 ```bash
-java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.0.0.jar" zcl_my_amdp.abap --lb-rule=1
+java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.1.0.jar" zcl_my_amdp.abap --lb-rule=1
 ```
 
 #### Directory mode
@@ -76,31 +76,31 @@ java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.0.0.jar" zcl_my_amdp
 Format all `*.abap` files in `src/` in-place (recursively):
 
 ```bash
-java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.0.0.jar" src/
+java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.1.0.jar" src/
 ```
 
 Format all `*.abap` files from `src/` and write results to `out/` (directory structure is mirrored):
 
 ```bash
-java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.0.0.jar" src/ out/
+java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.1.0.jar" src/ out/
 ```
 
 Format only the top-level directory, skip subdirectories:
 
 ```bash
-java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.0.0.jar" src/ --no-recursive
+java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.1.0.jar" src/ --no-recursive
 ```
 
 Format all `*.txt` files instead of the default `*.abap`:
 
 ```bash
-java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.0.0.jar" src/ --pattern=*.txt
+java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.1.0.jar" src/ --pattern=*.txt
 ```
 
 Combine options - format `*.abap` files non-recursively, write to a separate directory, use lb-rule 2:
 
 ```bash
-java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.0.0.jar" src/ out/ --no-recursive --lb-rule=2
+java -jar "C:\AMDP-Pretty-Printer\amdp-pretty-printer-app-2.1.0.jar" src/ out/ --no-recursive --lb-rule=2
 ```
 
 ---

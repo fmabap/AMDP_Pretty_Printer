@@ -49,6 +49,9 @@ public final class AbapDummyRule extends BaseRule {
             return tokenExt.row;
         }
 
+        // Ensure the unresolved prefix is computed iteratively, not recursively.
+        resolveCurRowAncestors();
+
         TokensExt prevTokenExt = prevRule.getTokenExt();
 
         if (AppUtilities.isAbapToken(prevTokenExt.sqlscript)) {

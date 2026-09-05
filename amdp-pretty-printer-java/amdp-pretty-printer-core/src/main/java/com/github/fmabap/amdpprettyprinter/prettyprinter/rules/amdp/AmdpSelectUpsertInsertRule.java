@@ -59,6 +59,17 @@ public class AmdpSelectUpsertInsertRule extends AmdpDefaultNoCommentRule {
         return getCurOffsetEnd();
     }
 
+    /**
+     * Mirrors the fallback condition of {@link #getNewLineIndent()} so the
+     * iterative same-type-prefix walk in {@code BaseRule.getNewLineIndent()}
+     * knows it may unroll through this rule when its special logic is not
+     * active.
+     */
+    @Override
+    protected boolean usesDefaultNewLineIndent() throws AppException {
+        return !isLogicActive();
+    }
+
     // -----------------------------------------------------------------------
     // IRule - getCurOffsetStart
     // -----------------------------------------------------------------------

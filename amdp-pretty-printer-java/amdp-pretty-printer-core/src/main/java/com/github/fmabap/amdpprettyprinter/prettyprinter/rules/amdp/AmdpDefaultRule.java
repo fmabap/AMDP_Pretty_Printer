@@ -100,6 +100,9 @@ public class AmdpDefaultRule extends BaseRule {
             return curOffsetStart;
         }
 
+        // Ensure the unresolved prefix is computed iteratively, not recursively.
+        resolveCurOffsetStartAncestors();
+
         if (tokenExt.commentDetail == CommentDetail.START_BEGIN_OF_LINE) {
             setCurOffsetStart(0);
             return 0;

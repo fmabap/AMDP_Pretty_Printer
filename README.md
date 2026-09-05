@@ -2,7 +2,7 @@
 
 SAP recommends code push downs of the ABAP logic to the HANA database to have a better performance. One of the possible ways to do this is to use AMDPs (ABAP Managed Database Procedures). They can be developed in Eclipse or in Visual Studio Code. SAP unfortunately does not provide a Pretty Printer (source code formatter) for it. The AMDP Pretty Printer is closing this gap.
 
-## :rotating_light::rotating_light::rotating_light: The AMDP Pretty Printer 2.0 is now released. :rotating_light::rotating_light::rotating_light:
+## :rotating_light::rotating_light::rotating_light: The AMDP Pretty Printer 2 is now released. :rotating_light::rotating_light::rotating_light:
 
 The coding is now Java only. The ABAP coding of the version 1.2.1 has been converted to Java and a new tokenizer has been developed which allows the reuse of the existing logic without the dependency to the SAP Standard Pretty Printer. So there is no longer an installation in the SAP Backend required and it can be used with cloud systems.
 

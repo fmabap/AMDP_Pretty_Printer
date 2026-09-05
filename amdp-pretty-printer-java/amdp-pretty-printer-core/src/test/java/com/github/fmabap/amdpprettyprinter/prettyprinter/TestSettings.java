@@ -48,6 +48,6 @@ class TestSettings implements ISettings {
 
     @Override
     public boolean isTrace() {
-        return true;
+        return false;
     }
 }

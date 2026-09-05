@@ -1,6 +1,8 @@
 package com.github.fmabap.amdpprettyprinter.prettyprinter.rules;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 import com.github.fmabap.amdpprettyprinter.prettyprinter.AppException;
@@ -204,6 +206,8 @@ public abstract class BaseRule implements IRule {
             return curRow;
         }
 
+        resolveCurRowAncestors();
+
         if (prevRule == null) {
             setCurRow(1);
             return curRow;
@@ -239,6 +243,37 @@ public abstract class BaseRule implements IRule {
         return curRow;
     }
 
+    /**
+     * Resolves {@code endRow} (and transitively {@code curRow}) for every
+     * not-yet-resolved ancestor of this rule (oldest first), using an
+     * explicit heap-allocated worklist instead of recursion. Without this,
+     * {@link #getCurRow()} would recurse one Java stack frame per unresolved
+     * predecessor - for a long token chain (e.g. a large real-world source
+     * file) this can exhaust the JVM stack. After this call every
+     * {@code prevRule.getEndRow()} access below is a cheap cache hit.
+     *
+     * <p>
+     * Deliberately keyed on {@code endRowSet} rather than {@code curRowSet}:
+     * {@link #getEndRow()} is never overridden and always caches
+     * unconditionally, so it is a reliable "fully resolved" marker even for
+     * rule classes whose {@code getCurRow()} override does not cache (e.g.
+     * {@code AbapDummyRule}) - checking {@code curRowSet} there would treat
+     * such a rule as forever unresolved and re-walk its whole prefix on every
+     * call.
+     * </p>
+     */
+    protected final void resolveCurRowAncestors() throws AppException {
+        Deque<IRule> pending = new ArrayDeque<>();
+        IRule cursor = prevRule;
+        while (cursor instanceof BaseRule && !((BaseRule) cursor).endRowSet) {
+            pending.push(cursor);
+            cursor = cursor.getPrevRule();
+        }
+        while (!pending.isEmpty()) {
+            pending.pop().getEndRow();
+        }
+    }
+
     @Override
     public int getEndRow() throws AppException {
         if (endRowSet) {
@@ -269,6 +304,8 @@ public abstract class BaseRule implements IRule {
         if (curOffsetStartSet) {
             return curOffsetStart;
         }
+
+        resolveCurOffsetStartAncestors();
 
         if (tokenExt.commentDetail == CommentDetail.START_BEGIN_OF_LINE) {
             setCurOffsetStart(0);
@@ -316,6 +353,28 @@ public abstract class BaseRule implements IRule {
         return result;
     }
 
+    /**
+     * Resolves {@code curOffsetEnd} (and transitively {@code curOffsetStart})
+     * for every not-yet-resolved ancestor of this rule (oldest first),
+     * iteratively instead of recursively - see {@link #resolveCurRowAncestors()}
+     * for the rationale, including why this is keyed on {@code curOffsetEndSet}
+     * (always cached by the never-overridden {@link #getCurOffsetEnd()})
+     * rather than {@code curOffsetStartSet}. Also used by
+     * {@code AmdpDefaultRule#getCurOffsetStart()}, which reimplements
+     * {@code getCurOffsetStart()} for AMDP tokens instead of delegating to it.
+     */
+    protected final void resolveCurOffsetStartAncestors() throws AppException {
+        Deque<IRule> pending = new ArrayDeque<>();
+        IRule cursor = prevRule;
+        while (cursor instanceof BaseRule && !((BaseRule) cursor).curOffsetEndSet) {
+            pending.push(cursor);
+            cursor = cursor.getPrevRule();
+        }
+        while (!pending.isEmpty()) {
+            pending.pop().getCurOffsetEnd();
+        }
+    }
+
     @Override
     public int getCurOffsetEnd() throws AppException {
         if (curOffsetEndSet) {
@@ -349,29 +408,73 @@ public abstract class BaseRule implements IRule {
 
     @Override
     public int getNewLineIndent() throws AppException {
-        int result;
-        if (hasPrevRuleSameType()) {
-            if (isEndOfStatement()) {
-                result = prevRule.getNewStatementIndent();
-            } else {
-                result = prevRule.getNewLineIndent();
-            }
-        } else {
-            result = defaultLineIndent;
+        // Walk backward through the run of rules that would just delegate to
+        // this default (same-type, non-terminal, no active special logic)
+        // implementation, iteratively instead of recursively - a long run of
+        // same-type tokens (e.g. many SELECT columns) is never cached (the
+        // value may legitimately change across calcRuleResult's convergence
+        // iterations), so unlike the row/offset chains this cannot rely on a
+        // cache flag to bound recursion depth.
+        List<BaseRule> plainChain = new ArrayList<>();
+        BaseRule current = this;
+        while (current.hasPrevRuleSameType()
+                && !current.isEndOfStatement()
+                && current.prevRule instanceof BaseRule
+                && ((BaseRule) current.prevRule).usesDefaultNewLineIndent()) {
+            plainChain.add(current);
+            current = (BaseRule) current.prevRule;
         }
-        result += ruleData.newLineIndentDiff;
-        return Math.max(0, result);
+
+        int result;
+        if (current.hasPrevRuleSameType()) {
+            result = current.isEndOfStatement()
+                    ? current.prevRule.getNewStatementIndent()
+                    : current.prevRule.getNewLineIndent();
+        } else {
+            result = current.defaultLineIndent;
+        }
+        result = Math.max(0, result + current.ruleData.newLineIndentDiff);
+
+        for (int i = plainChain.size() - 1; i >= 0; i--) {
+            BaseRule rule = plainChain.get(i);
+            result = Math.max(0, result + rule.ruleData.newLineIndentDiff);
+        }
+        return result;
+    }
+
+    /**
+     * Whether {@link #getNewLineIndent()} for this rule instance resolves to
+     * this default same-type-prefix logic rather than rule-specific special
+     * logic. Used by the iterative walk in {@link #getNewLineIndent()} to
+     * know how far it may safely keep unrolling instead of falling back to an
+     * ordinary (polymorphic, possibly recursive) call. Overridden by rule
+     * classes whose {@code getNewLineIndent()} has an active alternative
+     * branch, mirroring their existing fallback condition exactly.
+     */
+    protected boolean usesDefaultNewLineIndent() throws AppException {
+        return true;
     }
 
     @Override
     public int getNewStatementIndent() throws AppException {
-        int result;
-        if (hasPrevRuleSameType()) {
-            result = prevRule.getNewStatementIndent();
-        } else {
-            result = defaultLineIndent;
+        // Same rationale as getNewLineIndent() above; getNewStatementIndent()
+        // is never overridden, so no "special logic" boundary check is needed.
+        List<BaseRule> plainChain = new ArrayList<>();
+        BaseRule current = this;
+        while (current.hasPrevRuleSameType() && current.prevRule instanceof BaseRule) {
+            plainChain.add(current);
+            current = (BaseRule) current.prevRule;
         }
-        result += ruleData.newStatementIndentDiff;
+
+        int result = current.hasPrevRuleSameType()
+                ? current.prevRule.getNewStatementIndent()
+                : current.defaultLineIndent;
+        result += current.ruleData.newStatementIndentDiff;
+
+        for (int i = plainChain.size() - 1; i >= 0; i--) {
+            BaseRule rule = plainChain.get(i);
+            result += rule.ruleData.newStatementIndentDiff;
+        }
         return result;
     }
 

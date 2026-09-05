@@ -43,8 +43,8 @@ $Artifacts = Join-Path $RootDir "artifacts"
 # ---------------------------------------------------------------------------
 # Version constants – update here when bumping the project version
 # ---------------------------------------------------------------------------
-$Version = "2.0.0"
-$EclipseVersion = "2.0.0"
+$Version = "2.1.0"
+$EclipseVersion = "2.1.0"
 
 function Step([string]$msg) {
     Write-Host ""

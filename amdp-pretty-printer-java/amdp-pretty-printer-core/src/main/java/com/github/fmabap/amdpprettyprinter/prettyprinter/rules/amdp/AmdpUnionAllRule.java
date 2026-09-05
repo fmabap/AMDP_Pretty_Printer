@@ -143,6 +143,19 @@ public final class AmdpUnionAllRule extends AmdpNewLineLeftRule {
         return selectRule.getCurOffsetStart() - selectRule.getAdditionalIndent();
     }
 
+    /**
+     * Mirrors the fallback condition of {@link #getNewLineIndent()} so the
+     * iterative same-type-prefix walk in {@code BaseRule.getNewLineIndent()}
+     * knows it may unroll through this rule when its special logic is not
+     * active. Conservative for the (rare) case where the SELECT lookup would
+     * itself return {@code null}: treating this rule as "special" there too
+     * is safe, just marginally less optimal.
+     */
+    @Override
+    protected boolean usesDefaultNewLineIndent() throws AppException {
+        return !isUnionOrAllOfUnionAll();
+    }
+
     // -----------------------------------------------------------------------
     // IRule - isNewLineReq
     // -----------------------------------------------------------------------
